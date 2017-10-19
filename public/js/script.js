@@ -4,32 +4,32 @@ var tabla_creditos;
 var columnas_creditos;
 columnas_creditos = [
     {
-        "title": "Creditos Fiscales",
+        "title": "Crédito Fiscal",
         "data": "folio"
     },
     {
-        "title": "Documento Determinante",
+        "title": "Documento determinante",
         "data": "documento_determinante"
     },
     {
-        "title": "Origen del credito fiscal",
+        "title": "Origen del crédito fiscal",
         "data": "origen_credito"
     },
     {
-        "title": "Monto total del credito fiscal",
+        "title": "Adeudo",
         "data": "monto",
         "render": function (data) {
             return "$" + data;
         }
     },
     {
-        "title": "Bienes del credito fiscal",
+        "title": "Bienes",
         "defaultContent": "<button type='button' class='btn btn-default btn-lg'><span class='glyphicon glyphicon-eye-open'></button>",
         "data": null,
         "className": "view-bienes"
     },
     {
-        "title": "Editar credito fiscal",
+        "title": "Editar",
         "defaultContent": "<button type='button' class='btn btn-success btn-lg'><span class='glyphicon glyphicon-edit'></span></button>",
         "data": null,
         "className": "details-control"
@@ -41,20 +41,19 @@ columnas_creditos = [
     }
 ];
 
-function actualizar_credito(folio) {
+function actualizar_credito(folio, tabla) {
     var datos = {};
     datos.folio = $("#nuevo_folio").val();
     datos.monto = $("#nuevo_monto").val();
     datos.documento= $("#nuevo_documento_determinante").val();
     datos.origen = $("#nuevo_origen").val();
-    ajax("/creditos/update", "post", {"folio": folio, "credito": datos});
-    tabla_creditos.ajax.reload();
+    ajax("/creditos/update", "post", {"folio": folio, "credito": datos}, tabla);
 }
 function format ( d ) {
     // `d` is the original data object for the row
     return '<table id="tabla_actualizar_credito" cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
         '<tr>' +
-            '<td>Credito Fiscal:</td>' +
+            '<td>Crédito Fiscal:</td>' +
             '<td>' + '<input type="text" id="nuevo_folio" value="' + d.folio + '"></td>' +
         '</tr>' +
         '<tr>' +
@@ -62,7 +61,7 @@ function format ( d ) {
             '<td>' + '<input type="text" id="nuevo_documento_determinante" value="' + d.documento_determinante + '"></td>' +
         '</tr>' +
         '<tr>' +
-            '<td>Origen del Credito:</td>' +
+            '<td>Origen del Crédito:</td>' +
             '<td>' + '<input type="text" id="nuevo_origen"value="' + d.origen_credito + '"></td>' +
         '</tr>' +
         '<tr>' +
@@ -131,7 +130,7 @@ function crear_tabla(tabla, columnas) {
     });
 }
 
-function ajax(direccion, metodo, data) {
+function ajax(direccion, metodo, data, tabla) {
     $.ajax({
         "url": direccion,
         "type": metodo,
@@ -140,7 +139,7 @@ function ajax(direccion, metodo, data) {
             $("#success #mensaje").text(msj);
             $("#success").modal();
             $("#creditos_fiscales_form")[0].reset();
-            //crear_tabla($("#creditos"), columnas_creditos);
+            tabla.ajax.reload();
         },
         "error": function(msj) {
             $("#warning #mensaje").text("");
@@ -174,11 +173,8 @@ function start() {
         credito_fiscal.origen = $("#origen").val();
         credito_fiscal.monto = $("#monto").val();
         //Se envian los datos al servidor
-        ajax("/creditos/create", "post", {"credito": credito_fiscal}, $("#success"), $("#success #mensaje"));
+        ajax("/creditos/create", "post", {"credito": credito_fiscal}, $("#success"), $("#success #mensaje"), tabla_creditos);
         //Refrescamos la tabla para que cargue el nuevo registro
-        tabla_creditos.ajax.reload(function(json){
-            console.log(json.lastInput);
-        });
     });
 
     //Mostrar los detalles del credito fiscal en una sub-tabla
@@ -208,10 +204,7 @@ function start() {
                         "folio": $("#data").val(),
                         "baja": $("#categoria_bajas option:selected").val(),
                         "comentarios": $("#comentarios").val()
-                    }
-                );
-                //Recargamos la tabla para que deje de mostrar el credito eliminado
-                tabla_creditos.ajax.reload();
+                    }, tabla_creditos);
             });
         });
     });

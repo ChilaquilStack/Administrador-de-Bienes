@@ -1,5 +1,5 @@
 @extends("layout.master")
-@section("title","creditos fiscales")
+@section("title","créditos fiscales")
 @section("content")
 @include('modals.warning')
 @include('modals.success')
@@ -7,7 +7,7 @@
 <form class="form-horizontal" role="form" id="creditos_fiscales_form">
     <input type="hidden" id="data" value="">
     <div class="form-group">
-      <h1>Registrar Credito Fiscal</h1>
+      <h1>Registrar Crédito Fiscal</h1>
       <label class="control-label col-sm-2" for="folio">Credito Fiscal:</label>
       <div class="col-sm-10">
         <input class="form-control" id="folio" placeholder="Ingresar numero de credito fiscal" type="text">
