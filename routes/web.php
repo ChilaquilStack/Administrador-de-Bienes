@@ -14,6 +14,8 @@
 Route::get('/', function () {
     return view('index');
 });
-Route::get("/creditos", function(){
-    return view("creditos.index");
-});
+Route::get("/creditos/creditos", "CreditosController@creditos");
+Route::post("/creditos/create",  "CreditosController@store");
+Route::post("/creditos/destroy", "CreditosController@destroy");
+Route::post("/creditos/update",  "CreditosController@update");
+Route::resource("creditos", "CreditosController");

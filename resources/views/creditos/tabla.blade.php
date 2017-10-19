@@ -1,20 +1,14 @@
 <table class="container-table" id="creditos">
+    <h1>Creditos Fiscales</h1>
     <thead>
         <tr>
-            <th>folio</th>
-            <th>documento determinante</th>
-            <th>origen del creido</th>
-            <th>monto</th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
             <th></th>
         </tr>
     </thead>
-    <tfoot>
-        <tr>
-            <th>folio</th>
-            <th>documento determinante</th>
-            <th>origen del creido</th>
-            <th>monto</th>
-            <th></th>
-        </tr>
-    </tfoot>
 </table>
