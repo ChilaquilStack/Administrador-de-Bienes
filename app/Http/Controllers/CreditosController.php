@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\CreditoRequest;
 use App\Credito;
+use App\Contribuyente;
 use Validator;
 use DB;
 
@@ -14,8 +15,15 @@ class CreditosController extends Controller
     
     public function index()
     {
+        $origenes_del_credito = [
+            "1"=> "Anexo 18", 
+            "2" => "ISTUV", 
+            "3" => "Control de Obligaciones", 
+            "4" => "Multas Federales No Fiscales", 
+            "5" => "Liquidaciones DAFE" 
+        ];
         $bajas = DB::select("select id, motivo from motivos_bajas_creditos_fiscales order by motivo");
-        return view("creditos.index", compact('bajas'));
+        return view("creditos.index", ["bajas" => $bajas, "origenes" => $origenes_del_credito]);
     }
 
     public function create()
@@ -28,19 +36,18 @@ class CreditosController extends Controller
         $messages = [
             'credito.folio.required' => 'Por favor introduzca un número de folio.',
             'credito.folio.unique' => 'El crédito fiscal ya existe',
-            'credito.folio.numeric' => "El credito fiscal debe ser un valor numerico",
             'credito.monto.required' => 'Por favor introduzca un monto.',
             'credito.monto.numeric' => "El monto debe ser un valor numerico",
-            'credito.monto.min' => 'El monto debe ser mayor de :min.',
+            'credito.monto.min' => 'El monto debe ser mayor de 0.',
             'credito.origen.required' => 'Por favor introduzca el origen del crédito.',
             'credito.documento.required' => 'Por favor introduzca el documento determinante.',
             'credito.documento.unique' => 'El documento determinante ya exite.'
         ];
         
         $validator = Validator::make($request->all(), [
-            'credito.folio' => 'required|unique:creditos_fiscales,folio|numeric',
-            'credito.monto' => 'required|numeric',
-            'credito.documento' => 'required|unique:creditos_fiscales,documento_determinante',
+            'credito.folio' => 'required|unique:creditos_fiscales,folio|alpha_dash',
+            'credito.monto' => 'required|numeric|min:1',
+            'credito.documento' => 'unique:creditos_fiscales,documento_determinante',
             'credito.origen' => 'required'
         ], $messages);
 
@@ -48,15 +55,38 @@ class CreditosController extends Controller
             return response()->json($validator->errors(), 400);
         }
 
-        $folio = $request->input("credito.folio");
-        $credito = new credito([
-            "folio" => $folio,
+        $contribuyente = new contribuyente([
+            "nombre" => $request->input("credito.contribuyente.nombre"),
+            "apellido_paterno" => $request->input("credito.contribuyente.paterno"),
+            "apellido_materno" => $request->input("credito.contribuyente.materno"),
+            "telefono" => $request->input("credito.contribuyente.telefono"),
+            "rfc" => $request->input("credito.contribuyente.rfc"),
+            "curp" => $request->input("credito.contribuyente.curp")
+        ]);
+        $contribuyente->save();
+        
+        // $domicilio = new Domicilio([
+        //     "cp" => $request->input("credito.contribuyente.nombre"),
+        //     "int" => $request->input("credito.contribuyente.paterno"),
+        //     "ext" => $request->input("credito.contribuyente.materno"),
+        //     "calle" => $request->input("credito.contribuyente.telefono"),
+        //     "colonia" => $request->input("credito.contribuyente.rfc"),
+        //     "municipio" => $request->input("credito.contribuyente.curp"),
+        //     "estado" => $request->input("credito.contribuyente.curp")
+        // ]);
+
+        $credito = new Credito([
+            "folio" => $request->input("credito.folio"),
             "monto" => $request->input("credito.monto"),
             "documento_determinante" => $request->input("credito.documento"),
             "origen_credito" => $request->input("credito.origen")
+            //"contribuyentes_id" => $contribuyente->id
         ]);
-        $credito->save();
-        return response()->json("Credito Fiscal"." ".$folio." "."Creado con Exito",200);
+        //$credito->save();
+
+        $credito->contribuyente()->save($contribuyente);
+        
+        return response()->json("Credito Fiscal"." ".$credito->folio." "."Creado con Exito",200);
     }
 
     public function show($id)
@@ -73,20 +103,18 @@ class CreditosController extends Controller
     {
         $messages = [
             'credito.folio.required' => 'Por favor introduzca un número de folio.',
-            'credito.folio.numeric' => 'El folio debe de ser un valor numerico.',
             'credito.folio.unique' => 'El crédito fiscal ya existe',
             'credito.monto.required' => 'Por favor introduzca un monto.',
             'credito.monto.numeric' => 'El monto debe ser un valor numerico.',
-            'credito.monto.min' => 'El monto debe ser mayor de :min.',
+            'credito.monto.min' => 'El monto debe ser mayor de 0',
             'credito.origen.required' => 'Por favor introduzca el origen del crédito.',
-            'credito.documento.required' => 'Por favor introduzca el documento determinante.',
             'credito.documento.unique' => 'El documento determinante ya exite.'
         ];
         
         $validator = Validator::make($request->all(), [
-            'credito.folio' => 'required|numeric',
-            'credito.monto' => 'required|numeric',
-            'credito.documento' => 'required',
+            'credito.folio' => 'required|alpha_dash',
+            'credito.monto' => 'required|numeric|min:0',
+            'credito.documento' => 'required|alpha_dash',
             'credito.origen' => 'required'
         ], $messages);
 
@@ -115,7 +143,9 @@ class CreditosController extends Controller
     }
 
     public function creditos(){
-        $creditos = Credito::where('estado', 1)->orderBy("folio","desc")->get();
+        //$creditos = Credito::where('estado', 1)->orderBy("folio","desc")->get();
+        $creditos = Credito::All();
         return response()->json(json_encode($creditos), 200);
+    
     }
 }

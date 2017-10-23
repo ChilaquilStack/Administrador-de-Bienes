@@ -1,9 +1,6 @@
 <div class="modal fade" id="eliminar_credito">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Crédito Fiscal</h4>
-            </div>
             <div class="modal-body"  id="mensaje">
                 <p>Commentarios</p>
                     <textarea id="comentarios" cols="70" rows="5"></textarea>

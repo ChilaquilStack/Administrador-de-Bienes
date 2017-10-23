@@ -1,9 +1,6 @@
 <div class="modal fade" id="success">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header alert-success">
-                <h4 class="modal-title">Crédito Fiscal</h4>
-            </div>
             <div class="modal-body alert-success" id="mensaje">
                 <p>Crédito Fiscal creado con éxito.</p>
             </div>
