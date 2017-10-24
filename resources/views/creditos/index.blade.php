@@ -15,7 +15,9 @@
 </div>
 </div>
 @include('creditos.tabla')
+@include('bienes.tabla')
 @endsection
 @section("scripts")
+  {{Html::script("js/variables.js")}}
   {{Html::script("js/script.js")}}
 @endsection

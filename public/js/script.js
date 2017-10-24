@@ -13,46 +13,6 @@ var tabla_creditos, credito_fiscal = {
     ]
 };
 
-var columnas_creditos;
-columnas_creditos = [
-    {
-        "title": "Crédito Fiscal",
-        "data": "folio"
-    },
-    {
-        "title": "Documento determinante",
-        "data": "documento_determinante"
-    },
-    {
-        "title": "Origen del crédito fiscal",
-        "data": "origen_credito"
-    },
-    {
-        "title": "Adeudo",
-        "data": "monto",
-        "render": function (data) {
-            return "$" + data;
-        }
-    },
-    {
-        "title": "Bienes",
-        "defaultContent": "<button type='button' class='btn btn-default btn-lg'><span class='glyphicon glyphicon-eye-open'></button>",
-        "data": null,
-        "className": "view-bienes"
-    },
-    {
-        "title": "Editar",
-        "defaultContent": "<button type='button' class='btn btn-success btn-lg'><span class='glyphicon glyphicon-edit'></span></button>",
-        "data": null,
-        "className": "details-control"
-    },
-    {
-        "title": "Baja",
-        "className": "delete-control",
-        "defaultContent": "<button type='button' class='btn btn-danger btn-lg' data-toggle='modal' data-target='#warning'><span class='glyphicon glyphicon-remove'></span></button>"
-    }
-];
-
 function format ( d ) {
     // `d` is the original data object for the row
     return '<table id="tabla_actualizar_credito" cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
@@ -78,12 +38,13 @@ function format ( d ) {
     '</table>';
 }
 
-function crear_tabla(tabla, columnas) {
+function crear_tabla(tabla, columnas, url, data, botones) {
     tabla.DataTable({
         "contentType": "application/json; charset=utf-8",
         "dataType": "json",
         "ajax": {
-            "url": "/creditos/creditos",
+            "data": data,
+            "url": url,
             "dataSrc": function (json) {
                 return $.parseJSON(json);
             }
@@ -95,48 +56,11 @@ function crear_tabla(tabla, columnas) {
         },
         "pageLength": 5,
         "dom": "Bfrtip",
-        "buttons": [
-            {
-                "text": "<i id='add_credito' class='fa fa-plus' aria-hidden='true'></i>",
-                "className": "btn btn-info",
-                "action": function(){
-                    if( $("#registro_creditos_fiscales").is(":hidden") ){
-                        $("#registro_creditos_fiscales").show("slow");
-                        $("#add_credito").removeClass("fa fa-plus");
-                        $("#add_credito").addClass("fa fa-minus");
-                        $("#creditos").hide("slow");
-                    } else {
-                        $("#registro_creditos_fiscales").slideUp("slow");
-                        $("#add_credito").removeClass("fa fa-minus");
-                        $("#add_credito").addClass("fa fa-plus");
-                        $("#creditos").show("slow");
-                    }
-                }
-            },
-            {
-                "text": "<i class='fa fa-file-excel-o'></i>",
-                "extend": "excelHtml5",
-                "className": "btn btn-info",
-                "titleAttr": "Excel",
-                "filename": "reporte",
-                "exportOptions": {
-                    "columns":[0,1,2,3]
-                }
-            },
-            {
-                "text": "<i class='fa fa-file-pdf-o'></i>",
-                "extend": "pdfHtml5",
-                "className": "btn btn-info",
-                "titleAttr": "PDF",
-                "exportOptions": {
-                    "columns":[0,1,2,3]
-                }
-            }
-        ]
+        "buttons": botones
     });
 }
 
-function ajax(direccion, metodo, data, tabla) {
+function ajax(direccion, metodo = "get", data, tabla) {
     let e;
     $.ajax({
         "url": direccion,
@@ -201,34 +125,7 @@ function agregar_bienes(){
     let tabla_bienes = $("#tabla_bienes").dataTable({
         "bDestroy": true,
         "data": credito_fiscal.bienes,
-        "columns":[
-            {
-                "data": "numero_control"
-            },
-            {
-                "data": "categoria"
-            },
-            {
-                "data": "subcategoria"
-            },
-            {
-                "data": "subsubcategoria"
-            },
-            {
-                "data": "cantidad"
-            },
-            {
-                "data": "comentarios"
-            },
-            {
-                "data":null,
-                "defaultContent": "<button'>X</button>",
-            },
-            {
-                "data":null,
-                "defaultContent": "<button>X</button>"
-            }
-        ]
+        "columns": columnas_bienes
     });
 }
 
@@ -259,7 +156,7 @@ function actualizar_credito(folio, tabla) {
 function start() {
 
      //Llamado de la tabla de los creditos fiscales
-    crear_tabla($("#creditos"), columnas_creditos);
+    crear_tabla($("#creditos"), columnas_creditos, "creditos/creditos",null,botones_credito);
 
     //Asignamos la tabala a una variable
     tabla_creditos = $("#creditos").DataTable();
@@ -286,28 +183,14 @@ function start() {
     //Eliminar los creditos fiscales
     $('#creditos tbody').on('click', 'td.delete-control', eliminar_credito);
 
+    //Mostrar los bienes de un credito fiscal
+    $('#creditos tbody').on('click', 'td.view-bienes', function(){
+        var data = tabla_creditos.row($(this).parents("tr")).data();
+        crear_tabla($("#tabla_bienes"),columnas_bienes, "/creditos/bienes", {"folio": data.folio}, "null");
+    });
     //Agregar Bienes
     $("#agregar").click( function () {
         agregar_bienes();
-    });
-    $.fn.dataTable.ext.search.push(
-        function (settings, data, dataIndex ) {
-            var min = parseInt( $('#min').val(), 10 );
-            var max = parseInt( $('#max').val(), 10 );
-            var age = parseFloat( data[3] ) || 0; // use data for the age column
-
-            if ( ( isNaN( min ) && isNaN( max ) ) ||
-                 ( isNaN( min ) && age <= max ) ||
-                 ( min <= age   && isNaN( max ) ) ||
-                 ( min <= age   && age <= max ) )
-            {
-                return true;
-            }
-            return false;
-        }
-    );
-    $('#min, #max').keyup( function() {
-        tabla_creditos.draw();
     });
 }
 $(function () {

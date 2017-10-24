@@ -14,6 +14,7 @@
 Route::get('/', function () {
     return view('index');
 });
+Route::get("/creditos/bienes", "CreditosController@bienes");
 Route::get("/creditos/creditos", "CreditosController@creditos");
 Route::post("/creditos/create",  "CreditosController@store");
 Route::post("/creditos/destroy", "CreditosController@destroy");

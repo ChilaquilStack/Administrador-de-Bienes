@@ -2,7 +2,7 @@
     <label class="control-label col-sm-2" for="nombre">Estado:</label>
     <div class="col-sm-10">
         <select id="estado">
-            <option value="jalisco">Jalisco</option>
+            <option value="1">Jalisco</option>
         </select>
     </div>
 </div>
@@ -10,7 +10,7 @@
         <label class="control-label col-sm-2" for="nombre">Municipio:</label>
         <div class="col-sm-10">
             <select id="municipio">
-                <option value="guadalajara">Gudalajara</option>
+                <option value="1">Gudalajara</option>
             </select>
         </div>
 </div>
@@ -18,7 +18,7 @@
     <label class="control-label col-sm-2" for="nombre">Colonia:</label>
     <div class="col-sm-10">
         <select id="colonia">
-            <option value="olimpica">Olimpica</option>
+            <option value="1">Olimpica</option>
         </select>
     </div>
 </div>

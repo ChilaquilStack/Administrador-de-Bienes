@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\CreditoRequest;
 use App\Credito;
 use App\Contribuyente;
+use App\Domicilio;
+use App\Bien;
 use Validator;
 use DB;
 
@@ -41,14 +43,18 @@ class CreditosController extends Controller
             'credito.monto.min' => 'El monto debe ser mayor de 0.',
             'credito.origen.required' => 'Por favor introduzca el origen del crédito.',
             'credito.documento.required' => 'Por favor introduzca el documento determinante.',
-            'credito.documento.unique' => 'El documento determinante ya exite.'
+            'credito.contribuyente.apellido_paterno' => 'Por favor introduzca el apellido paterno del contribuyente',
+            'credito.contribuyente.apellido_materno' => 'Por favor introduzca el apellido materno del contribuyente',
         ];
         
         $validator = Validator::make($request->all(), [
             'credito.folio' => 'required|unique:creditos_fiscales,folio|alpha_dash',
             'credito.monto' => 'required|numeric|min:1',
-            'credito.documento' => 'unique:creditos_fiscales,documento_determinante',
-            'credito.origen' => 'required'
+            'credito.documento' => 'required',
+            'credito.origen' => 'required',
+            'credito.contribuyente.nombre' => 'required',
+            'credito.contribuyente.apellido_paterno' => 'required',
+            'credito.contribuyente.apellido_materno' => 'required',
         ], $messages);
 
         if ($validator->fails()) {
@@ -57,35 +63,49 @@ class CreditosController extends Controller
 
         $contribuyente = new contribuyente([
             "nombre" => $request->input("credito.contribuyente.nombre"),
-            "apellido_paterno" => $request->input("credito.contribuyente.paterno"),
-            "apellido_materno" => $request->input("credito.contribuyente.materno"),
+            "apellido_paterno" => $request->input("credito.contribuyente.apellido_paterno"),
+            "apellido_materno" => $request->input("credito.contribuyente.apellido_materno"),
             "telefono" => $request->input("credito.contribuyente.telefono"),
             "rfc" => $request->input("credito.contribuyente.rfc"),
             "curp" => $request->input("credito.contribuyente.curp")
         ]);
         $contribuyente->save();
         
-        // $domicilio = new Domicilio([
-        //     "cp" => $request->input("credito.contribuyente.nombre"),
-        //     "int" => $request->input("credito.contribuyente.paterno"),
-        //     "ext" => $request->input("credito.contribuyente.materno"),
-        //     "calle" => $request->input("credito.contribuyente.telefono"),
-        //     "colonia" => $request->input("credito.contribuyente.rfc"),
-        //     "municipio" => $request->input("credito.contribuyente.curp"),
-        //     "estado" => $request->input("credito.contribuyente.curp")
-        // ]);
+        $domicilio = new Domicilio([
+            "cp" => $request->input("credito.contribuyente.domicilio.cp"),
+            "int" => $request->input("credito.contribuyente.domicilio.int"),
+            "ext" => $request->input("credito.contribuyente.domicilio.ext"),
+            "calle" => $request->input("credito.contribuyente.domicilio.calle"),
+            "colonias_id" => $request->input("credito.contribuyente.domicilio.colonia"),
+            "municipios_id" => $request->input("credito.contribuyente.domicilio.municipio"),
+            "estados_id" => $request->input("credito.contribuyente.domicilio.estado")
+        ]);
+        $domicilio->save();
+
+        $contribuyente->domicilios()->attach($domicilio->id);
 
         $credito = new Credito([
             "folio" => $request->input("credito.folio"),
             "monto" => $request->input("credito.monto"),
             "documento_determinante" => $request->input("credito.documento"),
-            "origen_credito" => $request->input("credito.origen")
-            //"contribuyentes_id" => $contribuyente->id
+            "origen_credito" => $request->input("credito.origen"),
+            "contribuyentes_id" => $contribuyente->id
         ]);
-        //$credito->save();
-
-        $credito->contribuyente()->save($contribuyente);
+        $credito->save();
         
+        $bienes = $request->input('credito.bienes');
+        foreach($bienes as $b){
+                $numero_control = $b["numero_control"];
+                $bien = new Bien([
+                    "numero_control" => $numero_control,
+                    "comentarios" => $b["comentarios"],
+                    "cantidad" => $b["cantidad"]
+                ]);
+                $bien->save();
+                //$bien->creditos()->attach($folio,['documento_embargo' => "100"]);
+                $credito->bienes()->attach($numero_control, ['documento_embargo' => "100"]);
+            }
+
         return response()->json("Credito Fiscal"." ".$credito->folio." "."Creado con Exito",200);
     }
 
@@ -143,9 +163,13 @@ class CreditosController extends Controller
     }
 
     public function creditos(){
-        //$creditos = Credito::where('estado', 1)->orderBy("folio","desc")->get();
         $creditos = Credito::All();
         return response()->json(json_encode($creditos), 200);
-    
     }
+
+    public function bienes(Request $request){
+        $bienes = Credito::where("folio",$request->input("folio"))->firstOrFail()->bienes;
+        return response()->json(json_encode($bienes),200);
+    }
+ 
 }
