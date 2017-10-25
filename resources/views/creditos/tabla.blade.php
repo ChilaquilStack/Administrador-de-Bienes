@@ -1,5 +1,5 @@
 <table class="container-table" id="creditos">
-    <h1>Créditos Fiscales</h1>
+    <caption><h1>Créditos Fiscales</h1></caption>
     <thead>
         <tr>
             <th></th>

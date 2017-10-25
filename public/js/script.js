@@ -1,5 +1,5 @@
 "use strict";
-var tabla_creditos, credito_fiscal = {
+var tabla_creditos, tabla_bienes, credito_fiscal = {
     "contribuyente": {
         "domicilio": {}
     },
@@ -56,7 +56,8 @@ function crear_tabla(tabla, columnas, url, data, botones) {
         },
         "pageLength": 5,
         "dom": "Bfrtip",
-        "buttons": botones
+        "buttons": botones,
+        "destroy": true,
     });
 }
 
@@ -114,19 +115,40 @@ function guardar_credito(){
 }
 
 function agregar_bienes(){
-    let bien = {};
+    let bien = {"categoria": {}, "subcategoria": {}, "subsubcategoria":{}};
     bien.numero_control = $("#numero_control").val();
     bien.cantidad = $("#cantidad").val();
-    bien.categoria = $("#categoria").val();
-    bien.subcategoria = $("#subcategoria").val();
-    bien.subsubcategoria = $("#subsubcategoria").val();
+    bien.categoria.valor = $("#categoria").val();
+    bien.categoria.texto = $("#categoria :selected").text();
+    bien.subcategoria.valor = $("#subcategoria").val();
+    bien.subcategoria.texto = $("#subcategoria :selected").text();
+    bien.subsubcategoria.valor = $("#subsubcategoria").val();
+    bien.subsubcategoria.valor = $("#subsubcategoria :selected").text();
     bien.comentarios = $("#comentarios_bien").val();
     credito_fiscal.bienes.push(bien);
-    let tabla_bienes = $("#tabla_bienes").dataTable({
-        "bDestroy": true,
-        "data": credito_fiscal.bienes,
-        "columns": columnas_bienes
+    console.log(credito_fiscal.bienes);
+    crear_tabla_bienes(credito_fiscal.bienes)
+}
+
+function crear_tabla_bienes(bienes) {
+    var indice, total = 0, cantidad = 0, cantidades = 0, subtotal = 0;
+    $('#tabla_bienes tbody').html("");
+    $.each(bienes, function (index, bien) {
+        cantidad = parseInt(bien.cantidad);
+        cantidades += cantidad;
+        $('#tabla_bienes tbody').append("<tr>" + "<td>" + bien.numero_control + "</td>" + "<td>" +
+                bien.categoria.texto + "</td>" + "<td>" + bien.subcategoria.texto + "</td>" + "<td>" + bien.subsubcatergoria + "</td>" + "<td>" +
+                bien.cantidad + "</td>" + "<td>" + bien.comentarios + "</td>" + "<td>" +
+                "<button type='button' class='btn btn-danger btn-sm' onclick='eliminar_producto(" + index + "); return false;'><i class='fa fa-trash-o' aria-hidden='true'></i></button>"
+                + "</td>" + "</tr>");
     });
+    $('#tabla_bienes tfoot').html('');
+    $('#tabla_bienes tfoot').append("<tr><th colspan='7'></th><th>Importe</th><th>Cantidad</th></tr><tr><td colspan='7'></td>" + "<td>" + cantidades + "</td></tr>");
+}
+
+function eliminar_producto(indice) {
+    credito_fiscal.bienes.splice(indice, 1);
+    crear_tabla_bienes(credito_fiscal.bienes);
 }
 
 function eliminar_credito(){
@@ -156,9 +178,15 @@ function actualizar_credito(folio, tabla) {
 function start() {
 
      //Llamado de la tabla de los creditos fiscales
-    crear_tabla($("#creditos"), columnas_creditos, "creditos/creditos",null,botones_credito);
+     crear_tabla($("#creditos"), columnas_creditos, "creditos/creditos",null, botones_credito);
+    //crear_tabla($("#tabla_bienes"), columnas_bienes, null, credito_fiscal.bienes, null, null);
+    //crear_tabla($("#tabla_bienes", columnas_bienes,null,credito_fiscal.bienes,null,null));
+    // $('#tabla_bienes tbody').on('click', 'td.delete-bien', function(){
+    //     var data = tabla_bienes.row($(this).parents("tr")).data();
+    //     alert("hola");
+    // });
 
-    //Asignamos la tabala a una variable
+    //Asignamos la tabla a una variable
     tabla_creditos = $("#creditos").DataTable();
 
     //Tomar los datos del credito fiscal
@@ -186,7 +214,7 @@ function start() {
     //Mostrar los bienes de un credito fiscal
     $('#creditos tbody').on('click', 'td.view-bienes', function(){
         var data = tabla_creditos.row($(this).parents("tr")).data();
-        crear_tabla($("#tabla_bienes"),columnas_bienes, "/creditos/bienes", {"folio": data.folio}, "null");
+        crear_tabla($("#tabla_bienes"),columnas_bienes, "/creditos/bienes", {"folio": "Lm505"}, "null");
     });
     //Agregar Bienes
     $("#agregar").click( function () {

@@ -20,3 +20,4 @@ Route::post("/creditos/create",  "CreditosController@store");
 Route::post("/creditos/destroy", "CreditosController@destroy");
 Route::post("/creditos/update",  "CreditosController@update");
 Route::resource("creditos", "CreditosController");
+Route::resource("bienes", "BienesController");

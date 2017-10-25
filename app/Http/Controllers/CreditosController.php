@@ -24,8 +24,15 @@ class CreditosController extends Controller
             "4" => "Multas Federales No Fiscales", 
             "5" => "Liquidaciones DAFE" 
         ];
+        $categorias = DB::select("select id, descripcion from categorias order by descripcion asc");
+        $subcategorias = DB::select("select id, descripcion from subcategorias order by descripcion asc");
         $bajas = DB::select("select id, motivo from motivos_bajas_creditos_fiscales order by motivo");
-        return view("creditos.index", ["bajas" => $bajas, "origenes" => $origenes_del_credito]);
+        $estados = DB::select("select id, nombre from estados order by nombre asc");
+        $municipios = DB::select("select id, nombre from municipios order by nombre asc");
+        return view("creditos.index", [
+            "bajas" => $bajas, "origenes" => $origenes_del_credito,  "categorias" => $categorias, "subcategorias" => $subcategorias,
+            "estados" => $estados, "municipios" => $municipios
+        ]);
     }
 
     public function create()
@@ -102,7 +109,6 @@ class CreditosController extends Controller
                     "cantidad" => $b["cantidad"]
                 ]);
                 $bien->save();
-                //$bien->creditos()->attach($folio,['documento_embargo' => "100"]);
                 $credito->bienes()->attach($numero_control, ['documento_embargo' => "100"]);
             }
 

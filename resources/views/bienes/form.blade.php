@@ -1,11 +1,9 @@
-<form class="form-horizontal" role="form">
-        <h1>Registro de bienes</h1>
 <div class="form-group">
     <label class="control-label col-sm-2" for="numero_control">Numero de Control:</label>
     <div class="col-sm-10">
         <input type="text" class="form-control" id="numero_control">
     </div>
-</div>
+    </div>
 <div class="form-group">
     <label class="control-label col-sm-2" for="cantidad">Cantidad:</label>
     <div class="col-sm-10">
@@ -22,7 +20,9 @@
         <label class="control-label col-sm-2" for="categoria">Categoria:</label>
         <div class="col-sm-10">
             <select name="categoria" id="categoria">
-                <option value="automoviles">Automoviles</option>
+            @foreach($categorias as $categoria)
+                <option value="{{$categoria->id}}">{{$categoria->descripcion}}</option>
+            @endforeach
             </select>
         </div>
 </div>
@@ -30,7 +30,9 @@
         <label class="control-label col-sm-2" for="subcategoria">Sub-Categoria:</label>
         <div class="col-sm-10">
             <select name="subcategoria" id="subcategoria">
-                <option value="motos">Motos</option>
+            @foreach($subcategorias as $subcategoria)
+                <option value="{{$subcategoria->id}}">{{$subcategoria->descripcion}}</option>
+            @endforeach
             </select>
         </div>
 </div>
@@ -38,15 +40,13 @@
     <label class="control-label col-sm-2" for="subsubcategoria">Sub-Sub-Categoria:</label>
     <div class="col-sm-10">
         <select name="subsubcategoria" id="subsubcategoria">
-            <option value="pista">Pista</option>
+            <option value=""></option>
         </select>
     </div>
 </div>
 <div class="form-group">
-    <label class="control-label col-sm-2" for="subsubcategoria">Sub-Sub-Categoria:</label>
+    <label class="control-label col-sm-2" for="imagen">Imagenes:</label>
     <div class="col-sm-10">
-        @include('bienes.tabla')
+        <input type="file" id="imagen">
     </div>
 </div>
-<button type="button" id="agregar" class="btn btn-success">Agregar</button>
-</form>

@@ -77,29 +77,32 @@ columnas_creditos = [
 ], 
 columnas_bienes = [
     {
+        "title": "Numero de Control",
         "data": "numero_control"
     },
     {
+        "title": "Categoria",
         "data": "categoria"
     },
     {
+        "title": "Subcategoria",
         "data": "subcategoria"
     },
     {
+        "title": "SubsubCategoria",
         "data": "subsubcategoria"
     },
     {
+        "title": "Cantidad",
         "data": "cantidad"
     },
     {
+        "title": "Comentarios",
         "data": "comentarios"
     },
     {
         "data":null,
-        "defaultContent": "<button'>X</button>",
+        "className": "delete-bien",
+        "defaultContent": "<button type='button' class='btn btn-info'><i class='fa fa-trash-o' aria-hidden='true'></i></button>"
     },
-    {
-        "data":null,
-        "defaultContent": "<button>X</button>"
-    }
 ];

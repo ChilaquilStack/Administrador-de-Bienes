@@ -2,7 +2,9 @@
     <label class="control-label col-sm-2" for="nombre">Estado:</label>
     <div class="col-sm-10">
         <select id="estado">
-            <option value="1">Jalisco</option>
+            @foreach($estados as $estado)
+            <option value="{{$estado->id}}">{{$estado->nombre}}</option>
+            @endforeach
         </select>
     </div>
 </div>
@@ -10,16 +12,16 @@
         <label class="control-label col-sm-2" for="nombre">Municipio:</label>
         <div class="col-sm-10">
             <select id="municipio">
-                <option value="1">Gudalajara</option>
+                @foreach($municipios as $municipio)
+                <option value="{{$municipio->id}}">{{$municipio->nombre}}</option>
+                @endforeach
             </select>
         </div>
 </div>
 <div class="form-group">
-    <label class="control-label col-sm-2" for="nombre">Colonia:</label>
+    <label class="control-label col-sm-2" for="coloniac">Colonia:</label>
     <div class="col-sm-10">
-        <select id="colonia">
-            <option value="1">Olimpica</option>
-        </select>
+        <input class="form-control" id="colonia" placeholder="Ingrese la colonia" type="text">
     </div>
 </div>
 <div class="form-group">

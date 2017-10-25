@@ -31,7 +31,7 @@
       </div>
     </div>
     <div class="form-group">
-      <label class="control-label col-sm-2" for="monto">CURP:</label>
+      <label class="control-label col-sm-2  rol-label col-sm-2" for="monto">CURP:</label>
       <div class="col-sm-10">
         <input class="form-control" id="curp" type="text" placeholder="Ingrede el CURP en caso de ser una persona moral">
       </div>
