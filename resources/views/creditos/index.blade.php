@@ -28,8 +28,8 @@
   </div>
   @include('creditos.tabla')
   @include('bienes.tabla-creados')
-  @endsection
-  @section("scripts")
+@endsection
+@section("scripts")
   {{Html::script("js/variables.js")}}
-  {{Html::script("js/script.js")}}
+  {{Html::script("js/creditos.js")}}  
 @endsection

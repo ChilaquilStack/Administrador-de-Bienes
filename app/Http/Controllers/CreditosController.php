@@ -174,8 +174,17 @@ class CreditosController extends Controller
     }
 
     public function bienes(Request $request){
-        $bienes = Credito::where("folio",$request->input("folio"))->firstOrFail()->bienes;
-        return response()->json(json_encode($bienes),200);
+        $bienes = Collect();
+        $bienes_folio = Credito::where("folio", $request->input("folio"))->firstOrFail()->bienes;
+        foreach($bienes_folio as $bien){
+            $categorias = Collect();
+            foreach($bien->categorias as $categoria) {
+                $categorias->push(array($categoria->descripcion));
+            }
+            $bien->categoria = $categorias;
+            $bienes->push($bien);
+        }
+        return response()->json(json_encode($bienes), 200);
     }
  
 }

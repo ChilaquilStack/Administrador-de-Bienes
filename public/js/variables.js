@@ -82,11 +82,12 @@ columnas_bienes = [
     },
     {
         "title": "Categoria",
-        "data": "categoria"
+        "data":  "categoria",
+        "render": "[, ]"
     },
     {
         "title": "Subcategoria",
-        "data": "subcategoria"
+        "data": "subcategoria.0"
     },
     {
         "title": "SubsubCategoria",

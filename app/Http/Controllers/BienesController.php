@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use DB;
+use App\Bien;
 class BienesController extends Controller
 {
     /**
@@ -84,5 +85,19 @@ class BienesController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function bienes(){ 
+        $bienes = Collect();
+        $subcategoria = Collect();
+        foreach(Bien::All() as $bien){
+            $categorias = Collect();
+            foreach($bien->categorias as $categoria){
+                $categorias->push(array($categoria->descripcion));
+            }
+            $bien->categoria = $categorias;
+            $bienes->push($bien);
+        }
+        return response()->json(json_encode($bienes), 200);
     }
 }

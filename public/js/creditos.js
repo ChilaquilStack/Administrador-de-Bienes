@@ -110,7 +110,6 @@ function guardar_credito(){
     credito_fiscal.contribuyente.domicilio.calle = $("#calle").val();
     //Se envian los datos al servidor
         ajax("/creditos/create", "post", {"credito": credito_fiscal}, $("#success"), $("#success #mensaje"), tabla_creditos);
-    //console.log(credito_fiscal);
     //Refrescamos la tabla para que cargue el nuevo registro
 }
 
@@ -126,7 +125,6 @@ function agregar_bienes(){
     bien.subsubcategoria.valor = $("#subsubcategoria :selected").text();
     bien.comentarios = $("#comentarios_bien").val();
     credito_fiscal.bienes.push(bien);
-    console.log(credito_fiscal.bienes);
     crear_tabla_bienes(credito_fiscal.bienes)
 }
 
@@ -179,12 +177,6 @@ function start() {
 
      //Llamado de la tabla de los creditos fiscales
      crear_tabla($("#creditos"), columnas_creditos, "creditos/creditos",null, botones_credito);
-    //crear_tabla($("#tabla_bienes"), columnas_bienes, null, credito_fiscal.bienes, null, null);
-    //crear_tabla($("#tabla_bienes", columnas_bienes,null,credito_fiscal.bienes,null,null));
-    // $('#tabla_bienes tbody').on('click', 'td.delete-bien', function(){
-    //     var data = tabla_bienes.row($(this).parents("tr")).data();
-    //     alert("hola");
-    // });
 
     //Asignamos la tabla a una variable
     tabla_creditos = $("#creditos").DataTable();
@@ -214,7 +206,8 @@ function start() {
     //Mostrar los bienes de un credito fiscal
     $('#creditos tbody').on('click', 'td.view-bienes', function(){
         var data = tabla_creditos.row($(this).parents("tr")).data();
-        crear_tabla($("#tabla_bienes"),columnas_bienes, "/creditos/bienes", {"folio": "Lm505"}, "null");
+        crear_tabla($("#tabla_bienes_crear"),columnas_bienes, "/creditos/bienes", {"folio": "LM300"}, "null");
+        $("#tabla_bienes_crear").DataTable();
     });
     //Agregar Bienes
     $("#agregar").click( function () {

@@ -24,10 +24,15 @@
                 <button id="guardar" type="button" class="btn btn-success btn-lg">Guardar Bien</button>
             </div>
         </div>
-        <div class="form-group">
+        {{-- <div class="form-group">
             <div class="col-sm-10">
-                @include('bienes.tabla-creados')
+            @include('bienes.tabla-creados')
             </div>
-        </div>
+        </div> --}}
     </form>
+    @include('bienes.tabla-creados')
+@endsection
+@section("scripts")
+    {{Html::script("js/variables.js")}}
+    {{Html::script("js/bienes.js")}}
 @endsection
