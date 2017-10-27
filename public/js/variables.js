@@ -53,8 +53,13 @@ columnas_creditos = [
     {
         "title": "Adeudo",
         "data": "monto",
-        "render": function (data) {
-            return "$" + data;
+        "render": $.fn.dataTable.render.number( ',', '.', 0, '$' )
+    },
+    {
+        "title": "Contribuyente",
+        "data": "contribuyente",
+        "render": function(data) {
+            return data.Nombre + " " + data.Apellido_Paterno + " " + data.Apellido_Materno;
         }
     },
     {

@@ -18,4 +18,8 @@ class Credito extends Model {
     public function bienes() {
         return $this->belongsToMany('App\Bien','embargos','creditos_fiscales_folio','bienes_numero_control');
     }
+
+    public function baja(){
+        return $this->hasOne("App\Baja");
+    }
 }

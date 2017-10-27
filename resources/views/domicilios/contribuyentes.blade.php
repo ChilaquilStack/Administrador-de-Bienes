@@ -19,7 +19,7 @@
         </div>
 </div>
 <div class="form-group">
-    <label class="control-label col-sm-2" for="coloniac">Colonia:</label>
+    <label class="control-label col-sm-2" for="colonia">Colonia:</label>
     <div class="col-sm-10">
         <input class="form-control" id="colonia" placeholder="Ingrese la colonia" type="text">
     </div>

@@ -1,4 +1,5 @@
 <table class="container-table" id="tabla_bienes">
+    <caption><h1>Articulos</h1></caption>
     <thead>
         <tr>
             <th>Numero de Control</th>

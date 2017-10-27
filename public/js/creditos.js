@@ -3,14 +3,11 @@ var tabla_creditos, tabla_bienes, credito_fiscal = {
     "contribuyente": {
         "domicilio": {}
     },
-    "bienes": [
-        // {
-        //     "resguardo": {
-        //         "resguardatario":{},
-        //         "domicilio": {}
-        //     },
-        // }
-    ]
+    "bien": {
+        "articulos": [],
+        "depositario": {},
+        "deposito": {}
+    }
 };
 
 function format ( d ) {
@@ -108,45 +105,60 @@ function guardar_credito(){
     credito_fiscal.contribuyente.domicilio.int = $("#int").val();
     credito_fiscal.contribuyente.domicilio.ext = $("#ext").val();
     credito_fiscal.contribuyente.domicilio.calle = $("#calle").val();
+    credito_fiscal.bien.numero_control = $("#numero_control").val();
+    credito_fiscal.bien.deposito.estado = $("#estado_desposito").val();
+    credito_fiscal.bien.deposito.municipio = $("#municipio_deposito").val();
+    credito_fiscal.bien.deposito.colonia = $("#colonia_deposito").val();
+    credito_fiscal.bien.deposito.cp = $("#codigo_postal_despoto").val();
+    credito_fiscal.bien.deposito.int = $("#int_desposito").val();
+    credito_fiscal.bien.deposito.ext = $("#ext_desposito").val();
+    credito_fiscal.bien.deposito.calle = $("#calle").val();
+    credito_fiscal.bien.depositario.nombre = $("#nombre").val();
+    credito_fiscal.bien.depositario.apellido_paterno = $("#paterno").val();
+    credito_fiscal.bien.depositario.apellido_materno = $("#materno").val();
     //Se envian los datos al servidor
         ajax("/creditos/create", "post", {"credito": credito_fiscal}, $("#success"), $("#success #mensaje"), tabla_creditos);
     //Refrescamos la tabla para que cargue el nuevo registro
 }
 
-function agregar_bienes(){
-    let bien = {"categoria": {}, "subcategoria": {}, "subsubcategoria":{}};
-    bien.numero_control = $("#numero_control").val();
-    bien.cantidad = $("#cantidad").val();
-    bien.categoria.valor = $("#categoria").val();
-    bien.categoria.texto = $("#categoria :selected").text();
-    bien.subcategoria.valor = $("#subcategoria").val();
-    bien.subcategoria.texto = $("#subcategoria :selected").text();
-    bien.subsubcategoria.valor = $("#subsubcategoria").val();
-    bien.subsubcategoria.valor = $("#subsubcategoria :selected").text();
-    bien.comentarios = $("#comentarios_bien").val();
-    credito_fiscal.bienes.push(bien);
-    crear_tabla_bienes(credito_fiscal.bienes)
+function agregar_articulos(){
+    let articulo = { "categoria": {}, "subcategoria": {}, "subsubcategoria":{} };
+    articulo.numero_control = $("#numero_control").val();
+    articulo.cantidad = $("#cantidad").val()
+    articulo.categoria.valor = $("#categoria").val();
+    articulo.categoria.texto = $("#categoria :selected").text();
+    articulo.subcategoria.valor = $("#subcategoria").val();
+    articulo.subcategoria.texto = $("#subcategoria :selected").text();
+    articulo.subsubcategoria.valor = $("#subsubcategoria").val();
+    articulo.subsubcategoria.valor = $("#subsubcategoria :selected").text();
+    articulo.descripcion = $("#descripcion_articulo").val();
+    credito_fiscal.bien.articulos.push(articulo);
+    crear_tabla_articulos(credito_fiscal.bien.articulos);
 }
 
-function crear_tabla_bienes(bienes) {
-    var indice, total = 0, cantidad = 0, cantidades = 0, subtotal = 0;
+function crear_tabla_articulos(articulos) {
+    var indice, numero_control = $("#numero_control").val();
     $('#tabla_bienes tbody').html("");
-    $.each(bienes, function (index, bien) {
-        cantidad = parseInt(bien.cantidad);
-        cantidades += cantidad;
-        $('#tabla_bienes tbody').append("<tr>" + "<td>" + bien.numero_control + "</td>" + "<td>" +
-                bien.categoria.texto + "</td>" + "<td>" + bien.subcategoria.texto + "</td>" + "<td>" + bien.subsubcatergoria + "</td>" + "<td>" +
-                bien.cantidad + "</td>" + "<td>" + bien.comentarios + "</td>" + "<td>" +
-                "<button type='button' class='btn btn-danger btn-sm' onclick='eliminar_producto(" + index + "); return false;'><i class='fa fa-trash-o' aria-hidden='true'></i></button>"
-                + "</td>" + "</tr>");
+    $.each(articulos, function (index, articulo) {
+        indice = index + 1;
+        articulo.numero_control = numero_control + "." + indice;
+        $('#tabla_bienes tbody').append(
+            "<tr>" +
+                "<td>" + articulo.numero_control + "</td>" +
+                "<td>" + articulo.categoria.texto + "</td>" +
+                "<td>" + articulo.subcategoria.texto + "</td>" +
+                "<td>" + "algo" + "</td>" +
+                "<td>" + articulo.cantidad + "</td>" +
+                "<td>" + articulo.descripcion + "</td>" +
+                "<td>" + "<button type='button' class='btn btn-danger btn-sm' onclick='eliminar_articulo(" + index + "); return false;'><i class='fa fa-trash-o' aria-hidden='true'></i></button>" + "</td>" +
+            "</tr>"
+        );
     });
-    $('#tabla_bienes tfoot').html('');
-    $('#tabla_bienes tfoot').append("<tr><th colspan='7'></th><th>Importe</th><th>Cantidad</th></tr><tr><td colspan='7'></td>" + "<td>" + cantidades + "</td></tr>");
 }
 
-function eliminar_producto(indice) {
-    credito_fiscal.bienes.splice(indice, 1);
-    crear_tabla_bienes(credito_fiscal.bienes);
+function eliminar_articulo(indice) {
+    credito_fiscal.bien.articulos.splice(indice, 1);
+    crear_tabla_articulos(credito_fiscal.bien.articulos);
 }
 
 function eliminar_credito(){
@@ -156,10 +168,10 @@ function eliminar_credito(){
         $("#eliminar_credito").modal()
         $("#aceptar_eliminar_credito").click(function(){
             ajax("/creditos/destroy", "post", {
-                    "folio": $("#data").val(),
-                    "baja": $("#categoria_bajas option:selected").val(),
-                    "comentarios": $("#comentarios").val()
-                }, tabla_creditos);
+                "folio": $("#data").val(),
+                "baja": $("#categoria_bajas option:selected").val(),
+                "comentarios": $("#comentarios").val()
+            }, tabla_creditos);
         });
     });
 }
@@ -211,7 +223,7 @@ function start() {
     });
     //Agregar Bienes
     $("#agregar").click( function () {
-        agregar_bienes();
+        agregar_articulos();
     });
 }
 $(function () {

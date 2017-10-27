@@ -1,4 +1,4 @@
-<h1>Resguardatario</h1>
+<h1>Depositario</h1>
     <div class="form-group">
         <div>
             <label class="control-label" for="nombre_resguardatario">Nombre:</label>

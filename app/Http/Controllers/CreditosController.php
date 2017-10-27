@@ -8,6 +8,8 @@ use App\Credito;
 use App\Contribuyente;
 use App\Domicilio;
 use App\Bien;
+use App\Articulo;
+use App\Depositario;
 use Validator;
 use DB;
 
@@ -78,18 +80,18 @@ class CreditosController extends Controller
         ]);
         $contribuyente->save();
         
-        $domicilio = new Domicilio([
+        $domicilio_contribuyente = new Domicilio([
             "cp" => $request->input("credito.contribuyente.domicilio.cp"),
             "int" => $request->input("credito.contribuyente.domicilio.int"),
             "ext" => $request->input("credito.contribuyente.domicilio.ext"),
             "calle" => $request->input("credito.contribuyente.domicilio.calle"),
-            "colonias_id" => $request->input("credito.contribuyente.domicilio.colonia"),
+            "colonia" => $request->input("credito.contribuyente.domicilio.colonia"),
             "municipios_id" => $request->input("credito.contribuyente.domicilio.municipio"),
             "estados_id" => $request->input("credito.contribuyente.domicilio.estado")
         ]);
-        $domicilio->save();
+        $domicilio_contribuyente->save();
 
-        $contribuyente->domicilios()->attach($domicilio->id);
+        $contribuyente->domicilios()->attach($domicilio_contribuyente->id);
 
         $credito = new Credito([
             "folio" => $request->input("credito.folio"),
@@ -99,19 +101,45 @@ class CreditosController extends Controller
             "contribuyentes_id" => $contribuyente->id
         ]);
         $credito->save();
-        
-        $bienes = $request->input('credito.bienes');
-        foreach($bienes as $b){
-                $numero_control = $b["numero_control"];
-                $bien = new Bien([
-                    "numero_control" => $numero_control,
-                    "comentarios" => $b["comentarios"],
-                    "cantidad" => $b["cantidad"]
-                ]);
-                $bien->save();
-                $credito->bienes()->attach($numero_control, ['documento_embargo' => "100"]);
-            }
 
+        $depositario = new Depositario([
+            "nombre" => $request->input("credito.bien.despositario.nombre"),
+            "apellido_paterno" => $request->input("credito.bien.despositario.apellido_paterno"),
+            "apellido_materno" => $request->input("credito.bien.despositario.materno")
+        ]);
+        $depositario->save();
+        
+        $deposito = new Domicilio([
+            "cp" => $request->input("credito.bien.depostio.domicilio.cp"),
+            "int" => $request->input("credito.bien.deposito.int"),
+            "ext" => $request->input("credito.contribuyente.deposito.ext"),
+            "calle" => $request->input("credito.contribuyente.deposito.calle"),
+            "colonia" => $request->input("credito.contribuyente.deposito.colonia"),
+            "municipios_id" => $request->input("credito.contribuyente.deposito.municipio"),
+            "estados_id" => $request->input("credito.contribuyente.deposito.estado")
+        ]);
+        $deposito->save();
+
+        $bien = new Bien([
+            "numero_control" => $request->input('credito.bien.numero_control'),
+            "depositarios_id" => $depositario->id,
+            "deposito_id" => $deposito->id
+        ]);
+        $bien->save();
+
+        $articulos = $request->input('credito.bien.articulos');
+        foreach($articulos as $b){
+            $articulo = new Articulo([
+                "numero_control" => $b["numero_control"],
+                "descripcion" => $b["descripcion"],
+                "cantidad" => $b["cantidad"],
+                "bienes_numero_control" => $bien->numero_control
+            ]);
+        $articulo->save();
+        }
+
+        $credito->bienes()->attach($numero_control, ['documento_embargo' => $request->input("bien.documento_embargo")]);
+        
         return response()->json("Credito Fiscal"." ".$credito->folio." "."Creado con Exito",200);
     }
 
@@ -169,7 +197,12 @@ class CreditosController extends Controller
     }
 
     public function creditos(){
-        $creditos = Credito::All();
+        $consulta = DB::select("select folio, monto, documento_determinante, origen_credito from creditos_fiscales order by folio asc");
+        $creditos = Collect();
+        foreach(Credito::All() as $credito) {
+            $credito->contribuyente;
+            $creditos->push($credito);
+        }
         return response()->json(json_encode($creditos), 200);
     }
 

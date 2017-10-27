@@ -1,7 +1,7 @@
 <div class="form-group">
   <div>
-    <label class="control-label" for="nombre">Estado:</label>
-    <select id="estado">
+    <label class="control-label" for="estado_resguardo">Estado:</label>
+    <select id="estado_resguardo">
     @foreach($estados as $estado)
       <option value="{{$estado->id}}">{{$estado->nombre}}</option>
     @endforeach
@@ -10,7 +10,7 @@
 </div>
 <div class="form-group">
   <div>
-  <label class="control-label" for="nombre">Municipio:</label>
+  <label class="control-label" for="municipio_resguardo">Municipio:</label>
   <select id="municipio">
     @foreach($municipios as $municipio)
     <option value="{{$municipio->id}}">{{$municipio->nombre}}</option>
@@ -20,31 +20,31 @@
 </div>
 <div class="form-group">
   <div>
-    <label class="control-label" for="coloniac">Colonia:</label>
-    <input class="form-control" id="colonia" placeholder="Ingrese la colonia" type="text">
+    <label class="control-label" for="colonia_resguardo">Colonia:</label>
+    <input class="form-control" id="colonia_resguardo" placeholder="Ingrese la colonia" type="text">
   </div>
 </div>
 <div class="form-group">
   <div>
-      <label class="control-label" for="codigo_postal">Codigo postal:</label>
-      <input class="form-control" id="codigo_postal" placeholder="Ingrese el codigo postal" type="text">
+      <label class="control-label" for="codigo_postal_resguardo">Codigo postal:</label>
+      <input class="form-control" id="codigo_postal_resguardo" placeholder="Ingrese el codigo postal" type="text">
   </div>
 </div>
 <div class="form-group">
   <div>
-    <label class="control-label" for="int">Numero Interio:</label>
-    <input class="form-control" id="int" placeholder="Ingrese el numero interio" type="text">
+    <label class="control-label" for="int_resguardo">Numero Interio:</label>
+    <input class="form-control" id="int_resguardo" placeholder="Ingrese el numero interio" type="text">
   </div>
 </div>
 <div class="form-group">
   <div>
-    <label class="control-label" for="ext">Numero Exterior:</label>
+    <label class="control-label" for="ext_resguardo">Numero Exterior:</label>
     <input class="form-control" id="ext" type="text" placeholder="Ingrese el numero exterior">
   </div>
 </div>
 <div class="form-group">
   <div>
-    <label class="control-label" for="calle">Calle:</label>
-    <input class="form-control" id="calle" type="text" placeholder="Ingrese la calle">
+    <label class="control-label" for="calle_resguardo">Calle:</label>
+    <input class="form-control" id="calle_resguardo" type="text" placeholder="Ingrese la calle">
   </div>
 </div>
