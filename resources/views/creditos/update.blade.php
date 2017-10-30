@@ -1,5 +1,5 @@
 @extends("layout.master")
-@section("title","créditos fiscales")
+@section("title","Actualizar Credito Fiscal")
 @section("content")
     @include('modals.warning')
     @include('modals.success')
@@ -11,8 +11,8 @@
                 <h1 class="panel-title">Registro Crédito Fiscal</h1>
             </div>
             <div class="panel-body">
-                {!! Form::open([ "class"=>"form-inline", "role"=>"form" ]) !!}
-                    @include('creditos.form')
+                {!! Form::model($credito, [ "class"=>"form-inline", "role"=>"form" ]) !!}
+                    @include('creditos.add')
                 {!! Form::close() !!}
             </div>
         </div>
@@ -58,6 +58,8 @@
                 {!!Form::close()!!}
             </div>
         </div>
+
+        |
 
         <button id="guardar" type="button" class="btn btn-success btn-sm">Guardar</button>
     </div>

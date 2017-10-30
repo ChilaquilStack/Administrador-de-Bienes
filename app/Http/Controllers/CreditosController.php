@@ -3,15 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\CreditoRequest;
+use App\Http\Requests\CreditosRequest;
 use App\Credito;
 use App\Contribuyente;
 use App\Domicilio;
 use App\Bien;
 use App\Articulo;
 use App\Depositario;
-use Validator;
 use DB;
+use Validator;
 
 class CreditosController extends Controller
 {
@@ -39,7 +39,7 @@ class CreditosController extends Controller
         //
     }
 
-    public function store(CreditoRequest $request) {
+    public function store(CreditosRequest $request) {
         
         $contribuyente = new contribuyente([
             "nombre" => $request->input("credito.contribuyente.nombre"),
@@ -124,37 +124,14 @@ class CreditosController extends Controller
         //
     }
 
-    public function update(Request $request)
-    {
-        $messages = [
-            'credito.folio.required' => 'Por favor introduzca un número de folio.',
-            'credito.folio.unique' => 'El crédito fiscal ya existe',
-            'credito.monto.required' => 'Por favor introduzca un monto.',
-            'credito.monto.numeric' => 'El monto debe ser un valor numerico.',
-            'credito.monto.min' => 'El monto debe ser mayor de 0',
-            'credito.origen.required' => 'Por favor introduzca el origen del crédito.',
-            'credito.documento.unique' => 'El documento determinante ya exite.'
-        ];
-        
-        $validator = Validator::make($request->all(), [
-            'credito.folio' => 'required|alpha_dash',
-            'credito.monto' => 'required|numeric|min:0',
-            'credito.documento' => 'required|alpha_dash',
-            'credito.origen' => 'required'
-        ], $messages);
-
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 400);
-        }
-
-        $folio = $request->input("folio");
+    public function update(Credito $request) {
         $credito = Credito::whereFolio($folio)->firstOrFail();
         $credito->folio = $request->input("credito.folio");
         $credito->monto = $request->input("credito.monto");
         $credito->documento_determinante = $request->input("credito.documento");
         $credito->origen_credito = $request->input("credito.origen");
         $credito->save();
-        return response()->json("Credito Fiscal"." ".$folio." "."actualizado cone exito!", 200);
+        return response()->json("Credito Fiscal"." ".$credito->folio." "."actualizado cone exito!", 200);
     }
 
     public function destroy(Request $request) {

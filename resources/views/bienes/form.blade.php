@@ -1,4 +1,3 @@
-<h1>Registro de bienes</h1>
 <div class="form-group">
     <label class="control-label col-sm-2" for="numero_control">Numero de Control:</label>
     <div class="col-sm-10">

@@ -1,5 +1,4 @@
-<table class="container-table" id="tabla_bienes_crear">
-    <caption><h1>Articulos</h1></caption>
+<table class="table" id="tabla_articulos_temporales">
     <thead>
         <tr>
             <th></th>
@@ -11,4 +10,5 @@
             <th></th>
         </tr>
     </thead>
+    <tbody></tbody>
 </table>

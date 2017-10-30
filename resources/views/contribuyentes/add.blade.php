@@ -1,4 +1,3 @@
-<h1>Registro del Contribuyente</h1>
   <div class="form-group">      
   <label class="control-label col-sm-2" for="nombre">Nombre:</label>
       <div class="col-sm-10">

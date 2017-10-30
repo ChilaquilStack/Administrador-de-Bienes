@@ -4,23 +4,12 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreditoRequest extends FormRequest
-{
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
+class CreditosRequest extends FormRequest {
+    
+    public function authorize() {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
     public function rules() {
         return [
             'credito.folio' => 'required|unique:creditos_fiscales,folio|alpha_dash',
@@ -31,8 +20,8 @@ class CreditoRequest extends FormRequest
             'credito.contribuyente.apellido_paterno' => 'required',
             'credito.contribuyente.apellido_materno' => 'required',
             'credito.bien.depositario.nombre' => 'required',
-            'credito.bien.depositario.apellido_paterno' => 'requiered',
-            'credito.bien.depositario.apellido_materno' => 'requiered',
+            'credito.bien.depositario.apellido_paterno' => 'required',
+            'credito.bien.depositario.apellido_materno' => 'required',
         ];
     }
 
@@ -52,5 +41,4 @@ class CreditoRequest extends FormRequest
             'credito.bien.depositario.apellido_paterno' => 'Por favor introduzca el apellido materno del depositario',
         ];
     }
-
 }

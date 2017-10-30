@@ -6,11 +6,21 @@ var botones_credito = [
         "action": function () {
             if ($("#registro_creditos_fiscales").is(":hidden")) {
                 $("#registro_creditos_fiscales").show("slow");
+                if($("#bienes").is(":hidden") && $("#deposito").is(":hidden") && $("#contribuyente").is(":hidden") && $("#credito").is(":hidden")){
+                    $("#credito").show("slow");
+                    $("#contribuyente").show("slow");
+                    $("#bienes").show("slow");
+                    $("#deposito").show("slow");
+                }
                 $("#add_credito").removeClass("fa fa-plus");
                 $("#add_credito").addClass("fa fa-minus");
                 $("#creditos").hide("slow");
             } else {
                 $("#registro_creditos_fiscales").slideUp("slow");
+                $("#credito").slideUp("slow");
+                $("#contribuyente").slideUp("slow");
+                $("#bienes").slideUp("slow");
+                $("#deposito").slideUp("slow");
                 $("#add_credito").removeClass("fa fa-minus");
                 $("#add_credito").addClass("fa fa-plus");
                 $("#creditos").show("slow");
@@ -39,26 +49,27 @@ var botones_credito = [
 ],
 botones_bienes = [
     {
-        "text": "<i id='add_bien' class='fa fa-plus' aria-hidden='true'></i>",
-        "className": "btn btn-info",
+        "text": "<i id='add_articulo' class='fa fa-plus' aria-hidden='true'></i>",
+        "className": "btn btn-info btn-sm",
         "action": function () {
             if ($("#registro_creditos_fiscales").is(":hidden")) {
                 $("#registro_creditos_fiscales").show("slow");
-                $("#add_credito").removeClass("fa fa-plus");
-                $("#add_credito").addClass("fa fa-minus");
-                $("#creditos").hide("slow");
+                if($("#bienes").is(":hidden") && $("#deposito").is(":hidden")){
+                    $("#bienes").show("slow");
+                }
+                $("#add_articulo").removeClass("fa fa-plus");
+                $("#add_articulo").addClass("fa fa-minus");
             } else {
-                $("#registro_creditos_fiscales").slideUp("slow");
-                $("#add_credito").removeClass("fa fa-minus");
-                $("#add_credito").addClass("fa fa-plus");
-                $("#creditos").show("slow");
+                $("#registro_articulo").slideUp("slow");
+                $("#add_articulo").removeClass("fa fa-minus");
+                $("#add_articulo").addClass("fa fa-plus");
             }
         }
     },
     {
         "text": "<i class='fa fa-file-excel-o'></i>",
         "extend": "excelHtml5",
-        "className": "btn btn-info",
+        "className": "btn btn-info btn-sm",
         "titleAttr": "Excel",
         "filename": "reporte",
         "exportOptions": {
@@ -68,7 +79,7 @@ botones_bienes = [
     {
         "text": "<i class='fa fa-file-pdf-o'></i>",
         "extend": "pdfHtml5",
-        "className": "btn btn-info",
+        "className": "btn btn-info btn-sm",
         "titleAttr": "PDF",
         "exportOptions": {
             "columns":[0,1,2,3]
@@ -149,6 +160,12 @@ columnas_bienes = [
         "render": function(data){
             return data.calle + " " + data.int + " " + data.ext + " " + data.colonia + " " + data.estado.nombre;
         }
+    },
+    {
+        "data":null,
+        "title": "Editar",
+        "className": "edit-bien",
+        "defaultContent": "<button type='button' class='btn btn-success btn-sm'><i class='fa fa-pencil-square-o' aria-hidden='true'></i></button>"
     },
     {
         "data":null,

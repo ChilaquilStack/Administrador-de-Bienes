@@ -26,7 +26,7 @@
         </div>
         {{-- <div class="form-group">
             <div class="col-sm-10">
-            @include('bienes.tabla-creados')
+            @include('bienes.tabla-articulos-temporales')
             </div>
         </div> --}}
     </form>

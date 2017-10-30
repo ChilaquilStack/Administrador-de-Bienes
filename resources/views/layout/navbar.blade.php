@@ -14,11 +14,8 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
         <li><a href="{{action('CreditosController@index')}}">Creditos<span class="sr-only">(current)</span></a></li>
-        <li><a href="{{action('BienesController@index')}}">Bienes</a></li>
         <li><a href="#">Valuaciones</a></li>
         <li><a href="#">Remates</a></li>
-        <li><a href="#">Embargos</a></li>
-        <li><a href="#">Resguardos</a></li>
         {{--<li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
           <ul class="dropdown-menu">

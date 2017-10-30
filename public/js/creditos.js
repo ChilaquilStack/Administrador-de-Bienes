@@ -138,11 +138,11 @@ function agregar_articulos(){
 
 function crear_tabla_articulos(articulos) {
     var indice, numero_control = $("#numero_control").val();
-    $('#tabla_bienes tbody').html("");
+    $('#tabla_articulos_temporales tbody').html("");
     $.each(articulos, function (index, articulo) {
         indice = index + 1;
         articulo.numero_control = numero_control + "." + indice;
-        $('#tabla_bienes tbody').append(
+        $('#tabla_articulos_temporales tbody').append(
             "<tr>" +
                 "<td>" + articulo.numero_control + "</td>" +
                 "<td>" + articulo.categoria.texto + "</td>" +
@@ -218,9 +218,8 @@ function start() {
     //Mostrar los bienes de un credito fiscal
     $('#creditos tbody').on('click', 'td.view-bienes', function(){
         var data = tabla_creditos.row($(this).parents("tr")).data();
-        crear_tabla($("#tabla_bienes_crear"),columnas_bienes, "/creditos/bienes", {"folio": data.folio}, botones_bienes);
-        console.log(data.folio);
-        $("#tabla_bienes_crear").DataTable();
+        crear_tabla($("#tabla_articulos"),columnas_bienes, "/creditos/bienes", {"folio": data.folio}, botones_bienes);
+        $("#tabla_articulos").show();
     });
     //Agregar Bienes
     $("#agregar").click( function () {
