@@ -37,6 +37,44 @@ var botones_credito = [
         }
     }
 ],
+botones_bienes = [
+    {
+        "text": "<i id='add_bien' class='fa fa-plus' aria-hidden='true'></i>",
+        "className": "btn btn-info",
+        "action": function () {
+            if ($("#registro_creditos_fiscales").is(":hidden")) {
+                $("#registro_creditos_fiscales").show("slow");
+                $("#add_credito").removeClass("fa fa-plus");
+                $("#add_credito").addClass("fa fa-minus");
+                $("#creditos").hide("slow");
+            } else {
+                $("#registro_creditos_fiscales").slideUp("slow");
+                $("#add_credito").removeClass("fa fa-minus");
+                $("#add_credito").addClass("fa fa-plus");
+                $("#creditos").show("slow");
+            }
+        }
+    },
+    {
+        "text": "<i class='fa fa-file-excel-o'></i>",
+        "extend": "excelHtml5",
+        "className": "btn btn-info",
+        "titleAttr": "Excel",
+        "filename": "reporte",
+        "exportOptions": {
+            "columns":[0, 1, 2, 3]
+        }
+    },
+    {
+        "text": "<i class='fa fa-file-pdf-o'></i>",
+        "extend": "pdfHtml5",
+        "className": "btn btn-info",
+        "titleAttr": "PDF",
+        "exportOptions": {
+            "columns":[0,1,2,3]
+        }
+    }
+],
 columnas_creditos = [
     {
         "title": "Crédito Fiscal",
@@ -64,51 +102,58 @@ columnas_creditos = [
     },
     {
         "title": "Bienes",
-        "defaultContent": "<button type='button' class='btn btn-default btn-lg'><span class='glyphicon glyphicon-eye-open'></button>",
+        "defaultContent": "<button type='button' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-eye-open'></button>",
         "data": null,
         "className": "view-bienes"
     },
     {
         "title": "Editar",
-        "defaultContent": "<button type='button' class='btn btn-success btn-lg'><span class='glyphicon glyphicon-edit'></span></button>",
+        "defaultContent": "<button type='button' class='btn btn-success btn-sm'><span class='glyphicon glyphicon-edit'></span></button>",
         "data": null,
         "className": "details-control"
     },
     {
         "title": "Baja",
         "className": "delete-control",
-        "defaultContent": "<button type='button' class='btn btn-danger btn-lg' data-toggle='modal' data-target='#warning'><span class='glyphicon glyphicon-remove'></span></button>"
+        "defaultContent": "<button type='button' class='btn btn-danger btn-sm'><i class='fa fa-trash-o' aria-hidden='true'></i></button>"
     }
-], 
+],
 columnas_bienes = [
     {
-        "title": "Numero de Control",
-        "data": "numero_control"
+        "title": "#",
+        "data": "id"
     },
     {
-        "title": "Categoria",
-        "data":  "categoria",
-        "render": "[, ]"
-    },
-    {
-        "title": "Subcategoria",
-        "data": "subcategoria.0"
-    },
-    {
-        "title": "SubsubCategoria",
-        "data": "subsubcategoria"
+        "title": "Descripion",
+        "data": "descripcion"
     },
     {
         "title": "Cantidad",
-        "data": "cantidad"
+        "data":  "cantidad"
     },
     {
-        "title": "Comentarios",
-        "data": "comentarios"
+        "title": "Categorias",
+        "data": "categorias",
+        "render": "[, ].descripcion"
+    },
+    {
+        "title": "Depositario",
+        "data": "depositario",
+        "render": function(data) {
+            return data.nombre + " " + data.apellido_paterno + " " + data.apellido_materno;
+        }
+    },
+    {
+        "title": "Deposito",
+        "data": "deposito",
+        "render": function(data){
+            return data.calle + " " + data.int + " " + data.ext + " " + data.colonia + " " + data.estado.nombre;
+        }
     },
     {
         "data":null,
+        "title": "Baja",
         "className": "delete-bien",
-        "defaultContent": "<button type='button' class='btn btn-info'><i class='fa fa-trash-o' aria-hidden='true'></i></button>"
+        "defaultContent": "<button type='button' class='btn btn-danger btn-sm'><i class='fa fa-trash-o' aria-hidden='true'></i></button>"
     },
 ];

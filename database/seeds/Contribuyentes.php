@@ -9,8 +9,8 @@ class Contribuyentes extends Seeder
      *
      * @return void
      */
-    public function run()
-    {
+    public function run() {
+        //DB::table('contribuyentes')->truncate();
         for($n = 1; $n <= 500; $n++){
             DB::table("Contribuyentes")->insert([
                 "Nombre" => "contribuyente_".$n,

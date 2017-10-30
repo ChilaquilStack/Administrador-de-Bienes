@@ -1,7 +1,6 @@
-<form class="form-horizontal" role="form">
-  <h1>Registro del Contribuyente</h1>
+<h1>Registro del Contribuyente</h1>
   <div class="form-group">      
-      <label class="control-label col-sm-2" for="nombre">Nombre:</label>
+  <label class="control-label col-sm-2" for="nombre">Nombre:</label>
       <div class="col-sm-10">
         <input class="form-control" id="nombre" placeholder="Ingrese el nombre del contribuyente" type="text">
       </div>
@@ -37,4 +36,3 @@
       </div>
     </div>
     @include("domicilios.contribuyentes")
-</form>

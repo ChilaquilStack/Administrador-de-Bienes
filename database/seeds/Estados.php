@@ -4,13 +4,8 @@ use Illuminate\Database\Seeder;
 
 class Estados extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
-    public function run()
-    {
+   
+    public function run() {
         $estados = [
         "AGUASCALIENTES",
         "BAJA CALIFORNIA",
@@ -44,7 +39,8 @@ class Estados extends Seeder
         "VERACRUZ",
         "YUCATAN",
         "ZACATECAS"            
-    ];
+        ];
+        //DB::table('estados')->truncate();
         foreach($estados as $estado){
             DB::table("estados")->insert([
                 "nombre" => $estado

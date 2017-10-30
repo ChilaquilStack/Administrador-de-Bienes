@@ -17,8 +17,11 @@ class DatabaseSeeder extends Seeder
             categorias::class,
             Estados::class,
             Municipios::class,
+            SubcategoriasBienesTableSeeder::class,
+            Depositarios::class,
+            Domicilios::class,
             Bienes::class,
-            SubcategoriasBienesTableSeeder::class
+            Articulos::class
         ]);
     }
 }

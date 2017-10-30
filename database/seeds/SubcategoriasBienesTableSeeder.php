@@ -30,6 +30,7 @@ class SubcategoriasBienesTableSeeder extends Seeder
             "Camaras Digitales",
             "Video Camaras"
     ];
+    //DB::table('subcategorias')->truncate();
         foreach($subcategorias as $subcategoria) {
             DB::table('subcategorias')->insert([
                 "descripcion" => $subcategoria

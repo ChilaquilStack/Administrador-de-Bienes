@@ -15,10 +15,7 @@ use DB;
 
 class CreditosController extends Controller
 {
-
-    
-    public function index()
-    {
+    public function index() {
         $origenes_del_credito = [
             "1"=> "Anexo 18", 
             "2" => "ISTUV", 
@@ -42,34 +39,8 @@ class CreditosController extends Controller
         //
     }
 
-    public function store(Request $request) {
+    public function store(CreditoRequest $request) {
         
-        $messages = [
-            'credito.folio.required' => 'Por favor introduzca un número de folio.',
-            'credito.folio.unique' => 'El crédito fiscal ya existe',
-            'credito.monto.required' => 'Por favor introduzca un monto.',
-            'credito.monto.numeric' => "El monto debe ser un valor numerico",
-            'credito.monto.min' => 'El monto debe ser mayor de 0.',
-            'credito.origen.required' => 'Por favor introduzca el origen del crédito.',
-            'credito.documento.required' => 'Por favor introduzca el documento determinante.',
-            'credito.contribuyente.apellido_paterno' => 'Por favor introduzca el apellido paterno del contribuyente',
-            'credito.contribuyente.apellido_materno' => 'Por favor introduzca el apellido materno del contribuyente',
-        ];
-        
-        $validator = Validator::make($request->all(), [
-            'credito.folio' => 'required|unique:creditos_fiscales,folio|alpha_dash',
-            'credito.monto' => 'required|numeric|min:1',
-            'credito.documento' => 'required',
-            'credito.origen' => 'required',
-            'credito.contribuyente.nombre' => 'required',
-            'credito.contribuyente.apellido_paterno' => 'required',
-            'credito.contribuyente.apellido_materno' => 'required',
-        ], $messages);
-
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 400);
-        }
-
         $contribuyente = new contribuyente([
             "nombre" => $request->input("credito.contribuyente.nombre"),
             "apellido_paterno" => $request->input("credito.contribuyente.apellido_paterno"),
@@ -103,25 +74,26 @@ class CreditosController extends Controller
         $credito->save();
 
         $depositario = new Depositario([
-            "nombre" => $request->input("credito.bien.despositario.nombre"),
-            "apellido_paterno" => $request->input("credito.bien.despositario.apellido_paterno"),
-            "apellido_materno" => $request->input("credito.bien.despositario.materno")
+            "nombre" => $request->input("credito.bien.depositario.nombre"),
+            "apellido_paterno" => $request->input("credito.bien.depositario.apellido_paterno"),
+            "apellido_materno" => $request->input("credito.bien.depositario.apellido_materno")
         ]);
         $depositario->save();
         
         $deposito = new Domicilio([
-            "cp" => $request->input("credito.bien.depostio.domicilio.cp"),
+            "cp" => $request->input("credito.bien.deposito.cp"),
             "int" => $request->input("credito.bien.deposito.int"),
-            "ext" => $request->input("credito.contribuyente.deposito.ext"),
-            "calle" => $request->input("credito.contribuyente.deposito.calle"),
-            "colonia" => $request->input("credito.contribuyente.deposito.colonia"),
-            "municipios_id" => $request->input("credito.contribuyente.deposito.municipio"),
-            "estados_id" => $request->input("credito.contribuyente.deposito.estado")
+            "ext" => $request->input("credito.bien.deposito.ext"),
+            "calle" => $request->input("credito.bien.deposito.calle"),
+            "colonia" => $request->input("credito.bien.deposito.colonia"),
+            "municipios_id" => $request->input("credito.bien.deposito.municipio"),
+            "estados_id" => $request->input("credito.bien.deposito.estado")
         ]);
         $deposito->save();
 
+        $numero_control = $request->input('credito.bien.numero_control');
         $bien = new Bien([
-            "numero_control" => $request->input('credito.bien.numero_control'),
+            "numero_control" => $numero_control,
             "depositarios_id" => $depositario->id,
             "deposito_id" => $deposito->id
         ]);
@@ -130,15 +102,14 @@ class CreditosController extends Controller
         $articulos = $request->input('credito.bien.articulos');
         foreach($articulos as $b){
             $articulo = new Articulo([
-                "numero_control" => $b["numero_control"],
                 "descripcion" => $b["descripcion"],
                 "cantidad" => $b["cantidad"],
-                "bienes_numero_control" => $bien->numero_control
+                "bienes_numero_control" => $numero_control
             ]);
         $articulo->save();
+        $articulo->categorias()->attach($b["categoria"]["valor"]);
         }
-
-        $credito->bienes()->attach($numero_control, ['documento_embargo' => $request->input("bien.documento_embargo")]);
+        $credito->bienes()->attach($numero_control, ['documento' => "100"/*$request->input("bien.documento_embargo")*/]);
         
         return response()->json("Credito Fiscal"." ".$credito->folio." "."Creado con Exito",200);
     }
@@ -207,17 +178,21 @@ class CreditosController extends Controller
     }
 
     public function bienes(Request $request){
-        $bienes = Collect();
+        $articulos = Collect();
+        //$bienes = Collect();
         $bienes_folio = Credito::where("folio", $request->input("folio"))->firstOrFail()->bienes;
         foreach($bienes_folio as $bien){
-            $categorias = Collect();
-            foreach($bien->categorias as $categoria) {
-                $categorias->push(array($categoria->descripcion));
+            foreach($bien->articulos as $articulo) {
+                $articulo->depositario = $bien->depositario;
+                $articulo->deposito = $bien->deposito;
+                $bien->deposito->estado->nombre;
+                $articulo->categorias;
+                $articulos->push($articulo);
             }
-            $bien->categoria = $categorias;
-            $bienes->push($bien);
+            //$bien->articulos = $articulos;
+            //$bienes->push($bien);
         }
-        return response()->json(json_encode($bienes), 200);
+        return response()->json(json_encode($articulos), 200);
     }
  
 }

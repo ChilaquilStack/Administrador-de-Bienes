@@ -1,9 +1,7 @@
-<form class="form-inline" role="form">
-  <h1>Registro Crédito Fiscal</h1>
-  <input type="hidden" id="data" value="">
-  <div class="form-group">
-    <label for="folio">Credito Fiscal:</label>
-    <input class="form-control" id="folio" placeholder="numero de credito fiscal" type="text">
+<h1>Registro Crédito Fiscal</h1>
+    <input type="hidden" id="data" value="">
+        <div class="form-group">
+        <label for="folio">Credito Fiscal:</label><input class="form-control" id="folio" placeholder="numero de credito fiscal" type="text">
   </div>
   <div class="form-group">
     <label for="documento">Documento Determinante:</label>
@@ -21,4 +19,4 @@
     <label for="monto">Monto:</label>
     <input class="form-control" id="monto" type="number" placeholder="$">
   </div>
-</form>
+{!!Form::close()!!}

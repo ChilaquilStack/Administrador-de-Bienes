@@ -18,7 +18,7 @@
         </div>
     </form>
     <form class="form-inline" role="form">
-        @include('resguardos.form')
+        @include('depositos.form')
         <div class="form-group">
             <div class="col-sm-10">
                 <button id="guardar" type="button" class="btn btn-success btn-lg">Guardar Bien</button>

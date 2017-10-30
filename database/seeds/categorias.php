@@ -11,19 +11,20 @@ class categorias extends Seeder
      */
     public function run()
     {
-            $categorias = [
-                "Arte y Cultura",
-                "Articulos Personales",
-                "Bienes Inmuebles",
-                "Equipos y Aparatos de Comunicación",
-                "Equipo Hospitalario y Medico",
-                "Equipo y Accesorio de Fotografia",
-                "Equipos Linea Blanca y Aparatos Electonicos",
-            ];
-            foreach($categorias as $categoria) {
-                DB::table('categorias')->insert([
-                    "descripcion" => $categoria
-                ]);
-            }
+        $categorias = [
+            "Arte y Cultura",
+            "Articulos Personales",
+            "Bienes Inmuebles",
+            "Equipos y Aparatos de Comunicación",
+            "Equipo Hospitalario y Medico",
+            "Equipo y Accesorio de Fotografia",
+            "Equipos Linea Blanca y Aparatos Electonicos",
+        ];
+        //DB::table('categorias')->truncate();
+        foreach($categorias as $categoria) {
+            DB::table('categorias')->insert([
+                "descripcion" => $categoria
+            ]);
+        }
     }
 }

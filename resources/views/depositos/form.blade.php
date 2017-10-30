@@ -1,20 +1,20 @@
 <h1>Depositario</h1>
     <div class="form-group">
         <div>
-            <label class="control-label" for="nombre_resguardatario">Nombre:</label>
-            <input type="text" class="form-control" id="nombre_resguardatario" placeholder="Nombre">
+            <label class="control-label" for="nombre_depositario">Nombre:</label>
+            <input type="text" class="form-control" id="nombre_depositario" placeholder="Nombre">
         </div>
     </div>
     <div class="form-group">
         <div>
-            <label class="control-label" for="apellido_paterno">Apellido paterno:</label>
-            <input type="text" class="form-control" id="apellid_paterno" placeholder="Apellido Paterno">
+            <label class="control-label" for="apellido_paterno_depositario">Apellido paterno:</label>
+            <input type="text" class="form-control" id="apellido_paterno_depositario" placeholder="Apellido Paterno">
         </div>
     </div>
     <div class="form-group">
         <div>
-            <label class="control-label" for="apellido_materno">Apellido materno:</label>
-            <input type="text" class="form-control" id="apellid_materno" placeholder="Apellido Materno">
+            <label class="control-label" for="apellido_materno_depositario">Apellido materno:</label>
+            <input type="text" class="form-control" id="apellido_materno_depositario" placeholder="Apellido Materno">
         </div>
     </div>
-    @include('domicilios.resguardo')
+    @include('domicilios.deposito')

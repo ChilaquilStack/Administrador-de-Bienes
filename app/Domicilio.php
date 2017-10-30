@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Domicilio extends Model
 {
     protected $table = "Domicilios";
-    protected $primaryKey = "id";
+    protected $primaryKey = "Id";
     protected $fillable = ["estados_id","municipios_id","colonia","cp","int","ext","calle"];
     public $timestamps = false;
 
@@ -16,6 +16,10 @@ class Domicilio extends Model
     }
     
     public function bienes() {
-        return $this->hasMany("App\Bien");
+        return $this->hasMany("App\Bien", "deposito_Id","Id");
+    }
+
+    public function estado() {
+        return $this->belongsTo('App\estado','estados_id');
     }
 }

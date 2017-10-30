@@ -4,10 +4,14 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Articulo extends Model
-{
+class Articulo extends Model {
+
+    protected $primaryKey = "id";
+    protected $fillable = ['id','descripcion', 'cantidad', 'bienes_numero_control'];
+    public $timestamps = false;
+    
     public function categorias() {
-        return $this->belongsToMany("App\Categoria_bien","bienes_categorias","bienes_numero_control","categorias_id");
+        return $this->belongsToMany("App\Categoria_bien","articulos_categorias","articulos_id","categorias_id");
     }
 
     public function imagenes() {
@@ -18,7 +22,7 @@ class Articulo extends Model
         return $this->belongsToMany("App\Perito","valuaciones","bienes_numero_control","peritos_id");
     }
 
-    public function articulos() {
-        return $this->hasMany("App\Articulos");
+    public function bien(){
+        return $this->belongsTo("App\Bien","bienes_numero_control");
     }
 }

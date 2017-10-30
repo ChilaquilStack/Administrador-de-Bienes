@@ -20,11 +20,11 @@ class Municipios extends Seeder
             "006" => "Ameca",
             "008" => "Arandas",
             "010" => "Atemajac de Brizuela",
-            "011" =>	"Atengo",
-            "012" =>	"Atenguillo",
-            "013" =>	"Atotonilco el Alto",
-            "014" =>	"Atoyac",
-            "015" =>	"Autlán de Navarro",
+            "011" => "Atengo",
+            "012" => "Atenguillo",
+            "013" => "Atotonilco el Alto",
+            "014" => "Atoyac",
+            "015" => "Autlán de Navarro",
             "016" =>	"Ayotlán",
             "017" =>	"Ayutla",
             "019" =>	"Bolaños",
@@ -137,6 +137,7 @@ class Municipios extends Seeder
             "023" => "Zapotlán el Grande",
             "124" => "Zapotlanejo"
         ];
+        //DB::table('municipios')->truncate();
         foreach($municipios as $id  => $nombre){
             DB::table("municipios")->insert([
                 "id" => $id,

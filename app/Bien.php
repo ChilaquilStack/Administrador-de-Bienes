@@ -8,7 +8,7 @@ class Bien extends Model
 {
     protected $table = "bienes";
     protected $primaryKey = "numero_control";
-    protected $fillable = ["numero_control","fecha_alta"];
+    protected $fillable = ["numero_control","fecha_alta","depositarios_id", "deposito_id"];
     public $timestamps = false;
 
     public function creditos() {
@@ -16,15 +16,15 @@ class Bien extends Model
     }
 
     public function deposito() {
-        return $this->belongsTo("App\Domicilio");
+        return $this->belongsTo("App\Domicilio","deposito_Id");
     }
 
     public function depositario() {
-        return $this->belongsTo("App\Depositario");
+        return $this->belongsTo("App\Depositario","depositarios_id");
     }
 
     public function articulos() {
-        return $this->hasMany("App\Articulo");
+        return $this->hasMany("App\Articulo","bienes_numero_control","numero_control");
     }
 
 }

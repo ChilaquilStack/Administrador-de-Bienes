@@ -9,9 +9,9 @@ class Creditos extends Seeder
      *
      * @return void
      */
-    public function run()
-    {
+    public function run(){
         $origen_credito = ["Anexo18", "ISTUV", "Control de Obligaciones", "Multas federales no fiscales", "Liquidaciones DAFE"];
+        //DB::table('Creditos_Fiscaless')->truncate();
         for($n = 1; $n <= 1000; $n++){
             DB::table("creditos_fiscales")->insert([
                 "folio" => $n,

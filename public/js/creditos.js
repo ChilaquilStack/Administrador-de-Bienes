@@ -106,16 +106,16 @@ function guardar_credito(){
     credito_fiscal.contribuyente.domicilio.ext = $("#ext").val();
     credito_fiscal.contribuyente.domicilio.calle = $("#calle").val();
     credito_fiscal.bien.numero_control = $("#numero_control").val();
-    credito_fiscal.bien.deposito.estado = $("#estado_desposito").val();
+    credito_fiscal.bien.deposito.estado = $("#estado_deposito").val();
     credito_fiscal.bien.deposito.municipio = $("#municipio_deposito").val();
     credito_fiscal.bien.deposito.colonia = $("#colonia_deposito").val();
-    credito_fiscal.bien.deposito.cp = $("#codigo_postal_despoto").val();
-    credito_fiscal.bien.deposito.int = $("#int_desposito").val();
-    credito_fiscal.bien.deposito.ext = $("#ext_desposito").val();
+    credito_fiscal.bien.deposito.cp = $("#codigo_postal_deposito").val();
+    credito_fiscal.bien.deposito.int = $("#int_deposito").val();
+    credito_fiscal.bien.deposito.ext = $("#ext_deposito").val();
     credito_fiscal.bien.deposito.calle = $("#calle").val();
-    credito_fiscal.bien.depositario.nombre = $("#nombre").val();
-    credito_fiscal.bien.depositario.apellido_paterno = $("#paterno").val();
-    credito_fiscal.bien.depositario.apellido_materno = $("#materno").val();
+    credito_fiscal.bien.depositario.nombre = $("#nombre_depositario").val();
+    credito_fiscal.bien.depositario.apellido_paterno = $("#apellido_paterno_depositario").val();
+    credito_fiscal.bien.depositario.apellido_materno = $("#apellido_materno_depositario").val();
     //Se envian los datos al servidor
         ajax("/creditos/create", "post", {"credito": credito_fiscal}, $("#success"), $("#success #mensaje"), tabla_creditos);
     //Refrescamos la tabla para que cargue el nuevo registro
@@ -218,7 +218,8 @@ function start() {
     //Mostrar los bienes de un credito fiscal
     $('#creditos tbody').on('click', 'td.view-bienes', function(){
         var data = tabla_creditos.row($(this).parents("tr")).data();
-        crear_tabla($("#tabla_bienes_crear"),columnas_bienes, "/creditos/bienes", {"folio": "LM300"}, "null");
+        crear_tabla($("#tabla_bienes_crear"),columnas_bienes, "/creditos/bienes", {"folio": data.folio}, botones_bienes);
+        console.log(data.folio);
         $("#tabla_bienes_crear").DataTable();
     });
     //Agregar Bienes

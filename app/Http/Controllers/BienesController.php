@@ -88,16 +88,6 @@ class BienesController extends Controller
     }
 
     public function bienes(){ 
-        $bienes = Collect();
-        $subcategoria = Collect();
-        foreach(Bien::All() as $bien){
-            $categorias = Collect();
-            foreach($bien->categorias as $categoria){
-                $categorias->push(array($categoria->descripcion));
-            }
-            $bien->categoria = $categorias;
-            $bienes->push($bien);
-        }
-        return response()->json(json_encode($bienes), 200);
+        return response()->json(json_encode(Bien::all()), 200);
     }
 }
