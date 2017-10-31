@@ -16,6 +16,11 @@ use Validator;
 class CreditosController extends Controller
 {
     public function index() {
+        return view("creditos.index");
+    }
+
+    public function create()
+    {
         $origenes_del_credito = [
             "1"=> "Anexo 18", 
             "2" => "ISTUV", 
@@ -28,15 +33,10 @@ class CreditosController extends Controller
         $bajas = DB::select("select id, motivo from motivos_bajas_creditos_fiscales order by motivo");
         $estados = DB::select("select id, nombre from estados order by nombre asc");
         $municipios = DB::select("select id, nombre from municipios order by nombre asc");
-        return view("creditos.index", [
+        return view("creditos.form", [
             "bajas" => $bajas, "origenes" => $origenes_del_credito,  "categorias" => $categorias, "subcategorias" => $subcategorias,
             "estados" => $estados, "municipios" => $municipios
         ]);
-    }
-
-    public function create()
-    {
-        //
     }
 
     public function store(CreditosRequest $request) {
@@ -124,9 +124,10 @@ class CreditosController extends Controller
         //
     }
 
-    public function update(Credito $request) {
-        $credito = Credito::whereFolio($folio)->firstOrFail();
-        $credito->folio = $request->input("credito.folio");
+    public function update(Request $request) {
+        $folio = $request->input("credito.folio");
+        $credito = Credito::where("folio", $folio)->firstOrFail();
+        $credito->contribuyentes_id = $credito->contribuyente->id;
         $credito->monto = $request->input("credito.monto");
         $credito->documento_determinante = $request->input("credito.documento");
         $credito->origen_credito = $request->input("credito.origen");
@@ -156,7 +157,6 @@ class CreditosController extends Controller
 
     public function bienes(Request $request){
         $articulos = Collect();
-        //$bienes = Collect();
         $bienes_folio = Credito::where("folio", $request->input("folio"))->firstOrFail()->bienes;
         foreach($bienes_folio as $bien){
             foreach($bien->articulos as $articulo) {
@@ -166,8 +166,6 @@ class CreditosController extends Controller
                 $articulo->categorias;
                 $articulos->push($articulo);
             }
-            //$bien->articulos = $articulos;
-            //$bienes->push($bien);
         }
         return response()->json(json_encode($articulos), 200);
     }

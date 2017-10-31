@@ -22,3 +22,4 @@ Route::post("/creditos/update",  "CreditosController@update");
 Route::resource("creditos", "CreditosController");
 Route::get("/bienes/bienes", "BienesController@bienes");
 Route::resource("bienes", "BienesController");
+Route::resource("contribuyentes", "ContribuyenteController");

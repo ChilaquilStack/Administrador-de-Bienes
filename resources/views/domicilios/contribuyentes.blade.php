@@ -9,7 +9,7 @@
     </div>
 </div>
 <div class="form-group">
-        <label class="control-label col-sm-2" for="nombre">Municipio:</label>
+    {!!Form::label("Municipio","Municipio", ["class"=>"control-label col-sm-2"])!!}
         <div class="col-sm-10">
             <select id="municipio">
                 @foreach($municipios as $municipio)
@@ -21,30 +21,30 @@
 <div class="form-group">
     <label class="control-label col-sm-2" for="colonia">Colonia:</label>
     <div class="col-sm-10">
-        <input class="form-control" id="colonia" placeholder="Ingrese la colonia" type="text">
+        {!! Form::text("colonia", null, ["class"=>"form-control", "placeholder" => "Ingrese la colonia"]) !!}
     </div>
 </div>
 <div class="form-group">
-      <label class="control-label col-sm-2" for="codigo_postal">Codigo postal:</label>
-      <div class="col-sm-10">
-        <input class="form-control" id="codigo_postal" placeholder="Ingrese el codigo postal" type="text">
-      </div>
+    {!!Form::label("cp","Codigo Postal:", ["class"=>"control-label col-sm-2"])!!}
+        <div class="col-sm-10">
+            {!! Form::text("cp", null, ["class"=>"form-control", "placeholder" => "Ingrese la colonia", "id"=>"codigo_postal"]) !!}
+        </div>
+</div>
+<div class="form-group">
+    {!!Form::label("int","Numero Interior:", ["class"=>"control-label col-sm-2"])!!}
+    <div class="col-sm-10">
+        {!! Form::text("int", null, ["class"=>"form-control", "placeholder" => "Ingrese el numero interior", "id"=>"int"]) !!}
     </div>
-    <div class="form-group">
-      <label class="control-label col-sm-2" for="int">Numero Interio:</label>
-      <div class="col-sm-10">
-        <input class="form-control" id="int" placeholder="Ingrese el numero interio" type="text">
-      </div>
+</div>
+<div class="form-group">
+    {!!Form::label("ext","Numero exterior:", ["class"=>"control-label col-sm-2"])!!}
+    <div class="col-sm-10">
+        {!! Form::text("ext", null, ["class"=>"form-control", "placeholder" => "Ingrese el numero exterior", "id"=>"ext"]) !!}
     </div>
-    <div class="form-group">
-      <label class="control-label col-sm-2" for="ext">Numero Exterior:</label>
-      <div class="col-sm-10">
-        <input class="form-control" id="ext" type="text" placeholder="Ingrese el numero exterior">
-      </div>
+</div>
+<div class="form-group">
+    {!!Form::label("calle","Calle:", ["class"=>"control-label col-sm-2"])!!}
+    <div class="col-sm-10">
+        {!! Form::text("calle", null, ["class"=>"form-control", "placeholder" => "Ingrese la calle", "id"=>"calle"]) !!}
     </div>
-    <div class="form-group">
-      <label class="control-label col-sm-2" for="calle">Calle:</label>
-      <div class="col-sm-10">
-        <input class="form-control" id="calle" type="text" placeholder="Ingrese la calle">
-      </div>
-    </div>
+</div>

@@ -1,37 +1,36 @@
-  <div class="form-group">      
-  <label class="control-label col-sm-2" for="nombre">Nombre:</label>
-      <div class="col-sm-10">
-        <input class="form-control" id="nombre" placeholder="Ingrese el nombre del contribuyente" type="text">
-      </div>
+<div class="form-group">
+    {!!Form::label("Nombre","Nombre:",["class"=>"control-label col-sm-2"])!!}
+    <div class="col-sm-10">
+        {!! Form::text("Nombre",null,["class"=>"form-control", "placeholder"=>"Ingrese el nombre del contribuyente"])!!}
     </div>
-    <div class="form-group">
-      <label class="control-label col-sm-2" for="paterno">Apellido paterno:</label>
-      <div class="col-sm-10">
-        <input class="form-control" id="paterno" placeholder="Ingrese el apellido paterno" type="text">
-      </div>
+</div>
+<div class="form-group">
+    {!!Form::label("Apellido_Paterno","Apellido Paterno:",["class"=>"control-label col-sm-2"])!!}
+    <div class="col-sm-10">
+        {!! Form::text("Apellido_Paterno",null,["class"=>"form-control", "placeholder"=>"Ingrese el apellido paterno del contribuyente"])!!}
     </div>
-    <div class="form-group">
-      <label class="control-label col-sm-2" for="origen">Apellido materno:</label>
-      <div class="col-sm-10">
-        <input class="form-control" id="materno" placeholder="Ingrese el apellido materno" type="text">
-      </div>
+</div>
+<div class="form-group">
+    {!!Form::label("apellido","Apellido Paterno:",["class"=>"control-label col-sm-2"])!!}
+    <div class="col-sm-10">
+        {!!Form::text("Apellido_Paterno",null,["class"=>"form-control", "placeholder"=>"Ingrese el apellido materno"])!!}
     </div>
-    <div class="form-group">
-      <label class="control-label col-sm-2" for="telefono">Telefono:</label>
-      <div class="col-sm-10">
-        <input class="form-control" id="telefono" type="text" placeholder="Ingrese el telefono">
-      </div>
+</div>
+<div class="form-group">
+    {!!Form::label("telefono","Telefono:",["class"=>"control-label col-sm-2"])!!}
+    <div class="col-sm-10">
+        {!!Form::text("Telefono",null,["class"=>"form-control", "placeholder"=>"Ingrese el telefono"])!!}
     </div>
-    <div class="form-group">
-      <label class="control-label col-sm-2" for="monto">RFC:</label>
-      <div class="col-sm-10">
-        <input class="form-control" id="rfc" type="text" placeholder="Ingrese el RFC">
-      </div>
+</div>
+<div class="form-group">
+    {!!Form::label("RFC","RFC:",["class"=>"control-label col-sm-2"])!!}
+    <div class="col-sm-10">
+        {!!Form::text("RFC",null,["class"=>"form-control", "placeholder"=>"Ingrese el RFC"])!!}
     </div>
-    <div class="form-group">
-      <label class="control-label col-sm-2  rol-label col-sm-2" for="monto">CURP:</label>
-      <div class="col-sm-10">
-        <input class="form-control" id="curp" type="text" placeholder="Ingrede el CURP en caso de ser una persona moral">
-      </div>
+</div>
+<div class="form-group">
+    {!!Form::label("CURP","CURP:",["class"=>"control-label col-sm-2"])!!}
+    <div class="col-sm-10">
+    {!!Form::text("CURP",null,["class"=>"form-control", "placeholder"=>"Ingrese el CURP"])!!}
     </div>
-    @include("domicilios.contribuyentes")
+</div>

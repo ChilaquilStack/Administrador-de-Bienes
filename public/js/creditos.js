@@ -1,5 +1,5 @@
 "use strict";
-var tabla_creditos, tabla_bienes, credito_fiscal = {
+var tabla_creditos, tabla_articulos, credito_fiscal = {
     "contribuyente": {
         "domicilio": {}
     },
@@ -15,7 +15,7 @@ function format ( d ) {
     return '<table id="tabla_actualizar_credito" cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
         '<tr>' +
             '<td>Crédito Fiscal:</td>' +
-            '<td>' + '<input type="text" id="nuevo_folio" value="' + d.folio + '"></td>' +
+            '<td>' + '<input type="text" id="nuevo_folio" value="' + d.folio + '" readonly></td>' +
         '</tr>' +
         '<tr>' +
             '<td>Docuemento Determinante:</td>' +
@@ -185,6 +185,10 @@ function actualizar_credito(folio, tabla) {
     ajax("/creditos/update", "post", {"folio": folio, "credito": datos}, tabla);
 }
 
+function mensaje(folio){
+    console.log("Editar el folio" + " " + folio)
+}
+
 function start() {
 
      //Llamado de la tabla de los creditos fiscales
@@ -192,9 +196,6 @@ function start() {
 
     //Asignamos la tabla a una variable
     tabla_creditos = $("#creditos").DataTable();
-
-    //Tomar los datos del credito fiscal
-    $("#guardar").click(guardar_credito);
 
     //Mostrar los detalles del credito fiscal en una sub-tabla
     $('#creditos tbody').on('click', 'td.details-control', function () {
@@ -221,6 +222,7 @@ function start() {
         crear_tabla($("#tabla_articulos"),columnas_bienes, "/creditos/bienes", {"folio": data.folio}, botones_bienes);
         $("#tabla_articulos").show();
     });
+
     //Agregar Bienes
     $("#agregar").click( function () {
         agregar_articulos();
