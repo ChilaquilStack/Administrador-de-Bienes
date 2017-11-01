@@ -1,14 +1,14 @@
 <div class="form-group">
     {!!Form::label("Cantidad","Cantidad", ["class" => "control-label col-sm-2"])!!}
     <div class="col-sm-10">
-        {!!Form::number("cantidad",null,["class" => "form-control", "min"=>"1", "placeholder" => "numero de control"])!!}
+        {!!Form::number("cantidad",null,["class" => "form-control", "min"=>"1"])!!}
     </div>
 </div>
 
 <div class="form-group">
     {!!Form::label("descripcion","Descripcion Detallada", ["class" => "control-label col-sm-2"])!!}
     <div class="col-sm-10">
-        {!!Form::text("descripcion", null,["class" => "form-control","cols"=>"30","rows"=>"5"])!!}
+        {!!Form::textarea("descripcion", null,["class" => "form-control","cols"=>"30","rows"=>"5", "placeholder" => "descripcion detallada del bien"])!!}
     </div>
 </div>
 

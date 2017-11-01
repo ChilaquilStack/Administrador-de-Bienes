@@ -81,13 +81,13 @@ columnas_creditos = [
     },
     {
         "title": "Bienes",
-        "defaultContent": "<button type='button' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-eye-open'></button>",
+        "defaultContent": "<button type='button' class='btn btn-default btn-sm'><i class='glyphicon glyphicon-eye-open'></i></button>",
         "data": null,
         "className": "view-bienes"
     },
     {
         "title": "Editar",
-        "defaultContent": "<button type='button' class='btn btn-success btn-sm'><span class='glyphicon glyphicon-edit'></span></button>",
+        "defaultContent": "<button type='button' class='btn btn-success btn-sm'><i class='glyphicon glyphicon-edit'></i></button>",
         "data": null,
         "className": "details-control"
     },
@@ -98,6 +98,55 @@ columnas_creditos = [
     }
 ],
 columnas_bienes = [
+    {
+        "title": "Numero de Control",
+        "data": "numero_control"
+    },
+    {
+        "title": "Depositario",
+        "data": "depositario",
+        "render": function(data) {
+            return data.nombre + " " + data.apellido_paterno + " " + data.apellido_materno;
+        }
+    },
+    {
+        "title": "Deposito",
+        "data": "deposito",
+        "render": function(data){
+            return data.calle + " " + "#" + data.int + " " + "ext" + " " + data.ext + " " + data.colonia + " " + " " + "C.P" + " " +  data.cp + " " + data.estado.nombre;
+        }
+    },
+    {
+        "title": "Articulos",
+        "data": null,
+        "className": "view-bienes",
+        "defaultContent": "<button type='button' class='btn btn-default btn-sm'><i class='glyphicon glyphicon-eye-open'></i></button>"
+    },
+    {
+        "title": "Cantidad de Articulos",
+        "data": "cantidad"
+    },
+    {
+        "title": "Créditos Fiscales",
+        "data": "creditos",
+        "render": "[, ].folio"
+    },
+    {
+        "title": "Editar",
+        "data": null,
+        "defaultContent": "<button type='button' class='btn btn-success btn-sm'><i class='glyphicon glyphicon-edit'></i></button>"
+    },
+    {
+        "title": "Baja",
+        "data": null,
+        "defaultContent": "<button type='button' class='btn btn-danger btn-sm'><i class='fa fa-trash-o' aria-hidden='true'></i></button>"
+    }
+],
+columnas_articulos = [
+    {
+        "title": "Numero de Control",
+        "data": "bienes_numero_control"
+    },
     {
         "title": "#",
         "data": "id"
@@ -143,4 +192,80 @@ columnas_bienes = [
         "className": "delete-bien",
         "defaultContent": "<button type='button' class='btn btn-danger btn-sm'><i class='fa fa-trash-o' aria-hidden='true'></i></button>"
     },
+],
+columnas_contribuyentes= [
+    {
+        "title": "Nombre",
+        "render": function(data, type, row){
+            return "<a href='contribuyentes/" + row.id + "'><button type='button' class='btn btn-link'>" + row.Nombre + " " + row.Apellido_Paterno + " " + row.Apellido_Materno + "</button></a>";
+        }
+    },
+    {
+        "title": "Telefono",
+        "data": "Telefono"
+    },
+    {
+        "title": "Colonia",
+        "data": "domicilios",
+        "render": "[, ].colonia"
+    },
+    {
+        "title": "Calle",
+        "data": "domicilios",
+        "render": "[, ].calle"
+    },
+    {
+        "title": "CP",
+        "data": "domicilios",
+        "render": "[, ].cp"
+    },
+    {
+        "title": "Estado",
+        "data": "domicilios",
+        "render": "[, ].estado.nombre"
+    },
+    {
+        "title": "RFC",
+        "data": "RFC"
+    },
+    {
+        "title": "CURP",
+        "data": "CURP"
+    },
+],
+columnas_creditos_contribuyente = [
+    {
+        "title": "Crédito Fiscal",
+        "data": "folio"
+    },
+    {
+        "title": "Documento determinante",
+        "data": "documento_determinante"
+    },
+    {
+        "title": "Origen del crédito fiscal",
+        "data": "origen_credito"
+    },
+    {
+        "title": "Adeudo",
+        "data": "monto",
+        "render": $.fn.dataTable.render.number( ',', '.', 0, '$' )
+    },
+    {
+        "title": "Bienes",
+        "defaultContent": "<button type='button' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-eye-open'></button>",
+        "data": null,
+        "className": "view-bienes"
+    },
+    {
+        "title": "Editar",
+        "defaultContent": "<button type='button' class='btn btn-success btn-sm'><span class='glyphicon glyphicon-edit'></span></button>",
+        "data": null,
+        "className": "details-control"
+    },
+    {
+        "title": "Baja",
+        "className": "delete-control",
+        "defaultContent": "<button type='button' class='btn btn-danger btn-sm'><i class='fa fa-trash-o' aria-hidden='true'></i></button>"
+    }
 ];

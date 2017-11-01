@@ -35,29 +35,6 @@ function format ( d ) {
     '</table>';
 }
 
-function crear_tabla(tabla, columnas, url, data, botones) {
-    tabla.DataTable({
-        "contentType": "application/json; charset=utf-8",
-        "dataType": "json",
-        "ajax": {
-            "data": data,
-            "url": url,
-            "dataSrc": function (json) {
-                return $.parseJSON(json);
-            }
-        },
-        "columns": columnas,
-        "bDestroy": true,
-        "language": {
-            "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
-        },
-        "pageLength": 5,
-        "dom": "Bfrtip",
-        "buttons": botones,
-        "destroy": true,
-    });
-}
-
 function ajax(direccion, metodo = "get", data, tabla) {
     let e;
     $.ajax({
@@ -92,12 +69,12 @@ function guardar_credito(){
     credito_fiscal.documento = $("#documento").val();
     credito_fiscal.origen = $("#origen").val();
     credito_fiscal.monto = $("#monto").val();
-    credito_fiscal.contribuyente.nombre = $("#nombre").val();
-    credito_fiscal.contribuyente.apellido_paterno = $("#paterno").val();
-    credito_fiscal.contribuyente.apellido_materno = $("#materno").val();
-    credito_fiscal.contribuyente.telefono = $("#telefono").val();
-    credito_fiscal.contribuyente.rfc = $("#rfc").val();
-    credito_fiscal.contribuyente.curp = $("#curp").val();
+    credito_fiscal.contribuyente.nombre = $("#nombre_contribuyente").val();
+    credito_fiscal.contribuyente.apellido_paterno = $("#apellido_paterno_contribuyente").val();
+    credito_fiscal.contribuyente.apellido_materno = $("#apellido_materno_contribuyente").val();
+    credito_fiscal.contribuyente.telefono = $("#telefono_contribuyente").val();
+    credito_fiscal.contribuyente.rfc = $("#rfc_contribuyente").val();
+    credito_fiscal.contribuyente.curp = $("#curp_contribuyente").val();
     credito_fiscal.contribuyente.domicilio.estado = $("#estado").val();
     credito_fiscal.contribuyente.domicilio.municipio = $("#municipio").val();
     credito_fiscal.contribuyente.domicilio.colonia = $("#colonia").val();
@@ -185,16 +162,9 @@ function actualizar_credito(folio, tabla) {
     ajax("/creditos/update", "post", {"folio": folio, "credito": datos}, tabla);
 }
 
-function mensaje(folio){
-    console.log("Editar el folio" + " " + folio)
-}
-
 function start() {
-	//Llamado de la tabla de los creditos fiscales
-	crear_tabla($("#creditos"), columnas_creditos, "creditos/creditos",null, botones_credito);
-
-	//Asignamos la tabla a una variable
-    tabla_creditos = $("#creditos").DataTable();
+    //Llamado de la tabla de los creditos fiscales y la Asignamos la tabla a una variable
+    tabla_creditos = $("#creditos").DataTable(crear_tabla(columnas_creditos, "creditos/creditos", null, botones_credito));
 
     //Mostrar los detalles del credito fiscal en una sub-tabla
     $('#creditos tbody').on('click', 'td.details-control', function () {
@@ -218,21 +188,26 @@ function start() {
     //Mostrar los bienes de un credito fiscal
     $('#creditos tbody').on('click', 'td.view-bienes', function(){
         var data = tabla_creditos.row($(this).parents("tr")).data();
-        crear_tabla($("#tabla_articulos"),columnas_bienes, "/creditos/bienes", {"folio": data.folio}, botones_bienes);
+        tabla_articulos = $("#tabla_articulos").DataTable(crear_tabla(columnas_articulos, "/creditos/bienes", {"folio": data.folio}, botones_bienes));
+        tabla_articulos.on( 'order.dt search.dt', function () {
+            tabla_articulos.column(1, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                cell.innerHTML = i+1;
+            });
+        } ).draw();
         $("#tabla_articulos").show();
     });
 
     //Agregar articulos
     $("#agregar").click( function () {
-		if($("#tabla_articulos_temporales").is(":hidden")){
-			$("#tabla_articulos_temporales").slideDown("slow");
-		}
+        if($("#tabla_articulos_temporales").is(":hidden")){
+            $("#tabla_articulos_temporales").slideDown("slow");
+        }
         agregar_articulos();
     });
-	
-	$("#guardar_credito").click(function(){
-		guardar_credito();
-	});
+
+    $("#guardar_credito_fiscal").click(function(){
+        guardar_credito();
+    });
 }
 $(function () {
     start();

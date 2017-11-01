@@ -19,9 +19,24 @@
         <h1 class="panel-title">Registro del Contribuyente</h1>
     </div>
     <div class="panel-body">
-        {!! Form::open([ "class"=>"form-horizontal", "role"=>"form" ]) !!}
-            @include('contribuyentes.add')
-        {!! Form ::close() !!}
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#fisica" aria-controls="home" role="tab" data-toggle="tab">Fisica</a></li>
+            <li role="presentation"><a href="#moral" aria-controls="profile" role="tab" data-toggle="tab">Moral</a></li>
+        </ul>
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="fisica">
+                {!! Form::open([ "class"=>"form-horizontal", "role"=>"form" ]) !!}
+                    @include('contribuyentes.form-fisica')
+                    @include('domicilios.contribuyentes')
+                {!! Form ::close() !!}
+            </div>
+            <div role="tabpanel" class="tab-pane" id="moral">
+                {!! Form::open([ "class"=>"form-horizontal", "role"=>"form" ]) !!}
+                    @include('contribuyentes.form-moral')
+                    @include('domicilios.contribuyentes')
+                {!! Form ::close() !!}
+            </div>
+        </div>
     </div>
 </div>
 <div id="bienes" class="panel panel-primary">
@@ -55,12 +70,13 @@
 </div>
 <div id="deposito" class="panel panel-primary">
 	<div class="panel-footer">
-		<button type="button" class="btn btn-success btn-lm" id="guardar_credito">Guardar</button>
-		<button type="button" class="btn btn-default btn-lm">Cancelar</button>
+		<button type="button" class="btn btn-success btn-sm" id="guardar_credito_fiscal">Guardar Credito</button>
+		<button type="button" class="btn btn-default btn-sm">Cancelar</button>
 	</div>
 </div>
 @endsection
 @section("scripts")
-	{{Html::script("js/variables.js")}}
+    {{Html::script("js/variables.js")}}
+    {{Html::script("js/funciones.js")}}
 	{{Html::script("js/creditos.js")}}
 @endsection

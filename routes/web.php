@@ -21,5 +21,8 @@ Route::post("/creditos/destroy", "CreditosController@destroy");
 Route::post("/creditos/update",  "CreditosController@update");
 Route::resource("creditos", "CreditosController");
 Route::get("/bienes/bienes", "BienesController@bienes");
+Route::get("/bienes/articulos", "BienesController@articulos");
 Route::resource("bienes", "BienesController");
+Route::get("/contribuyentes/contribuyentes", "ContribuyenteController@contribuyentes");
+Route::get("/contribuyentes/creditos", "ContribuyenteController@creditos");
 Route::resource("contribuyentes", "ContribuyenteController");

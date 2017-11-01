@@ -1,11 +1,10 @@
 @extends("layout.master")
-@section("title","créditos fiscales")
+@section("title","contribuyentes")
 @section("content")
-    @include('creditos.tabla')
-    @include('articulos.tabla-articulos')
+    @include("contribuyentes.tabla")
 @endsection
 @section("scripts")
     {{Html::script("js/variables.js")}}
     {{Html::script("js/funciones.js")}}
-    {{Html::script("js/creditos.js")}}  
+    {{Html::script("js/contribuyentes.js")}}
 @endsection

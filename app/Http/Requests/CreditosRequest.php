@@ -34,11 +34,12 @@ class CreditosRequest extends FormRequest {
             'credito.monto.min' => 'El monto debe ser mayor de 0.',
             'credito.origen.required' => 'Por favor introduzca el origen del crédito.',
             'credito.documento.required' => 'Por favor introduzca el documento determinante.',
-            'credito.contribuyente.apellido_paterno' => 'Por favor introduzca el apellido paterno del contribuyente',
-            'credito.contribuyente.apellido_materno' => 'Por favor introduzca el apellido materno del contribuyente',
-            'credito.bien.depositario.nombre' => 'Por favor introduzca el nombre del depositario',
-            'credito.bien.depositario.apellido_paterno' => 'Por favor introduzca el apellido paterno del depositario',
-            'credito.bien.depositario.apellido_paterno' => 'Por favor introduzca el apellido materno del depositario',
+            "credito.contribuyente.nombre.required" => "Por favor introduzca del nombre del contribuyente",
+            'credito.contribuyente.apellido_paterno.required' => 'Por favor introduzca el apellido paterno del contribuyente',
+            'credito.contribuyente.apellido_materno.required' => 'Por favor introduzca el apellido materno del contribuyente',
+            'credito.bien.depositario.nombre.required' => 'Por favor introduzca el nombre del depositario',
+            'credito.bien.depositario.apellido_paterno.required' => 'Por favor introduzca el apellido paterno del depositario',
+            'credito.bien.depositario.apellido_materno.required' => 'Por favor introduzca el apellido materno del depositario',
         ];
     }
 }

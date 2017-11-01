@@ -7,7 +7,7 @@
         </div>
         <div class="panel panel-body">
             {!!Form::model($contribuyente, ["class" => "form-horizontal", "role" => "form"])!!}    
-                @include("contribuyentes.add")
+                @include("contribuyentes.form-fisica")
             {!!Form::close()!!}
         </div>
     </div>
@@ -28,4 +28,19 @@
             @endif
         </div>
     </div>
+    <div class="panel panel-default">
+        <button type="button" class="btn btn-success btn-sm">Guardar</button>
+        <button type="button" class="btn btn-default btn-sm">Cancelar</button>
+    </div>
+    <div class="panel panel-default">
+        @include("creditos.tabla")
+    </div>
+    <div class="panel panel-default">
+        @include("articulos.tabla-articulos")
+    </div>
+@endsection
+@section("scripts")
+    {{Html::script("js/variables.js")}}
+    {{Html::script("js/funciones.js")}}
+    {{Html::script("js/contribuyentes.js")}}
 @endsection
