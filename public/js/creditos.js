@@ -72,9 +72,9 @@ function ajax(direccion, metodo = "get", data, tabla) {
         },
         "error": function(msj) {
             $("#warning #mensaje").text("");
-            for(e in msj.responseJSON) {
-                for(var a in msj.responseJSON[e]){
-                    $("#warning #mensaje").append("<p>" + msj.responseJSON[e][a] + "</p>");
+            for(var e in msj.responseJSON.errors) {
+                for(var a in msj.responseJSON.errors[e]){
+                    $("#warning #mensaje").append("<p>" + msj.responseJSON.errors[e][a] + "</p>");
                     $("#warning").modal();
                 }
             }
@@ -190,11 +190,10 @@ function mensaje(folio){
 }
 
 function start() {
+	//Llamado de la tabla de los creditos fiscales
+	crear_tabla($("#creditos"), columnas_creditos, "creditos/creditos",null, botones_credito);
 
-     //Llamado de la tabla de los creditos fiscales
-     crear_tabla($("#creditos"), columnas_creditos, "creditos/creditos",null, botones_credito);
-
-    //Asignamos la tabla a una variable
+	//Asignamos la tabla a una variable
     tabla_creditos = $("#creditos").DataTable();
 
     //Mostrar los detalles del credito fiscal en una sub-tabla
@@ -223,10 +222,17 @@ function start() {
         $("#tabla_articulos").show();
     });
 
-    //Agregar Bienes
+    //Agregar articulos
     $("#agregar").click( function () {
+		if($("#tabla_articulos_temporales").is(":hidden")){
+			$("#tabla_articulos_temporales").slideDown("slow");
+		}
         agregar_articulos();
     });
+	
+	$("#guardar_credito").click(function(){
+		guardar_credito();
+	});
 }
 $(function () {
     start();

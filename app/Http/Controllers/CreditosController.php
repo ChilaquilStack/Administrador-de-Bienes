@@ -16,7 +16,7 @@ use Validator;
 class CreditosController extends Controller
 {
     public function index() {
-        return view("creditos.index");
+        return view("index");
     }
 
     public function create()
@@ -33,7 +33,7 @@ class CreditosController extends Controller
         $bajas = DB::select("select id, motivo from motivos_bajas_creditos_fiscales order by motivo");
         $estados = DB::select("select id, nombre from estados order by nombre asc");
         $municipios = DB::select("select id, nombre from municipios order by nombre asc");
-        return view("creditos.form", [
+        return view("creditos.create", [
             "bajas" => $bajas, "origenes" => $origenes_del_credito,  "categorias" => $categorias, "subcategorias" => $subcategorias,
             "estados" => $estados, "municipios" => $municipios
         ]);
