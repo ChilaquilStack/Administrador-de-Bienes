@@ -161,9 +161,10 @@ class CreditosController extends Controller
         foreach($bienes_folio as $bien){
             foreach($bien->articulos as $articulo) {
                 $articulo->depositario = $bien->depositario;
-                $articulo->deposito = $bien->deposito;
                 $bien->deposito->estado->nombre;
+                $articulo->deposito = $bien->deposito;
                 $articulo->categorias;
+                $articulo->ultima_valuacion = $articulo->valuaciones->first();
                 $articulos->push($articulo);
             }
         }

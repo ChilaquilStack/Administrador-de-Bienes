@@ -26,3 +26,4 @@ Route::resource("bienes", "BienesController");
 Route::get("/contribuyentes/contribuyentes", "ContribuyenteController@contribuyentes");
 Route::get("/contribuyentes/creditos", "ContribuyenteController@creditos");
 Route::resource("contribuyentes", "ContribuyenteController");
+Route::resource("avaluos", "AvaluosController");

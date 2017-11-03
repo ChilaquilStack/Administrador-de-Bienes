@@ -35,34 +35,6 @@ function format ( d ) {
     '</table>';
 }
 
-function ajax(direccion, metodo = "get", data, tabla) {
-    let e;
-    $.ajax({
-        "url": direccion,
-        "type": metodo,
-        "data": data,
-        "success": function(msj) {
-            $("#success #mensaje").text(msj);
-            $("#success").modal();
-            $("#creditos_fiscales_form")[0].reset();
-            tabla.ajax.reload();
-        },
-        "error": function(msj) {
-            $("#warning #mensaje").text("");
-            for(var e in msj.responseJSON.errors) {
-                for(var a in msj.responseJSON.errors[e]){
-                    $("#warning #mensaje").append("<p>" + msj.responseJSON.errors[e][a] + "</p>");
-                    $("#warning").modal();
-                }
-            }
-        },
-        //Se necesita un token para enviar datos a laravel
-        "headers": {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
-}
-
 //Funcion para guardar los creditos fiscales
 function guardar_credito(){
     credito_fiscal.folio = $("#folio").val();
@@ -186,12 +158,14 @@ function start() {
     $('#creditos tbody').on('click', 'td.delete-control', eliminar_credito);
 
     //Mostrar los bienes de un credito fiscal
-    $('#creditos tbody').on('click', 'td.view-bienes', function(){
+    $('#creditos tbody').on('click', 'td.view-bienes', function() {
         var data = tabla_creditos.row($(this).parents("tr")).data();
+        $("#tabla_articulos caption h1").text("Bienes del credito fiscal:" + " " + data.folio);
+        $("#info-credito").text(data.contribuyente.Nombre + " " + data.contribuyente.Apellido_Materno + " " + data.contribuyente.Apellido_Paterno);
         tabla_articulos = $("#tabla_articulos").DataTable(crear_tabla(columnas_articulos, "/creditos/bienes", {"folio": data.folio}, botones_bienes));
         tabla_articulos.on( 'order.dt search.dt', function () {
             tabla_articulos.column(1, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
-                cell.innerHTML = i+1;
+                cell.innerHTML = i + 1;
             });
         } ).draw();
         $("#tabla_articulos").show();

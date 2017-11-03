@@ -23,3 +23,28 @@ function crear_tabla(columnas, url, data, botones) {
     }
     return obj;
 }
+
+function ajax(direccion, metodo = "get", data) {
+    $.ajax({
+        "url": direccion,
+        "type": metodo,
+        "data": data,
+        "success": function(msj) {
+            $("#success #mensaje").text(msj);
+            $("#success").modal();
+        },
+        "error": function(msj) {
+            $("#warning #mensaje").text("");
+            for(var e in msj.responseJSON.errors) {
+                for(var a in msj.responseJSON.errors[e]){
+                    $("#warning #mensaje").append("<p>" + msj.responseJSON.errors[e][a] + "</p>");
+                    $("#warning").modal();
+                }
+            }
+        },
+        //Se necesita un token para enviar datos a laravel
+        "headers": {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+}

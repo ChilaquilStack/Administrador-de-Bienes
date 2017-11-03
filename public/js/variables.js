@@ -179,6 +179,16 @@ columnas_articulos = [
         }
     },
     {
+        "title": "Valuacion",
+        "data": "ultima_valuacion.pivot.monto",
+        "render": function(data = "0", type, row){
+            if(data == "0")
+                return "<a href='avaluos/" + row.id  + "'><botton type='button' class='btn btn-warning btn-sm'>" + "$" + data + "</button></a>";
+            else
+                return "<a href='avaluos'> <botton type='button' class='btn btn-info btn-sm'>" + "$" + data + "</button></a>";
+        }
+    },
+    {
         "data":"id",
         "title": "Editar",
         "className": "details-articulo",

@@ -18,11 +18,14 @@ class Articulo extends Model {
         return $this->hasMany("App\Imagenes");
     }
 
-    public function peritos() {
-        return $this->belongsToMany("App\Perito","valuaciones","bienes_numero_control","peritos_id");
+    public function valuaciones() {
+        return $this->belongsToMany("App\Perito","valuaciones","articulos_id","peritos_id")
+                ->orderBy("fecha", "des")
+                ->withPivot("monto","fecha", "numero_dictamen");
     }
 
     public function bien(){
         return $this->belongsTo("App\Bien","bienes_numero_control");
     }
+
 }
