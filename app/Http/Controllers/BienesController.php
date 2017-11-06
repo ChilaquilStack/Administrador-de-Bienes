@@ -8,13 +8,7 @@ use App\Bien;
 use App\Articulo;
 class BienesController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
+    public function index() {
         return view("bienes.index");
     }
 
@@ -46,7 +40,7 @@ class BienesController extends Controller
     }
     public function update(Request $request, $id)
     {
-        //
+        
     }
 
     public function destroy($id)
@@ -55,7 +49,7 @@ class BienesController extends Controller
     }
 
     public function bienes(){
-        $bienes = Bien::all();
+        $bienes = Bien::all();  
         foreach($bienes as $bien){
             $bien->deposito->estado;
             $bien->depositario;
@@ -69,6 +63,7 @@ class BienesController extends Controller
         $articulos = Bien::where("numero_control", $numero_control)->firstOrFail()->articulos;
         foreach($articulos as $articulo){
             $articulo->categorias;
+            $articulo->ultima_valuacion = $articulo->valuaciones->first();
         }
         return response()->json(json_encode($articulos), 200);
     }

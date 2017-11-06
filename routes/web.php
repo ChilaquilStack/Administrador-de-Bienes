@@ -27,3 +27,8 @@ Route::get("/contribuyentes/contribuyentes", "ContribuyenteController@contribuye
 Route::get("/contribuyentes/creditos", "ContribuyenteController@creditos");
 Route::resource("contribuyentes", "ContribuyenteController");
 Route::resource("avaluos", "AvaluosController");
+Route::get("/bienes/create", function() {
+    $categorias = DB::select("select id, descripcion from categorias");
+    $subcategorias = DB::select("select id, descripcion from subcategorias");
+    return view("articulos.add", ["categorias" => $categorias, "subcategorias" => $subcategorias]);
+});

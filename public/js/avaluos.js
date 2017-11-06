@@ -11,6 +11,7 @@ function enviar() {
     avaluo.perito.apellido_materno = $("#apellido_materno_perito").val();
     avaluo.monto = $("#monto").val();
     avaluo.numero_dictamen = $("#numero_dictamen").val();
+    avaluo.fecha = $("#fecha_avaluo").val();
     ajax("/avaluos", "post", {"avaluo": avaluo});
 }
 

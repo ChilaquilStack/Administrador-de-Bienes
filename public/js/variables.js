@@ -32,7 +32,10 @@ botones_bienes = [
     {
         "text": "<i id='add_articulo' class='fa fa-plus' aria-hidden='true'></i>",
         "className": "btn btn-info btn-sm",
-        "titleAttr": "Agregar Bién"
+        "titleAttr": "Agregar Bién",
+        "action": function(){
+            window.location = "/bienes/create";
+        }
     },
     {
         "text": "<i class='fa fa-file-excel-o'></i>",
@@ -182,18 +185,20 @@ columnas_articulos = [
         "title": "Valuacion",
         "data": "ultima_valuacion.pivot.monto",
         "render": function(data = "0", type, row){
-            if(data == "0")
-                return "<a href='avaluos/" + row.id  + "'><botton type='button' class='btn btn-warning btn-sm'>" + "$" + data + "</button></a>";
-            else
-                return "<a href='avaluos'> <botton type='button' class='btn btn-info btn-sm'>" + "$" + data + "</button></a>";
+            if( data === "0" ) {
+                return "<a href='http://localhost:8000/avaluos/" + row.id  + "'><botton type='button' class='btn btn-warning btn-sm'>" + "$" + data + "</button></a>"
+            } else {
+                return "<a href='http://localhost:8000/avaluos/" + row.id  + "'><botton type='button' class='btn btn-info btn-sm'>" + "$" + data + "</button></a>"
+            }
         }
+    
     },
     {
         "data":"id",
         "title": "Editar",
         "className": "details-articulo",
         "render": function(data) {
-            return "<a href='bienes/" + data + "/edit'><button type='button' class='btn btn-success btn-sm'><i class='fa fa-pencil-square-o' aria-hidden='true'></i></button></a>";
+            return "<a href='http://localhost:8000/bienes/" + data + "/edit'><button type='button' class='btn btn-success btn-sm'><i class='fa fa-pencil-square-o' aria-hidden='true'></i></button></a>";
         }
     },
     {
@@ -202,6 +207,11 @@ columnas_articulos = [
         "className": "delete-bien",
         "defaultContent": "<button type='button' class='btn btn-danger btn-sm'><i class='fa fa-trash-o' aria-hidden='true'></i></button>"
     },
+    {
+        "data": null,
+        "title": "Remate",
+        "defaultContent": "<input type='checkbox'>"
+    }
 ],
 columnas_contribuyentes= [
     {
@@ -209,10 +219,6 @@ columnas_contribuyentes= [
         "render": function(data, type, row){
             return "<a href='contribuyentes/" + row.id + "'><button type='button' class='btn btn-link'>" + row.Nombre + " " + row.Apellido_Paterno + " " + row.Apellido_Materno + "</button></a>";
         }
-    },
-    {
-        "title": "Telefono",
-        "data": "Telefono"
     },
     {
         "title": "Colonia",
@@ -233,14 +239,6 @@ columnas_contribuyentes= [
         "title": "Estado",
         "data": "domicilios",
         "render": "[, ].estado.nombre"
-    },
-    {
-        "title": "RFC",
-        "data": "RFC"
-    },
-    {
-        "title": "CURP",
-        "data": "CURP"
     },
 ],
 columnas_creditos_contribuyente = [
@@ -277,5 +275,54 @@ columnas_creditos_contribuyente = [
         "title": "Baja",
         "className": "delete-control",
         "defaultContent": "<button type='button' class='btn btn-danger btn-sm'><i class='fa fa-trash-o' aria-hidden='true'></i></button>"
+    }
+],
+columnas_articulos_bienes = [
+    {
+        "title": "#",
+        "data": "id"
+    },
+    {
+        "title": "Descripion",
+        "data": "descripcion"
+    },
+    {
+        "title": "Cantidad",
+        "data":  "cantidad"
+    },
+    {
+        "title": "Categorias",
+        "data": "categorias",
+        "render": "[, ].descripcion"
+    },
+    {
+        "title": "Valuacion",
+        "data": "ultima_valuacion.pivot.monto",
+        "render": function(data = "0", type, row){
+            if( data === "0" ) {
+                return "<a href='http://localhost:8000/avaluos/" + row.id  + "'><botton type='button' class='btn btn-warning btn-sm'>" + "$" + data + "</button></a>"
+            } else {
+                return "<a href='http://localhost:8000/avaluos/" + row.id  + "'><botton type='button' class='btn btn-info btn-sm'>" + "$" + data + "</button></a>"
+            }
+        }
+    },
+    {
+        "data":"id",
+        "title": "Editar",
+        "className": "details-articulo",
+        "render": function(data) {
+            return "<a href='http://localhost:8000/bienes/" + data + "/edit'><button type='button' class='btn btn-success btn-sm'><i class='fa fa-pencil-square-o' aria-hidden='true'></i></button></a>";
+        }
+    },
+    {
+        "data":null,
+        "title": "Baja",
+        "className": "delete-bien",
+        "defaultContent": "<button type='button' class='btn btn-danger btn-sm'><i class='fa fa-trash-o' aria-hidden='true'></i></button>"
+    },
+    {
+        "data": null,
+        "title": "Remate",
+        "defaultContent": "<input type='checkbox'>"
     }
 ];

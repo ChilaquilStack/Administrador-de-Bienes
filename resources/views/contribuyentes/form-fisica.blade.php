@@ -11,9 +11,9 @@
     </div>
 </div>
 <div class="form-group">
-    {!!Form::label("apellido","Apellido Paterno:",["class"=>"control-label col-sm-2"])!!}
+    {!!Form::label("apellido","Apellido Materno:",["class"=>"control-label col-sm-2"])!!}
     <div class="col-sm-10">
-        {!!Form::text("Apellido_Paterno",null,["class"=>"form-control", "placeholder"=>"Ingrese el apellido materno", "id" => "apellido_materno_contribuyente"])!!}
+        {!!Form::text("Apellido_Materno",null,["class"=>"form-control", "placeholder"=>"Ingrese el apellido materno", "id" => "apellido_materno_contribuyente"])!!}
     </div>
 </div>
 <div class="form-group">

@@ -8,5 +8,5 @@
 </div>
     <div class="form-group">
 	{!!Form::label("fecha","fecha:")!!}
-	{!!Form::date("fecha",null,["class" => "form-control", "fecha" => "fecha", "placeholder" => "DD/MM/AAAA"])!!}
+	{!!Form::date("fecha",null,["class" => "form-control", "fecha" => "fecha", "placeholder" => "DD/MM/AAAA", "id" => "fecha_avaluo"])!!}
 </div>

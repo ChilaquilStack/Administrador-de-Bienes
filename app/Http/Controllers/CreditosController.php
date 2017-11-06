@@ -38,7 +38,7 @@ class CreditosController extends Controller
         ]);
     }
 
-    public function store(/*CreditosRequest*/ request $request) {
+    public function store(CreditosRequest $request) {
         
         $contribuyente = new contribuyente([
             "nombre" => $request->input("credito.contribuyente.nombre"),
@@ -61,7 +61,7 @@ class CreditosController extends Controller
         ]);
         $domicilio_contribuyente->save();
 
-        $contribuyente->domicilios()->attach($domicilio_contribuyente->id);
+        $contribuyente->domicilios()->attach($domicilio_contribuyente->Id);
 
         $credito = new Credito([
             "folio" => $request->input("credito.folio"),
@@ -89,13 +89,12 @@ class CreditosController extends Controller
             "estados_id" => $request->input("credito.bien.deposito.estado")
         ]);
         $deposito->save();
-        $id_deposito = $deposito->id;
 
         $numero_control = $request->input('credito.bien.numero_control');
         $bien = new Bien([
             "numero_control" => $numero_control,
             "depositarios_id" => $depositario->id,
-            "deposito_id" => $id_deposito
+            "deposito_id" => $deposito->Id
         ]);
         $bien->save();
 

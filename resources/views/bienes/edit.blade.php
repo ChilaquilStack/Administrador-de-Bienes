@@ -8,6 +8,7 @@
         <div class="panel-body">
             {!!Form::model($articulo,[ "class"=>"form-horizontal", "role"=>"form" ])!!}
                 @include("articulos.form")
+                <button type="button" id="btn_editar_articulo" class="btn btn-success">Guardar</button>
             {!!Form::close()!!}
         </div>
     </div>

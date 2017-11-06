@@ -1,7 +1,7 @@
 <div class="form-group">
     {!!Form::label("Cantidad","Cantidad", ["class" => "control-label col-sm-2"])!!}
     <div class="col-sm-10">
-        {!!Form::number("cantidad",null,["class" => "form-control", "min"=>"1"])!!}
+        {!!Form::number("cantidad",null,["class" => "form-control", "min"=>"1", "id" => "cantidad"])!!}
     </div>
 </div>
 

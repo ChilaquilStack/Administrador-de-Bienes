@@ -1,6 +1,8 @@
 @extends("layout.master")
 @section("title", "Avaluos" )
 @section("content")
+@include('modals.warning')
+@include('modals.success')
     {!!Form::model($articulo,["class" => "form-horizontal"])!!}
         <input type="hidden" value="{{$articulo->id}}" id="id_articulo">
         <div class="panel panel-primary">

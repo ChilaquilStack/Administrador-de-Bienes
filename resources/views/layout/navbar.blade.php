@@ -16,8 +16,6 @@
         <li><a href="{{action('CreditosController@index')}}">Créditos<span class="sr-only">(current)</span></a></li>
         <li><a href="{{action('ContribuyenteController@index')}}">Contribuyentes</a></li>
         <li><a href="{{action('BienesController@index')}}">Bienes</a></li>
-        <li><a href="#">Valuaciones</a></li>
-        <li><a href="#">Remates</a></li>
         {{--<li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Menu<span class="caret"></span></a>
           <ul class="dropdown-menu">

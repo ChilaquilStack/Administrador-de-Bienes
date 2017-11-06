@@ -18,6 +18,7 @@
     <div class="container">
       @yield("content")
     </div>
+    @include("layout.sidebar")
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     {{Html::script("https://code.jquery.com/jquery-3.2.1.js")}}

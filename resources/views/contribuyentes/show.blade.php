@@ -1,6 +1,7 @@
 @extends("layout.master")
 @section("title","Contribuyente")
 @section("content")
+    <input type="hidden" id="id_contribuyente" value = "{{$contribuyente->id}}">
     <div class="panel panel-primary">
         <div class="panel-heading">
             <h1 class="panel-title">Contribuyente</h1>

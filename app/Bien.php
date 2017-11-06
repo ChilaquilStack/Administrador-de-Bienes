@@ -16,7 +16,7 @@ class Bien extends Model
     }
 
     public function deposito() {
-        return $this->belongsTo("App\Domicilio","deposito_Id");
+        return $this->belongsTo("App\Domicilio","deposito_id");
     }
 
     public function depositario() {
