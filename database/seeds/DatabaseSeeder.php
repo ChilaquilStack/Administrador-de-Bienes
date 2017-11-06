@@ -12,16 +12,16 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-            Contribuyentes::class,
-            Creditos::class,
+            //Contribuyentes::class,
+            //Creditos::class,
             categorias::class,
             Estados::class,
             Municipios::class,
             SubcategoriasBienesTableSeeder::class,
-            Depositarios::class,
-            Domicilios::class,
-            Bienes::class,
-            Articulos::class
+            //Depositarios::class,
+            //Domicilios::class,
+            //Bienes::class,
+            //Articulos::class
         ]);
     }
 }

@@ -19,8 +19,7 @@ class CreditosController extends Controller
         return view("index");
     }
 
-    public function create()
-    {
+    public function create() {
         $origenes_del_credito = [
             "1"=> "Anexo 18", 
             "2" => "ISTUV", 
@@ -39,7 +38,7 @@ class CreditosController extends Controller
         ]);
     }
 
-    public function store(CreditosRequest $request) {
+    public function store(/*CreditosRequest*/ request $request) {
         
         $contribuyente = new contribuyente([
             "nombre" => $request->input("credito.contribuyente.nombre"),
@@ -90,12 +89,13 @@ class CreditosController extends Controller
             "estados_id" => $request->input("credito.bien.deposito.estado")
         ]);
         $deposito->save();
+        $id_deposito = $deposito->id;
 
         $numero_control = $request->input('credito.bien.numero_control');
         $bien = new Bien([
             "numero_control" => $numero_control,
             "depositarios_id" => $depositario->id,
-            "deposito_id" => $deposito->id
+            "deposito_id" => $id_deposito
         ]);
         $bien->save();
 
@@ -106,11 +106,10 @@ class CreditosController extends Controller
                 "cantidad" => $b["cantidad"],
                 "bienes_numero_control" => $numero_control
             ]);
-        $articulo->save();
-        $articulo->categorias()->attach($b["categoria"]["valor"]);
+            $articulo->save();
+            $articulo->categorias()->attach($b["categoria"]["valor"]);
         }
         $credito->bienes()->attach($numero_control, ['documento' => "100"/*$request->input("bien.documento_embargo")*/]);
-        
         return response()->json("Credito Fiscal"." ".$credito->folio." "."Creado con Exito",200);
     }
 

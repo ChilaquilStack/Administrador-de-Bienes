@@ -8,7 +8,7 @@
 <div class="form-group">
     {!!Form::label("descripcion","Descripcion Detallada", ["class" => "control-label col-sm-2"])!!}
     <div class="col-sm-10">
-        {!!Form::textarea("descripcion", null,["class" => "form-control","cols"=>"30","rows"=>"5", "placeholder" => "descripcion detallada del bien"])!!}
+        {!!Form::textarea("descripcion", null,["class" => "form-control","cols"=>"30","rows"=>"5", "placeholder" => "descripcion detallada del bien", "id" => "descripcion_articulo"])!!}
     </div>
 </div>
 

@@ -8,7 +8,7 @@ class Bien extends Model
 {
     protected $table = "bienes";
     protected $primaryKey = "numero_control";
-    protected $fillable = ["numero_control","fecha_alta","depositarios_id", "deposito_id"];
+    protected $fillable = ["numero_control","depositarios_id", "deposito_id"];
     public $timestamps = false;
 
     public function creditos() {

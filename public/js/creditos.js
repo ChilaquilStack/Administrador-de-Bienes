@@ -61,7 +61,7 @@ function guardar_credito(){
     credito_fiscal.bien.deposito.cp = $("#codigo_postal_deposito").val();
     credito_fiscal.bien.deposito.int = $("#int_deposito").val();
     credito_fiscal.bien.deposito.ext = $("#ext_deposito").val();
-    credito_fiscal.bien.deposito.calle = $("#calle").val();
+    credito_fiscal.bien.deposito.calle = $("#calle_deposito").val();
     credito_fiscal.bien.depositario.nombre = $("#nombre_depositario").val();
     credito_fiscal.bien.depositario.apellido_paterno = $("#apellido_paterno_depositario").val();
     credito_fiscal.bien.depositario.apellido_materno = $("#apellido_materno_depositario").val();

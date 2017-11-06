@@ -21,7 +21,7 @@
 <div class="form-group">
     <label class="control-label col-sm-2" for="colonia">Colonia:</label>
     <div class="col-sm-10">
-        {!! Form::text("colonia", null, ["class"=>"form-control", "placeholder" => "Ingrese la colonia"]) !!}
+        {!! Form::text("colonia", null, ["class"=>"form-control", "placeholder" => "Ingrese la colonia", "id" => "colonia"]) !!}
     </div>
 </div>
 <div class="form-group">
