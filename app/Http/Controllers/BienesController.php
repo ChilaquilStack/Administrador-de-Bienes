@@ -34,9 +34,7 @@ class BienesController extends Controller
         $articulo = Articulo::where("id", $id)->firstOrFail();
         $categorias = DB::select("select id, descripcion from categorias order by descripcion asc");
         $subcategorias = DB::select("select id, descripcion from subcategorias order by descripcion asc");
-        $estados = DB::select("select id, nombre from estados order by nombre asc");
-        $municipios = DB::select("select id, nombre from municipios order by nombre asc");
-        return view("bienes.edit", ["articulo" => $articulo, "categorias" => $categorias, "subcategorias" => $subcategorias, "estados" => $estados, "municipios" => $municipios]);
+        return view("bienes.edit", ["articulo" => $articulo, "categorias" => $categorias, "subcategorias" => $subcategorias]);
     }
     public function update(Request $request, $id)
     {

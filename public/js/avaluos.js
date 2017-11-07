@@ -19,6 +19,7 @@ function start() {
     $("#enviar").click(function () {
         enviar()
     });
+    $("#fecha_avaluo").datepicker();
 }
 
 $(function () {

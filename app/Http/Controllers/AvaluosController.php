@@ -21,8 +21,7 @@ class AvaluosController extends Controller
         return view("avaluos.form");
     }
 
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         $id = $request->input("avaluo.articulo");
         $articulo = Articulo::where("id",$id)->firstOrFail();
         $perito = new Perito([
@@ -35,7 +34,7 @@ class AvaluosController extends Controller
         $numero_dictamen = $request->input("avaluo.numero_dictamen");
         $fecha_avaluo = $request->input("avaluo.fecha");
         $articulo->valuaciones()->attach($perito->Id,["monto" => $monto, "numero_dictamen" => $numero_dictamen, "fecha" => $fecha_avaluo]);
-        return response()->json("Todo chido carnal" ,200);
+        return response()->json("Se Valuo el bien correctamente" ,200);
     }
 
     public function show($id) {

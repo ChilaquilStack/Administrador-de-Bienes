@@ -32,3 +32,5 @@ Route::get("/bienes/create", function() {
     $subcategorias = DB::select("select id, descripcion from subcategorias");
     return view("articulos.add", ["categorias" => $categorias, "subcategorias" => $subcategorias]);
 });
+
+Route::resource("remates", "RematesController");

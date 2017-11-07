@@ -147,14 +147,6 @@ columnas_bienes = [
 ],
 columnas_articulos = [
     {
-        "title": "Numero de Control",
-        "data": "bienes_numero_control"
-    },
-    {
-        "title": "#",
-        "data": "id"
-    },
-    {
         "title": "Descripion",
         "data": "descripcion"
     },
@@ -206,11 +198,6 @@ columnas_articulos = [
         "title": "Baja",
         "className": "delete-bien",
         "defaultContent": "<button type='button' class='btn btn-danger btn-sm'><i class='fa fa-trash-o' aria-hidden='true'></i></button>"
-    },
-    {
-        "data": null,
-        "title": "Remate",
-        "defaultContent": "<input type='checkbox'>"
     }
 ],
 columnas_contribuyentes= [
@@ -319,10 +306,5 @@ columnas_articulos_bienes = [
         "title": "Baja",
         "className": "delete-bien",
         "defaultContent": "<button type='button' class='btn btn-danger btn-sm'><i class='fa fa-trash-o' aria-hidden='true'></i></button>"
-    },
-    {
-        "data": null,
-        "title": "Remate",
-        "defaultContent": "<input type='checkbox'>"
     }
 ];

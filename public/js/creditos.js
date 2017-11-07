@@ -163,11 +163,11 @@ function start() {
         $("#tabla_articulos caption h1").text("Bienes del credito fiscal:" + " " + data.folio);
         $("#info-credito").text(data.contribuyente.Nombre + " " + data.contribuyente.Apellido_Materno + " " + data.contribuyente.Apellido_Paterno);
         tabla_articulos = $("#tabla_articulos").DataTable(crear_tabla(columnas_articulos, "/creditos/bienes", {"folio": data.folio}, botones_bienes));
-        tabla_articulos.on( 'order.dt search.dt', function () {
-            tabla_articulos.column(1, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
-                cell.innerHTML = i + 1;
-            });
-        } ).draw();
+        // tabla_articulos.on( 'order.dt search.dt', function () {
+        //     tabla_articulos.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+        //         cell.innerHTML = i + 1;
+        //     });
+        // } ).draw();
         $("#tabla_articulos").show();
     });
 

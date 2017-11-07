@@ -1,38 +1,49 @@
 @extends("layout.master")
 @section("title", "Avaluos" )
 @section("content")
-@include('modals.warning')
-@include('modals.success')
-    {!!Form::model($articulo,["class" => "form-horizontal"])!!}
-        <input type="hidden" value="{{$articulo->id}}" id="id_articulo">
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <h1 class="panel-title">Bien</h1>    
-            </div>
-            <div class="panel-body">
+{{--@include('modals.warning')
+@include('modals.success')--}}
+<input type="hidden" value="{{$articulo->id}}" id="id_articulo">
+
+<div class="panel-group">
+
+    @include("layout.credito-details")
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h1 class="panel-title">Bien</h1>    
+        </div>
+        <div class="panel-body">
+            {!!Form::model($articulo,["class" => "form-horizontal"])!!}
                 @include("articulos.form")
-            </div>
+            {!!Form::close()!!}
         </div>
-    {!!Form::close()!!}
-    {!!Form::open(["class" => "form-horizontal", "role" => "form"])!!}
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <h1 class="panel-title">Avaluo</h1>
-            </div>
-            <div class = "panel-body">
+    </div>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h1 class="panel-title">Avaluo</h1>
+        </div>
+        <div class = "panel-body">
+            {!!Form::open(["class" => "form-horizontal", "role" => "form"])!!}
                 @include("avaluos.form")
-            </div>
+            {!!Form::close()!!}
         </div>
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <h1 class="panel-title">Perito</h1>
-            </div>
-            <div class = "panel-body">
+    </div>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h1 class="panel-title">Perito</h1>
+        </div>
+        <div class = "panel-body">
+            {!!Form::open(["class" => "form-horizontal", "role" => "form"])!!}
                 @include("peritos.form")
-            </div>
+            {!!Form::close()!!}
         </div>
-        <button type="button" class="btn btn-success btn-sm" id="enviar">Guardar</button>
-    {!!Form::close()!!}
+    </div>
+        
+    <button type="button" class="btn btn-success btn-sm" id="enviar">Guardar</button>
+</div>
 @endsection
 @section("scripts")
     {{Html::script("js/funciones.js")}}
