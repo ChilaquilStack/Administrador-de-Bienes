@@ -34,3 +34,4 @@ Route::get("/bienes/create", function() {
 });
 
 Route::resource("remates", "RematesController");
+Route::resource("subastas", "SubastaController");

@@ -79,7 +79,7 @@ columnas_creditos = [
         "title": "Contribuyente",
         "data": "contribuyente",
         "render": function(data) {
-            return "<a href='contribuyentes/" + data.id + "'><button type='button' class='btn btn-link'>" + data.Nombre + " " + data.Apellido_Paterno + " " + data.Apellido_Materno + "</button></a>";
+            return "<a href='contribuyentes/" + data.id + "' target='_blanck'><button type='button' class='btn btn-link'>" + data.Nombre + " " + data.Apellido_Paterno + " " + data.Apellido_Materno + "</button></a>";
         }
     },
     {
@@ -178,19 +178,17 @@ columnas_articulos = [
         "data": "ultima_valuacion.pivot.monto",
         "render": function(data = "0", type, row){
             if( data === "0" ) {
-                return "<a href='http://localhost:8000/avaluos/" + row.id  + "'><botton type='button' class='btn btn-warning btn-sm'>" + "$" + data + "</button></a>"
+                return "<a href='http://localhost:8000/avaluos/" + row.id  + "' target='_blank'><botton type='button' class='btn btn-warning btn-sm'>" + "$" + data.toLocaleString() + "</button></a>";
             } else {
-                return "<a href='http://localhost:8000/avaluos/" + row.id  + "'><botton type='button' class='btn btn-info btn-sm'>" + "$" + data + "</button></a>"
+                return "<a href='http://localhost:8000/avaluos/" + row.id  + "' target='_blank'><botton type='button' class='btn btn-info btn-sm'>" + "$" + data.toLocaleString() + "</button></a>"
             }
         }
-    
     },
     {
         "data":"id",
         "title": "Editar",
-        "className": "details-articulo",
         "render": function(data) {
-            return "<a href='http://localhost:8000/bienes/" + data + "/edit'><button type='button' class='btn btn-success btn-sm'><i class='fa fa-pencil-square-o' aria-hidden='true'></i></button></a>";
+            return "<a href='http://localhost:8000/bienes/" + data + "/edit' target='_blank'><button type='button' class='btn btn-success btn-sm'><i class='fa fa-pencil-square-o' aria-hidden='true'></i></button></a>";
         }
     },
     {

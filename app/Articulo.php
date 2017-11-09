@@ -15,7 +15,7 @@ class Articulo extends Model {
     }
 
     public function imagenes() {
-        return $this->hasMany("App\Imagenes");
+        return $this->hasMany("App\Imagen","Productos_id","id");
     }
 
     public function valuaciones() {

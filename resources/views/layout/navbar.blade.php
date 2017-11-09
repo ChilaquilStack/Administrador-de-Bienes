@@ -16,7 +16,7 @@
 			<li><a href="{{action('CreditosController@index')}}">Créditos<span class="sr-only">(current)</span></a></li>
 			<li><a href="{{action('ContribuyenteController@index')}}">Contribuyentes</a></li>
 			<li><a href="{{action('BienesController@index')}}">Bienes</a></li>
-			<li><a href="#">Remates</a></li>
+			<li><a href="{{action('RematesController@index')}}">Remates</a></li>
       	</ul>
       	<ul class="nav navbar-nav navbar-right">
         	<li class="dropdown">

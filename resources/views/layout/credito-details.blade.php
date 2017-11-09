@@ -7,7 +7,7 @@
                 <tr>
                     <td>{{$credito->folio}}</td>
                     <td>{{$credito->origen_credito}}</td>
-                    <td>{{$credito->monto}}</td>
+                    <td>${{number_format($credito->monto, 2)}}</td>
                     <td>{{$credito->contribuyente->Nombre." ".$credito->contribuyente->Apellido_Paterno." ".$credito->contribuyente->Apellido_Materno}}</td>
                     <td>{{$credito->pivot->bienes_numero_control}}</td>
                 </tr>

@@ -1,9 +1,9 @@
 @extends("layout.master")
 @section("title","Agregar Credito Fiscal")
 @section("content")
-@include('modals.warning')
-@include('modals.success')
-@include('modals.eliminar_credito')
+@include('layout.modals.warning')
+@include('layout.modals.success')
+@include('layout.modals.eliminar_credito')
 
 <div class="panel-group">
     
