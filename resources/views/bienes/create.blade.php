@@ -24,12 +24,8 @@
                 <button id="guardar" type="button" class="btn btn-success btn-lg">Guardar Bien</button>
             </div>
         </div>
-        {{-- <div class="form-group">
-            <div class="col-sm-10">
-            @include('bienes.tabla-articulos-temporales')
-            </div>
-        </div> --}}
     </form>
+    HOla
     @include('articulos.tabla-articulos')
 @endsection
 @section("scripts")

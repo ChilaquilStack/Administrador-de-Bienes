@@ -30,14 +30,6 @@ var botones_credito = [
 ],
 botones_bienes = [
     {
-        "text": "<i id='add_articulo' class='fa fa-plus' aria-hidden='true'></i>",
-        "className": "btn btn-info btn-sm",
-        "titleAttr": "Agregar Bién",
-        "action": function(){
-            window.location = "/bienes/create";
-        }
-    },
-    {
         "text": "<i class='fa fa-file-excel-o'></i>",
         "extend": "excelHtml5",
         "className": "btn btn-info btn-sm",
@@ -67,7 +59,7 @@ columnas_creditos = [
         "data": "documento_determinante"
     },
     {
-        "title": "Origen del crédito fiscal",
+        "title": "Origen del crédito",
         "data": "origen_credito"
     },
     {
@@ -79,11 +71,11 @@ columnas_creditos = [
         "title": "Contribuyente",
         "data": "contribuyente",
         "render": function(data) {
-            return "<a href='contribuyentes/" + data.id + "' target='_blanck'><button type='button' class='btn btn-link'>" + data.Nombre + " " + data.Apellido_Paterno + " " + data.Apellido_Materno + "</button></a>";
+            return "<a href='contribuyentes/" + data.id + "' target='_blank'><button type='button' class='btn btn-link'>" + data.Nombre + " " + data.Apellido_Paterno + " " + data.Apellido_Materno + "</button></a>";
         }
     },
     {
-        "title": "Bienes",
+        "title": "Ver Bienes",
         "defaultContent": "<button type='button' class='btn btn-default btn-sm'><i class='glyphicon glyphicon-eye-open'></i></button>",
         "data": null,
         "className": "view-bienes"
@@ -97,8 +89,16 @@ columnas_creditos = [
     {
         "title": "Baja",
         "className": "delete-control",
-        "defaultContent": "<button type='button' class='btn btn-danger btn-sm'><i class='fa fa-trash-o' aria-hidden='true'></i></button>"
-    }
+        "defaultContent": "<button type='button' class='btn btn-danger btn-sm' data-toggle='modal' data-target='#eliminar_credito'><i class='fa fa-trash-o' aria-hidden='true'></i></button>"
+    },
+    {
+        "data": "folio",
+        "title": "Agregar Bienes",
+        "titleAttr": "Agregar Bién",
+        "render": function(data){
+            return "<a href='/creditos/" + data + "/add' target='_blank><button type='button' class='btn btn-primary btn-sm''><i id='add_credito' class='fa fa-plus' aria-hidden='true'></i></button></a>";
+        }
+    },
 ],
 columnas_bienes = [
     {
@@ -195,7 +195,7 @@ columnas_articulos = [
         "data":null,
         "title": "Baja",
         "className": "delete-bien",
-        "defaultContent": "<button type='button' class='btn btn-danger btn-sm'><i class='fa fa-trash-o' aria-hidden='true'></i></button>"
+        "defaultContent": "<button type='button' class='btn btn-danger btn-sm' data-toggle='modal' data-target='#eliminar_articulo'><i class='fa fa-trash-o' aria-hidden='true'></i></button>"
     }
 ],
 columnas_contribuyentes= [

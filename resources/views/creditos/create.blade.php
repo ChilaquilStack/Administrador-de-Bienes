@@ -3,7 +3,6 @@
 @section("content")
 @include('layout.modals.warning')
 @include('layout.modals.success')
-@include('layout.modals.eliminar_credito')
 
 <div class="panel-group">
     

@@ -13,15 +13,15 @@ class BienesController extends Controller
     }
 
     
-    public function create()
-    {
-        //
+    public function create() {
+        $categorias = DB::select("select id, descripcion from categorias");
+        $subcategorias = DB::select("select id, descripcion from subcategorias");
+        return view("articulos.add", ["categorias" => $categorias, "subcategorias" => $subcategorias]);
     }
 
 
-    public function store(Request $request)
-    {
-        //
+    public function store(Request $request) {
+    
     }
 
     public function show($id)

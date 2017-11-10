@@ -141,7 +141,8 @@ class Municipios extends Seeder
         foreach($municipios as $id  => $nombre){
             DB::table("municipios")->insert([
                 "id" => $id,
-                "nombre" => $nombre
+                "nombre" => $nombre,
+                "estados_id" => 14
             ]);
         }
     }

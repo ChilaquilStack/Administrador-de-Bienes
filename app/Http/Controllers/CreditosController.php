@@ -16,7 +16,8 @@ use Validator;
 class CreditosController extends Controller
 {
     public function index() {
-        return view("index");
+        $bajas = DB::select("select id, descripcion from motivos_bajas_creditos_fiscales order by descripcion");
+        return view("index", ["bajas" => $bajas]);
     }
 
     public function create() {
@@ -29,11 +30,11 @@ class CreditosController extends Controller
         ];
         $categorias = DB::select("select id, descripcion from categorias order by descripcion asc");
         $subcategorias = DB::select("select id, descripcion from subcategorias order by descripcion asc");
-        $bajas = DB::select("select id, motivo from motivos_bajas_creditos_fiscales order by motivo");
+            
         $estados = DB::select("select id, nombre from estados order by nombre asc");
         $municipios = DB::select("select id, nombre from municipios order by nombre asc");
         return view("creditos.create", [
-            "bajas" => $bajas, "origenes" => $origenes_del_credito,  "categorias" => $categorias, "subcategorias" => $subcategorias,
+            "origenes" => $origenes_del_credito,  "categorias" => $categorias, "subcategorias" => $subcategorias,
             "estados" => $estados, "municipios" => $municipios
         ]);
     }
@@ -168,5 +169,11 @@ class CreditosController extends Controller
         }
         return response()->json(json_encode($articulos), 200);
     }
- 
+
+    public function add(Credito $credito) {
+        
+        $categorias = DB::select("select id, descripcion from categorias");
+        $subcategorias = DB::select("select id, descripcion from subcategorias");
+        return view("articulos.add", ["categorias" => $categorias, "subcategorias" => $subcategorias, "credito" => $credito]);
+    }
 }

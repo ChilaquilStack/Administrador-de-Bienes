@@ -1,4 +1,4 @@
-<div class="modal fade" id="eliminar_credito">
+<div class="modal fade" id="eliminar_articulo">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-body"  id="mensaje">

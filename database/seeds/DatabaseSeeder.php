@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             //Domicilios::class,
             //Bienes::class,
             //Articulos::class
+            bajas_creditos::class
         ]);
     }
 }
