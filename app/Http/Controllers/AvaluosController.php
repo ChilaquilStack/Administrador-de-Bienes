@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Articulo;
 use App\Perito;
 use DB;
+use Carbon\Carbon;
 class AvaluosController extends Controller
 {
     
@@ -32,7 +33,7 @@ class AvaluosController extends Controller
         $perito->save();
         $monto = $request->input("avaluo.monto");
         $numero_dictamen = $request->input("avaluo.numero_dictamen");
-        $fecha_avaluo = $request->input("avaluo.fecha");
+        $fecha_avaluo = new Carbon($request->input("avaluo.fecha"));
         $articulo->valuaciones()->attach($perito->Id,["monto" => $monto, "numero_dictamen" => $numero_dictamen, "fecha" => $fecha_avaluo]);
         return response()->json("Se Valuo el bien correctamente" ,200);
     }

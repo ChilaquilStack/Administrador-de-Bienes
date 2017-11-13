@@ -11,6 +11,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        DB::table("usuarios")->insert([
+            "nombre" => "Edgar Enrique",
+            "apellido_paterno" => "Villegas",
+            "apellido_materno" => "Briseño",
+            "correo" => "edgar.villegas@jalisco.gob.mx",
+            "contraseña" => bcrypt("123456")
+        ]);
         $this->call([
             //Contribuyentes::class,
             //Creditos::class,

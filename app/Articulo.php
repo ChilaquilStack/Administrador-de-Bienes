@@ -32,4 +32,8 @@ class Articulo extends Model {
         return $this->belongsTo("App\Bien","bienes_numero_control");
     }
 
+    public function remates() {
+        return $this->belongsToMany("App\Remate","lotes","articulos_id","remate_id");
+    }
+
 }

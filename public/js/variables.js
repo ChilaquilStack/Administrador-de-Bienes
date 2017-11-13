@@ -299,9 +299,9 @@ columnas_articulos_bienes = [
         "data": "ultima_valuacion.pivot.monto",
         "render": function(data = "0", type, row){
             if( data === "0" ) {
-                return "<a href='http://localhost:8000/avaluos/" + row.id  + "'><botton type='button' class='btn btn-warning btn-sm'>" + "$" + data + "</button></a>"
+                return "<a href='http://localhost:8000/avaluos/" + row.id  + "'><botton type='button' class='btn btn-warning btn-sm'>" + "$" + data.toLocaleString() + "</button></a>"
             } else {
-                return "<a href='http://localhost:8000/avaluos/" + row.id  + "'><botton type='button' class='btn btn-info btn-sm'>" + "$" + data + "</button></a>"
+                return "<a href='http://localhost:8000/avaluos/" + row.id  + "'><botton type='button' class='btn btn-info btn-sm'>" + "$" + data.toLocaleString() + "</button></a>"
             }
         }
     },

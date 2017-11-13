@@ -1,6 +1,11 @@
 @extends("layout.master")
 @section("title", "Remates")
 @section("content")
+@if (session('status'))
+    <div class="alert alert-success">
+        {{ session('status') }}
+    </div>
+@endif
     <div class="panel pangel-groups">
     
         <div class="panel panel-primary">
@@ -22,7 +27,9 @@
         </div>
     
     </div>
+    
 @endsection
 @section("scripts")
+    {{Html::script("js/wickedpicker.js")}}
     {{Html::script("js/remates.js")}}
 @endsection

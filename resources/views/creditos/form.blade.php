@@ -1,7 +1,7 @@
 <input type="hidden" id="data" value="">
 <div class="form-group">
 	<label for="folio">Credito Fiscal:</label>
-	<input class="form-control" id="folio" placeholder="numero de credito fiscal" type="text">
+	<input class="form-control" id="folio" name="folio" placeholder="numero de credito fiscal" type="text">
 </div>
 <div class="form-group">
 	{!!Form::label("documento","Documento Determinante:")!!}

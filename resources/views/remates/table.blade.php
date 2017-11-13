@@ -10,7 +10,7 @@
                     <td>{{$articulo->descripcion}}</td>
                     <td>{{$articulo->cantidad}}</td>
                     <td>${{number_format($articulo->valuaciones()->first()->pivot->monto, 2)}}</td>
-                    <td>{{Form::checkbox("remates[]", $articulo->id)}}</td>
+                    <td>{{Form::checkbox("articulos[]", $articulo->id)}}</td>
                 </tr>
             @endforeach
         </tbody>
