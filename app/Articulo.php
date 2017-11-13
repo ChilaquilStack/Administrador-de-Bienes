@@ -14,6 +14,10 @@ class Articulo extends Model {
         return $this->belongsToMany("App\Categoria_bien","articulos_categorias","articulos_id","categorias_id");
     }
 
+    public function subcategorias() {
+        return $this->belongsToMany("App\Subcategoria_bien","articulos_subcategorias","articulos_id","subcategorias_id");
+    }
+
     public function imagenes() {
         return $this->hasMany("App\Imagen","Productos_id","id");
     }

@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use DB;
 
 class Credito extends Model {
     protected $table = "creditos_fiscales";
@@ -19,7 +20,5 @@ class Credito extends Model {
         return $this->belongsToMany('App\Bien','embargos','creditos_fiscales_folio','bienes_numero_control');
     }
 
-    public function baja(){
-        return $this->hasOne("App\Baja");
-    }
+   
 }

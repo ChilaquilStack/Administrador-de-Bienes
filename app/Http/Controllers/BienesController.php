@@ -41,9 +41,17 @@ class BienesController extends Controller
         
     }
 
-    public function destroy($id)
-    {
-        //
+    public function destroy(request $request) {
+        $id = $request->input("id");
+        $articulo = Articulo::where("id", $id)->firstOrFail();
+        $articulo->estatus = 0;
+        $articulo->save();
+        DB::insert("insert into bajas_articulos (motivos_bajas_articulos_id, articulos_id, usuarios_id, comentarios) values(?,?,?,?)", 
+            [
+                $request->input("baja"), $articulo->id, 1, $request->input("comentarios")
+            ]
+        );
+        return response()->json("Credito Fiscal"." ".$articulo->id." "."se dio de Baja", 200);
     }
 
     public function bienes(){
@@ -56,11 +64,13 @@ class BienesController extends Controller
         }
         return response()->json(json_encode($bienes), 200);
     }
-    public function articulos(request $request){
-        $numero_control = $request->input("numero_control");
-        $articulos = Bien::where("numero_control", $numero_control)->firstOrFail()->articulos;
-        foreach($articulos as $articulo){
+
+    public function articulos(request $request) {
+        $articulos = $articulos = Articulo::where("estatus", 1)->get();
+        foreach($articulos as $articulo) {
             $articulo->categorias;
+            $articulo->subcategorias;
+            $articulo->bien->creditos;
             $articulo->ultima_valuacion = $articulo->valuaciones->first();
         }
         return response()->json(json_encode($articulos), 200);

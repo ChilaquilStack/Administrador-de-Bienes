@@ -4,20 +4,22 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Credito;
+use App\Articulo;
 
 class RematesController extends Controller
 {
     public function index() {
-        $creditos = Collect(Credito::all());
-        foreach($creditos as $credito){
-            foreach($credito->bienes as $bien){
-                $articulos = $bien->articulos->filter(function($articulo){
-                    return $articulo->valuaciones()->count() > 0;
-                });
-            }
-        }
 
-        return view("remates.index", ["articulos" => $articulos]);
+        // $creditos = Collect(Credito::where("estatus",1)->get());
+        // $articulos = Collect();
+        // foreach($creditos as $credito){
+        //     foreach($credito->bienes as $bien){
+        //         $articulos = $bien->articulos->filter(function($articulo){
+        //             return $articulo->valuaciones()->count() > 0;
+        //         });
+        //     }
+        // }
+        return view("remates.index", ["articulos" => Articulo::all()]);
     }
 
     /**

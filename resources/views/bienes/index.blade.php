@@ -1,7 +1,6 @@
 @extends("layout.master")
 @section("title","Bienes")
 @section("content")
-    @include("bienes.tabla")
     @include("articulos.tabla-articulos")
 @endsection
 @section("scripts")

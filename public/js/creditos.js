@@ -55,6 +55,7 @@ function guardar_credito(){
     credito_fiscal.contribuyente.domicilio.ext = $("#ext").val();
     credito_fiscal.contribuyente.domicilio.calle = $("#calle").val();
     credito_fiscal.bien.numero_control = $("#numero_control").val();
+    credito_fiscal.bien.documento_embargo = $("#documento_embargo").val();
     credito_fiscal.bien.deposito.estado = $("#estado_deposito").val();
     credito_fiscal.bien.deposito.municipio = $("#municipio_deposito").val();
     credito_fiscal.bien.deposito.colonia = $("#colonia_deposito").val();
@@ -110,20 +111,41 @@ function eliminar_articulo(indice) {
     crear_tabla_articulos(credito_fiscal.bien.articulos);
 }
 
-function eliminar_credito(){
+function eliminar_credito() {
     var data = tabla_creditos.row($(this).parents("tr")).data();
-    $("#data").val(data.folio);
+    $("#data_credito").val(data.folio);
     $("#confirmar_warning").click(function() {
-        $("#eliminar_credito").modal()
-        $("#aceptar_eliminar_credito").click(function(){
-            ajax("/creditos/destroy", "post", {
-                "folio": $("#data").val(),
-                "baja": $("#categoria_bajas option:selected").val(),
-                "comentarios": $("#comentarios").val()
-            }, tabla_creditos);
-        });
+        $("#eliminar_credito").modal();
     });
 }
+
+$("#aceptar_eliminar_credito").click(function(){
+    ajax("/creditos/destroy", "post",
+        {
+            "folio": $("#data_credito").val(),
+            "baja": $("#categoria_bajas option:selected").val(),
+            "comentarios": $("#comentarios").val()
+        }
+    );
+});
+
+function eliminar_articulo_credito() {
+    var data = tabla_articulos.row($(this).parents("tr")).data();
+    $("#data_articulo").val(data.id);
+    $("#confirmar_warning").click(function() {
+        $("#eliminar_articulo").modal();
+    });
+}
+
+$("#aceptar_eliminar_articulo").click(function(){
+    ajax("/bienes/destroy", "post",
+        {
+            "id": $("#data_articulo").val(),
+            "baja": $("#categoria_bajas option:selected").val(),
+            "comentarios": $("#comentarios_articulo ").val()
+        }
+    );
+});
 
 function actualizar_credito(folio, tabla) {
     var datos = {};
@@ -224,6 +246,10 @@ function start() {
 
     //Eliminar los creditos fiscales
     $('#creditos tbody').on('click', 'td.delete-control', eliminar_credito);
+
+    //Eliminar articulo
+    $('#tabla_articulos tbody').on('click', 'td.delete-bien', eliminar_articulo_credito);
+    
 
     //Mostrar los bienes de un credito fiscal
     $('#creditos tbody').on('click', 'td.view-bienes', function() {

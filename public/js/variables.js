@@ -160,6 +160,11 @@ columnas_articulos = [
         "render": "[, ].descripcion"
     },
     {
+        "title": "Subcategorias",
+        "data": "subcategorias",
+        "render": "[, ].descripcion"
+    },
+    {
         "title": "Depositario",
         "data": "depositario",
         "render": function(data) {
@@ -264,6 +269,10 @@ columnas_creditos_contribuyente = [
 ],
 columnas_articulos_bienes = [
     {
+        "title":"Numero de Control",
+        "data":"bienes_numero_control"
+    },
+    {
         "title": "#",
         "data": "id"
     },
@@ -281,6 +290,11 @@ columnas_articulos_bienes = [
         "render": "[, ].descripcion"
     },
     {
+        "title": "Subcategorias",
+        "data": "subcategorias",
+        "render": "[, ].descripcion"
+    },
+    {
         "title": "Valuacion",
         "data": "ultima_valuacion.pivot.monto",
         "render": function(data = "0", type, row){
@@ -290,6 +304,11 @@ columnas_articulos_bienes = [
                 return "<a href='http://localhost:8000/avaluos/" + row.id  + "'><botton type='button' class='btn btn-info btn-sm'>" + "$" + data + "</button></a>"
             }
         }
+    },
+    {
+        "title":"Creditos Fiscales",
+        "data": "bien.creditos",
+        "render": "[, ].folio"
     },
     {
         "data":"id",

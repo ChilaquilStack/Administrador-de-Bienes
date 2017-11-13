@@ -1,4 +1,5 @@
 <div class="modal fade" id="eliminar_credito">
+    <input type="hidden" id="data_credito">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-body"  id="mensaje">
@@ -6,7 +7,7 @@
                     <textarea id="comentarios" cols="70" rows="5"></textarea>
                 <p>Categoria de la baja</p>
                 <select id="categoria_bajas">
-                    @foreach($bajas as $baja)
+                    @foreach($bajas_creditos as $baja)
                         <option value="{{ $baja->id }}">{{$baja->descripcion}}</option>
                     @endforeach
                 </select>

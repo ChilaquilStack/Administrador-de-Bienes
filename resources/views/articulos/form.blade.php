@@ -16,7 +16,12 @@
     <label class="control-label col-sm-2" for="categoria">Categoria:</label>
     <div class="col-sm-10">
         <select name="categoria" id="categoria">
-            <option value="" selected>Seleccione una categoria</option>
+        @isset($articulo)
+            @if($articulo->categorias->count() > 0)
+                <option value="{{$articulo->categorias->first()->id}}" selected>{{$articulo->categorias->first()->descripcion}}</option>
+            @endif
+        @endisset
+            <option value="">Seleccione una categoria</option>
         @foreach($categorias as $categoria)
             <option value="{{$categoria->id}}">{{$categoria->descripcion}}</option>
         @endforeach
@@ -28,6 +33,11 @@
     {!! Form::label("subcategorias","Sub-Categorias", ["class"=>"control-label col-sm-2"])!!}
     <div class="col-sm-10">
         <select name="subcategoria" id="subcategoria">
+        @isset($articulo)
+            @if($articulo->subcategorias->count() > 0)
+                <option value="{{$articulo->subcategorias->first()->id}}" selected>{{$articulo->subcategorias->first()->descripcion}}</option>
+            @endif
+        @endisset
             <option value="" selected>Selectione una subcategoria</option>
         @foreach($subcategorias as $subcategoria)
             <option value="{{$subcategoria->id}}">{{$subcategoria->descripcion}}</option>
@@ -35,6 +45,7 @@
         </select>
     </div>
 </div>
+
 <div class="form-group">
     {!! Form::label("subcategorias","Sub-subCategorias", ["class"=>"control-label col-sm-2"])!!}
     <div class="col-sm-10">

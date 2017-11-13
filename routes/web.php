@@ -11,9 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('index');
-});
+Route::get('/', 'CreditosController@index');
 //Rutas de los creditos
 Route::get("/creditos/bienes", "CreditosController@bienes");
 Route::get("/creditos/creditos", "CreditosController@creditos");
@@ -25,6 +23,7 @@ Route::resource("creditos", "CreditosController");
 //Ruta de los bienes
 Route::get("/bienes/bienes", "BienesController@bienes");
 Route::get("/bienes/articulos", "BienesController@articulos");
+Route::post("/bienes/destroy", "BienesController@destroy");
 Route::resource("bienes", "BienesController");
 //Rutas de los contribuyentes
 Route::get("/contribuyentes/contribuyentes", "ContribuyenteController@contribuyentes");
