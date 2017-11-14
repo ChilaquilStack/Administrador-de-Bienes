@@ -10,6 +10,11 @@ use App\Remate;
 
 class RematesController extends Controller
 {
+
+    public function __construct() {
+        $this->middleware('auth');
+    }
+
     public function index() {
 
         $creditos = Collect(Credito::where("estatus",1)->get());

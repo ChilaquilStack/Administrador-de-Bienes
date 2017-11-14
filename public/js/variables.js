@@ -211,25 +211,12 @@ columnas_contribuyentes= [
         }
     },
     {
-        "title": "Colonia",
-        "data": "domicilios",
-        "render": "[, ].colonia"
-    },
-    {
-        "title": "Calle",
-        "data": "domicilios",
-        "render": "[, ].calle"
-    },
-    {
-        "title": "CP",
-        "data": "domicilios",
-        "render": "[, ].cp"
-    },
-    {
-        "title": "Estado",
-        "data": "domicilios",
-        "render": "[, ].estado.nombre"
-    },
+        "title": "Domicilio",
+        "data": "domicilio",
+        "render": function(data, type, row){
+            return data.calle + " " + data.int + " " + data.ext + " " + data.colonia + " " + data.estado;
+        }
+    }
 ],
 columnas_creditos_contribuyente = [
     {
@@ -265,6 +252,14 @@ columnas_creditos_contribuyente = [
         "title": "Baja",
         "className": "delete-control",
         "defaultContent": "<button type='button' class='btn btn-danger btn-sm'><i class='fa fa-trash-o' aria-hidden='true'></i></button>"
+    },
+    {
+        "data": "folio",
+        "title": "Agregar Bienes",
+        "titleAttr": "Agregar Bién",
+        "render": function(data){
+            return "<a href='/creditos/" + data + "/add' target='_blank><button type='button' class='btn btn-primary btn-sm''><i id='add_credito' class='fa fa-plus' aria-hidden='true'></i></button></a>";
+        }
     }
 ],
 columnas_articulos_bienes = [

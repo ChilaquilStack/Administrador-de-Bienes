@@ -18,7 +18,7 @@ Route::get("/creditos/creditos", "CreditosController@creditos");
 Route::post("/creditos/create",  "CreditosController@store");
 Route::post("/creditos/destroy", "CreditosController@destroy");
 Route::post("/creditos/update",  "CreditosController@update");
-Route::get("/creditos/{credito?}/add",  "CreditosController@add");
+Route::match(["get", "post"] , "/creditos/{credito?}/add",  "CreditosController@add");
 Route::resource("creditos", "CreditosController");
 //Ruta de los bienes
 Route::get("/bienes/bienes", "BienesController@bienes");
@@ -33,3 +33,6 @@ Route::resource("contribuyentes", "ContribuyenteController");
 Route::resource("avaluos", "AvaluosController");
 Route::resource("remates", "RematesController");
 Route::resource("subastas", "SubastaController");
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

@@ -8,6 +8,11 @@ use DB;
 
 class ContribuyenteController extends Controller
 {
+
+    public function __construct() {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
         return view("contribuyentes.index");
@@ -47,11 +52,11 @@ class ContribuyenteController extends Controller
     }
 
     public function contribuyentes () {
-        $contribuyentes = contribuyente::all();
-        foreach($contribuyentes as $contribuyente) {
-            foreach($contribuyente->domicilios as $domicilio){
-                $domicilio->estado;
-            }
+        $contribuyentes = Collect();
+        foreach(contribuyente::all() as $contribuyente) {
+            $contribuyente->domicilio = $contribuyente->domicilios()->first();
+            $contribuyente->domicilio->estado = $contribuyente->domicilios()->first()->estado->nombre;
+            $contribuyentes->push($contribuyente);
         }
         return response()->json(json_encode($contribuyentes), 200);
     }

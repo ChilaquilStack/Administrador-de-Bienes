@@ -13,8 +13,12 @@ use App\Depositario;
 use DB;
 use Validator;
 
-class CreditosController extends Controller
-{
+class CreditosController extends Controller {
+
+    public function __construct() {
+        $this->middleware('auth');
+    }
+
     public function index() {
         $bajas_creditos = DB::select("select id, descripcion from motivos_bajas_creditos_fiscales order by descripcion");
         $bajas_articulos = DB::select("select id, descripcion from motivos_bajas_articulos order by descripcion");
@@ -156,7 +160,7 @@ class CreditosController extends Controller
     }
 
     public function creditos(){
-        //$consulta = DB::select("select folio, monto, documento_determinante, origen_credito from creditos_fiscales where estatus = '1' order by folio asc");
+
         $consulta = Credito::where("estatus", 1)->orderBy('folio', 'asc')->get();
         $creditos = Collect();
         foreach($consulta as $credito) {
@@ -183,10 +187,21 @@ class CreditosController extends Controller
         return response()->json(json_encode($articulos), 200);
     }
 
-    public function add(Credito $credito) {
+    public function add(Credito $credito, request $request) {
         
+        if($request->isMethod("post")) {
+            $articulo = $credito->bienes->first()->articulos()->create([
+                "descripcion" => $request->input("descripcion"),
+                "cantidad" => $request->input("cantidad")
+            ]);
+            $articulo->categorias()->attach([$request->input("categoria")]);
+            $articulo->subcategorias()->attach([$request->input("subcategoria")]);
+            return redirect('/creditos')->with("status", "Se agrego el bien con exito");
+        }
+
         $categorias = DB::select("select id, descripcion from categorias");
         $subcategorias = DB::select("select id, descripcion from subcategorias");
         return view("articulos.add", ["categorias" => $categorias, "subcategorias" => $subcategorias, "credito" => $credito]);
     }
+
 }
