@@ -22,12 +22,11 @@ class RematesController extends Controller
         foreach($creditos as $credito){
             foreach($credito->bienes as $bien){
                 $articulos = $bien->articulos->filter(function($articulo){
-                    return $articulo->valuaciones()->count() > 0;
+                    return $articulo->valuaciones()->count() > 0 && $articulo->imagenes()->count() > 0;
                 });
             }
         }
-        $date = new Carbon('12-12-1994');
-        return view("remates.index", ["articulos" => $articulos, "fecha" => $date]);
+        return view("remates.index", ["articulos" => $articulos]);
     }
 
     public function create() {
@@ -50,7 +49,7 @@ class RematesController extends Controller
 
     public function show($id)
     {
-        //
+        
     }
 
     /**

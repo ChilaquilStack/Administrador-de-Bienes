@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Remate extends Model {
 
-    protected $primaryKey = "lote";
+    protected $primaryKey = "id";
     protected $table = "remates";
-    protected $fillable = ["fecha_inicio", "fecha_fin", "articulos_id"];
+    protected $fillable = ["fecha_inicio", "fecha_fin"];
     public $timestamps = false;
 
     public function articulos() {
@@ -17,6 +17,10 @@ class Remate extends Model {
     
     public function postores() {
         return $this->belongsToMany("App\Postor","pujas","remates_id","postores_RFC");
+    }
+
+    public static function activos() {
+        return static::where("estado", 1)->get();
     }
 
 }

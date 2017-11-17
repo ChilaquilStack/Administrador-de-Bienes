@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\CreditosRequest;
+use App\Http\Requests\imagenRequest;
 use App\Credito;
 use App\Contribuyente;
 use App\Domicilio;
 use App\Bien;
 use App\Articulo;
 use App\Depositario;
+use Hash;
 use DB;
 use Validator;
 
@@ -152,7 +154,7 @@ class CreditosController extends Controller {
         );
         foreach($credito->bienes as $bien){
             foreach($bien->articulos as $articulo){
-                $articulo->estatus = 0;
+                $articulo->estado = 0;
                 $articulo->save();
             }
         }
@@ -161,7 +163,7 @@ class CreditosController extends Controller {
 
     public function creditos(){
 
-        $consulta = Credito::where("estatus", 1)->orderBy('folio', 'asc')->get();
+        $consulta = Credito::activos();
         $creditos = Collect();
         foreach($consulta as $credito) {
             $credito->contribuyente;
@@ -173,8 +175,8 @@ class CreditosController extends Controller {
     public function bienes(Request $request){
         $articulos = Collect();
         $bienes_folio = Credito::where("folio", $request->input("folio"))->firstOrFail()->bienes;
-        foreach($bienes_folio as $bien){
-            foreach($bien->articulos->where("estatus", 1) as $articulo) {
+        foreach($bienes_folio as $bien) {
+            foreach($bien->articulos->where("estado", 1) as $articulo) {
                 $articulo->depositario = $bien->depositario;
                 $bien->deposito->estado->nombre;
                 $articulo->deposito = $bien->deposito;
@@ -196,7 +198,7 @@ class CreditosController extends Controller {
             ]);
             $articulo->categorias()->attach([$request->input("categoria")]);
             $articulo->subcategorias()->attach([$request->input("subcategoria")]);
-            return redirect('/creditos')->with("status", "Se agrego el bien con exito");
+            return redirect("/bienes")->with("status", "Se agrego el bien correctamente");
         }
 
         $categorias = DB::select("select id, descripcion from categorias");
@@ -204,4 +206,27 @@ class CreditosController extends Controller {
         return view("articulos.add", ["categorias" => $categorias, "subcategorias" => $subcategorias, "credito" => $credito]);
     }
 
+    public function imagenes(Articulo $articulo, request $request){
+
+        $validator = Validator::make($request->all(), [
+            "file" => "required|image|unique:imagenes,directorio"
+        ]);
+
+        if($request->isMethod("post")) {
+            $imagen = $request->file("file");
+            $nombre = $imagen->getClientOriginalName();
+            $extencion = $imagen->guessExtension();
+            $secureName = Hash::make($nombre);
+            $dir = public_path().'/img';
+            $articulo->imagenes()->create([
+                "nombre" => $nombre
+            ]);
+            $subir = $imagen->move($dir, $nombre);
+            //return redirect('/bienes')->with("status", "Se agrego la imagen con exito");
+        } else {
+            $categorias = DB::select("select id, descripcion from categorias");
+            $subcategorias = DB::select("select id, descripcion from subcategorias");
+            return view("imagenes.index", ["articulo" => $articulo, "categorias" => $categorias, "subcategorias" => $subcategorias]);
+        }
+    }
 }

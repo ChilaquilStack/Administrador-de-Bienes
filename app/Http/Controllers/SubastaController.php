@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\subasta;
 use Illuminate\Http\Request;
 use DB;
+use App\Remate;
 use App\Articulo;
-
 class SubastaController extends Controller
 {
 
@@ -16,11 +16,10 @@ class SubastaController extends Controller
    
     public function index() {
 
-        $articulos = Articulo::all();
+        $remates = Remate::activos();
         $categorias = DB::select("select id, descripcion from categorias");
-        //return view("subastas.index", ["categorias" => $categorias, "articulos" => $articulos]);
-    
-        return view("subastas.show",["categorias" => $categorias]);
+        return view("subastas.index", ["categorias" => $categorias, "remates" => $remates]);
+
     }
 
     public function create()
@@ -33,9 +32,9 @@ class SubastaController extends Controller
         //
     }
 
-    public function show(subasta $subasta)
-    {
-        
+    public function show(Articulo $articulo) {
+        $categorias = DB::select("select id, descripcion from categorias");
+        return view("subastas.show",["categorias" => $categorias, "articulo" => $articulo]);
     }
 
     public function edit(subasta $subasta)

@@ -20,5 +20,8 @@ class Credito extends Model {
         return $this->belongsToMany('App\Bien','embargos','creditos_fiscales_folio','bienes_numero_control');
     }
 
-   
+    public static function activos(){
+        return static::where("estatus", 1)->orderBy("folio","asc")->get();
+    }
+
 }

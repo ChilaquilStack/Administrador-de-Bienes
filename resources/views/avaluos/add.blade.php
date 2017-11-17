@@ -1,5 +1,9 @@
 @extends("layout.master")
 @section("title", "Avaluos" )
+@section("css")
+    {{Html::style("css/wickedpicker.css")}}
+    {{Html::style("//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css")}}
+@endsection
 @section("content")
 @include('layout.modals.warning')
 @include('layout.modals.success')

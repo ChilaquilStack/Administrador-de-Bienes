@@ -49,7 +49,7 @@ class BienesController extends Controller
     public function destroy(request $request) {
         $id = $request->input("id");
         $articulo = Articulo::where("id", $id)->firstOrFail();
-        $articulo->estatus = 0;
+        $articulo->estado = 0;
         $articulo->save();
         DB::insert("insert into bajas_articulos (motivos_bajas_articulos_id, articulos_id, usuarios_id, comentarios) values(?,?,?,?)", 
             [
@@ -71,12 +71,12 @@ class BienesController extends Controller
     }
 
     public function articulos(request $request) {
-        $articulos = $articulos = Articulo::where("estatus", 1)->get();
+        $articulos = Articulo::activos();
         foreach($articulos as $articulo) {
             $articulo->categorias;
             $articulo->subcategorias;
             $articulo->bien->creditos;
-            $articulo->ultima_valuacion = $articulo->valuaciones->first();
+            $articulo->ultima_valuacion = $articulo->valuaciones->last();
         }
         return response()->json(json_encode($articulos), 200);
     }

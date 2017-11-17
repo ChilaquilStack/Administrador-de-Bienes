@@ -190,6 +190,13 @@ columnas_articulos = [
         }
     },
     {
+        "title": "Imagenes",
+        "data": "id",
+        "render": function(data,type, row) {
+            return "<a href='/creditos/" + data + "/imagenes' target='_blank'><i class='fa fa-picture-o' aria-hidden='true'></i></a>";
+        }
+    },
+    {
         "data":"id",
         "title": "Editar",
         "render": function(data) {
@@ -273,7 +280,10 @@ columnas_articulos_bienes = [
     },
     {
         "title": "Descripion",
-        "data": "descripcion"
+        "data": "descripcion",
+        "render": function(data) {
+            return "<p>" + data + "</p>";
+        }
     },
     {
         "title": "Cantidad",
@@ -304,6 +314,13 @@ columnas_articulos_bienes = [
         "title":"Creditos Fiscales",
         "data": "bien.creditos",
         "render": "[, ].folio"
+    },
+    {
+        "title": "Imagenes",
+        "data": "id",
+        "render": function(data,type, row) {
+            return "<a href='/creditos/" + data + "/imagenes' target='_blank'><button class='btn btn-default btn-sm'><i class='fa fa-picture-o' aria-hidden='true'></i></button></a>";
+        }
     },
     {
         "data":"id",

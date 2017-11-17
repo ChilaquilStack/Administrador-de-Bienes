@@ -8,17 +8,14 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <!-- Bootstrap CSS -->
-    {{Html::style("css/bootstrap.min.css")}}
     <!-- Custom CSS -->
     {{Html::style("css/shop-homepage.css")}}
     {{Html::style("https://jalisco.gob.mx/guias/grafico/cdn/style.min.css")}}
     {{Html::style("https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css")}}
     {{Html::style("https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css")}}
     {{Html::style("https://cdn.datatables.net/v/bs/jszip-2.5.0/dt-1.10.16/af-2.2.2/b-1.4.2/b-colvis-1.4.2/b-flash-1.4.2/b-html5-1.4.2/b-print-1.4.2/cr-1.4.1/fc-3.2.3/fh-3.1.3/kt-2.3.2/r-2.2.0/rg-1.0.2/rr-1.2.3/sc-1.4.3/sl-1.2.3/datatables.min.css")}}
-    {{Html::style("//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css")}}
     {{Html::style("css/style.css")}}
-    {{Html::style("css/wickedpicker.css")}}
+    @yield("css")
     <title>@yield("title")</title>
   </head>
   <body>

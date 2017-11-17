@@ -22,6 +22,7 @@ class CreditosRequest extends FormRequest {
             'credito.bien.depositario.nombre' => 'required',
             'credito.bien.depositario.apellido_paterno' => 'required',
             'credito.bien.depositario.apellido_materno' => 'required',
+            'credito.bien.articulos.*.descripcion' => 'max:255'
         ];
     }
 
@@ -40,6 +41,7 @@ class CreditosRequest extends FormRequest {
             'credito.bien.depositario.nombre.required' => 'Por favor introduzca el nombre del depositario',
             'credito.bien.depositario.apellido_paterno.required' => 'Por favor introduzca el apellido paterno del depositario',
             'credito.bien.depositario.apellido_materno.required' => 'Por favor introduzca el apellido materno del depositario',
+            'credito.bien.articulos.*.descripcion.max' => 'La descripcion del articulo no debe ser mayor de 255 caracteres' 
         ];
     }
 }

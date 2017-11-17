@@ -25,10 +25,5 @@
             </div>
         </div>
     </form>
-    HOla
     @include('articulos.tabla-articulos')
-@endsection
-@section("scripts")
-    {{Html::script("js/variables.js")}}
-    {{Html::script("js/bienes.js")}}
 @endsection
