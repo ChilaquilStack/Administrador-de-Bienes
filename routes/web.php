@@ -21,8 +21,11 @@ Route::resource("contribuyentes", "ContribuyenteController");
 //Otros
 Route::resource("avaluos", "AvaluosController");
 Route::resource("remates", "RematesController");
-ROute::get("/subastas/{articulo?}", "SubastaController@show");
 Route::resource("subastas", "SubastaController");
+Route::get("/subastas/{articulo}", "SubastaController@show");
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/categorias', function(){
+    return view("categorias.index");
+});

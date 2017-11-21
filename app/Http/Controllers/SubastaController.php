@@ -19,7 +19,7 @@ class SubastaController extends Controller
         $remates = Remate::activos();
         $categorias = DB::select("select id, descripcion from categorias");
         return view("subastas.index", ["categorias" => $categorias, "remates" => $remates]);
-
+        //return "Hola corazon";
     }
 
     public function create()
@@ -32,7 +32,8 @@ class SubastaController extends Controller
         //
     }
 
-    public function show(Articulo $articulo) {
+    public function show($articulo) {
+        $articulo = Articulo::where("id", $articulo)->firstOrFail();
         $categorias = DB::select("select id, descripcion from categorias");
         return view("subastas.show",["categorias" => $categorias, "articulo" => $articulo]);
     }
