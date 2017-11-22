@@ -26,6 +26,4 @@ Route::get("/subastas/{articulo}", "SubastaController@show");
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/categorias', function(){
-    return view("categorias.index");
-});
+Route::match(["get", "post"], "/categorias","CategoriasController@index");

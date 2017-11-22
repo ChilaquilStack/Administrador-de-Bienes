@@ -33,7 +33,7 @@ class SubcategoriasBienesTableSeeder extends Seeder
     //DB::table('subcategorias')->truncate();
         foreach($subcategorias as $subcategoria) {
             DB::table('subcategorias')->insert([
-                "descripcion" => $subcategoria
+                "nombre" => $subcategoria
             ]);
         }
     }

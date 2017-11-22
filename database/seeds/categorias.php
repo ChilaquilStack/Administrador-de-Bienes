@@ -23,7 +23,7 @@ class categorias extends Seeder
         //DB::table('categorias')->truncate();
         foreach($categorias as $categoria) {
             DB::table('categorias')->insert([
-                "descripcion" => $categoria
+                "nombre" => $categoria
             ]);
         }
     }
