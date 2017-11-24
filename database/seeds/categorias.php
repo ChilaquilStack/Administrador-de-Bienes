@@ -19,6 +19,14 @@ class categorias extends Seeder
             "Equipo Hospitalario y Medico",
             "Equipo y Accesorio de Fotografia",
             "Equipos Linea Blanca y Aparatos Electonicos",
+            "Herramientas",
+            "Joyas, Metales Valiosos y Amonedados",
+            "Locales Comerciales, Moviles",
+            "Telas, Prendas y Articulos de Vestir",
+            "Vinos y Licores",
+            "Deportes",
+            "Vehiculos Automotores",
+            "Varios"
         ];
         //DB::table('categorias')->truncate();
         foreach($categorias as $categoria) {

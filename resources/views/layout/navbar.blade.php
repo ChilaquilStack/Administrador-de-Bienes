@@ -20,7 +20,7 @@
 			<li><a href="{{action('ContribuyenteController@index')}}">Contribuyentes</a></li>
 			<li><a href="{{action('BienesController@index')}}">Bienes</a></li>
 			<li><a href="{{action('RematesController@index')}}">Remates</a></li>
-            <li><a href="">Categorias</a></li>
+            <li><a href="{{action('CategoriasController@index')}}">Categorias</a></li>
         </ul>
     @endauth
         <ul class="nav navbar-nav navbar-right">

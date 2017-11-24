@@ -11,6 +11,7 @@ use App\Domicilio;
 use App\Bien;
 use App\Articulo;
 use App\Depositario;
+use App\Estado;
 use Hash;
 use DB;
 use Validator;
@@ -27,7 +28,7 @@ class CreditosController extends Controller {
         return view("index", ["bajas_creditos" => $bajas_creditos, "bajas_articulos" => $bajas_articulos]);
     }
 
-    public function create() {
+    public function create(request $request) {
         $origenes_del_credito = [
             "1"=> "Anexo 18", 
             "2" => "ISTUV", 
@@ -35,10 +36,9 @@ class CreditosController extends Controller {
             "4" => "Multas Federales No Fiscales", 
             "5" => "Liquidaciones DAFE" 
         ];
-        $categorias = DB::select("select id, descripcion from categorias order by descripcion asc");
-        $subcategorias = DB::select("select id, descripcion from subcategorias order by descripcion asc");
-            
-        $estados = DB::select("select id, nombre from estados order by nombre asc");
+        $categorias = DB::select("select id, nombre from categorias order by nombre asc");
+        $subcategorias = DB::select("select id, nombre from subcategorias order by nombre asc");
+        $estados = DB::select("select id, nombre from estados order by nombre asc");    
         $municipios = DB::select("select id, nombre from municipios order by nombre asc");
         return view("creditos.create", [
             "origenes" => $origenes_del_credito,  "categorias" => $categorias, "subcategorias" => $subcategorias,
@@ -48,6 +48,8 @@ class CreditosController extends Controller {
 
     public function store(CreditosRequest $request) {
         
+        //return response()->json($request->all(), 200);
+
         $contribuyente = new contribuyente([
             "nombre" => $request->input("credito.contribuyente.nombre"),
             "apellido_paterno" => $request->input("credito.contribuyente.apellido_paterno"),
@@ -114,8 +116,17 @@ class CreditosController extends Controller {
                 "bienes_numero_control" => $numero_control
             ]);
             $articulo->save();
-            $articulo->categorias()->attach($b["categoria"]["valor"]);
-            $articulo->subcategorias()->attach($b["subcategoria"]["valor"]);
+            foreach($b["categorias"] as $categoria) {
+                foreach($categoria["subcategorias"] as $subcategoria){
+                    if(array_has($subcategoria, 'subcategorias')){
+                        foreach($subcategoria["subsubcategorias"] as $subsubcategoria) {
+                            $articulo->categorias()->attach($categoria["id"], ["subcategoria_id" => $subcategoria["id"], "subsubcategoria_id" => $subsubcategoria["id"]]);
+                        }
+                    } else {
+                        $articulo->categorias()->attach($categoria["id"], ["subcategoria_id" => $subcategoria["id"], "subsubcategoria_id" => null]);
+                    }
+                }
+            }
         }
         $credito->bienes()->attach($numero_control, ['documento' => $request->input("bien.documento_embargo")]);
         return response()->json("Credito Fiscal"." ".$credito->folio." "."Creado con Exito",200);
@@ -201,8 +212,8 @@ class CreditosController extends Controller {
             return redirect("/bienes")->with("status", "Se agrego el bien correctamente");
         }
 
-        $categorias = DB::select("select id, descripcion from categorias");
-        $subcategorias = DB::select("select id, descripcion from subcategorias");
+        $categorias = DB::select("select id, nombre from categorias");
+        $subcategorias = DB::select("select id, nombre from subcategorias");
         return view("articulos.add", ["categorias" => $categorias, "subcategorias" => $subcategorias, "credito" => $credito]);
     }
 
@@ -228,5 +239,14 @@ class CreditosController extends Controller {
             $subcategorias = DB::select("select id, descripcion from subcategorias");
             return view("imagenes.index", ["articulo" => $articulo, "categorias" => $categorias, "subcategorias" => $subcategorias]);
         }
+    }
+
+    public function municipios(request $request){
+        $id = $request->input("id");
+        $municipios = Estado::where("id",$id)->firstOrFail()->municipios;
+        if($municipios->isEmpty()){
+            return response()->json(["obj" => ["id" => '0', "nombre" => ""]], 200);
+        }
+        return response()->json($municipios, 200);
     }
 }

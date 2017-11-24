@@ -10,8 +10,6 @@ class SubcategoriasBienesTableSeeder extends Seeder
             "Cuadros y Pinturas",
             "Esculturas",
             "Libros y Revistas",
-            "Esculturas",
-            "Libros y Revistas",
             "Cosmeticos y Perfumes",
             "Adornos y Accesorios",
             "Anteojos y Varios",
@@ -28,7 +26,18 @@ class SubcategoriasBienesTableSeeder extends Seeder
             "Instrumenos Medicos",
             "Camaras Fotograficas",
             "Camaras Digitales",
-            "Video Camaras"
+            "Video Camaras",
+            "Mecanicas",
+            "Electricas",
+            "Motor-Gas",
+            "Automoviles",            
+            "Camionetas", 
+            "Camiones",
+            "Motos",
+            "Refacciones",
+            "Partes Automotrices",
+            "Herreria y Forja",
+            "Materiales para Construcción"
     ];
     //DB::table('subcategorias')->truncate();
         foreach($subcategorias as $subcategoria) {

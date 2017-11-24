@@ -6,6 +6,8 @@ Route::get("/creditos/creditos", "CreditosController@creditos");
 Route::post("/creditos/create",  "CreditosController@store");
 Route::post("/creditos/destroy", "CreditosController@destroy");
 Route::post("/creditos/update",  "CreditosController@update");
+Route::get("/creditos/municipios",  "CreditosController@municipios");
+
 Route::match(["get", "post"] , "/creditos/{credito?}/add",  "CreditosController@add");
 Route::match(["get","post"], "/creditos/{articulo?}/imagenes","CreditosController@imagenes");
 Route::resource("creditos", "CreditosController");
@@ -27,3 +29,5 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::match(["get", "post"], "/categorias","CategoriasController@index");
+Route::get("/categorias/subcategorias", "CategoriasController@subcategorias");
+Route::get("/categorias/subsubcategorias", "CategoriasController@subsubcategorias");

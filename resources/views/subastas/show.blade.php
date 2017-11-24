@@ -15,7 +15,7 @@
                     </ol>
                     <div class="carousel-inner">
                         @foreach($articulo->imagenes as $imagen)
-                            <div class=" item {{$loop->first ? 'active' : ''}}">
+                            <div class="item {{$loop->first ? 'active' : ''}}">
                                 <img class="slide-image" src="{{'/img/'.$imagen->nombre}}" alt="{{$imagen->descripcion}}" style="height:300px ;width:800px">
                             </div>
                         @endforeach

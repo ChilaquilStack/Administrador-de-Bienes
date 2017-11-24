@@ -21,43 +21,52 @@
 
 <div class="form-group">
     <label class="control-label col-sm-2" for="categoria">Categoría:</label>
-    <div class="col-sm-10">
+    <div class="col-sm-9">
         <select name="categoria" id="categoria">
-        @isset($articulo)
-            @if($articulo->categorias->count() > 0)
-                <option value="{{$articulo->categorias->first()->id}}" selected>{{$articulo->categorias->first()->descripcion}}</option>
-            @endif
-        @endisset
-            <option value="">Seleccione una categoria</option>
-        @foreach($categorias as $categoria)
-            <option value="{{$categoria->id}}">{{$categoria->descripcion}}</option>
-        @endforeach
+            @isset($articulo)
+                @if($articulo->categorias->count() > 0)
+                    <option value="{{$articulo->categorias->first()->id}}" selected>{{$articulo->categorias->first()->descripcion}}</option>
+                @endif
+            @endisset
+                <option value="">Seleccione una categoria</option>
+            @foreach($categorias as $categoria)
+                <option value="{{$categoria->id}}">{{$categoria->nombre}}</option>
+            @endforeach
         </select>
+    </div>
+    <div class="col-sm-1">
+        <button type="button" class="btn btn-success btn-sm" id="agregar_categoria"><i class="fa fa-plus" aria-hidden="true"></i></button>
     </div>
 </div>
 
 <div class="form-group">
     {{Form::label("subcategorias","Sub-Categorias", ["class"=>"control-label col-sm-2"])}}
-    <div class="col-sm-10">
+    <div class="col-sm-9">
         <select name="subcategoria" id="subcategoria">
         @isset($articulo)
             @if($articulo->subcategorias->count() > 0)
-                <option value="{{$articulo->subcategorias->first()->id}}" selected>{{$articulo->subcategorias->first()->descripcion}}</option>
+                <option value="{{$articulo->subcategorias->first()->id}}" selected>{{$articulo->subcategorias->first()->nombre}}</option>
             @endif
         @endisset
             <option value="" selected>Selectione una subcategoria</option>
         @foreach($subcategorias as $subcategoria)
-            <option value="{{$subcategoria->id}}">{{$subcategoria->descripcion}}</option>
+            <option value="{{$subcategoria->id}}">{{$subcategoria->nombre}}</option>
         @endforeach
         </select>
+    </div>
+    <div class="col-sm-1">
+        <button type="button" class="btn btn-success btn-sm" id="agregar_subcategoria"><i class="fa fa-plus" aria-hidden="true"></i></button>
     </div>
 </div>
 
 <div class="form-group">
     {{Form::label("subcategorias","Sub-subCategorias", ["class"=>"control-label col-sm-2"])}}
-    <div class="col-sm-10">
+    <div class="col-sm-9">
         <select name="subsubcategoria" id="subsubcategoria">
             <option value="">Seleccione unsa subsubcategoria</option>
         </select>
+    </div>
+    <div class="col-sm-1">
+        <button type="button" class="btn btn-success btn-sm" id="agregar_subsubcategoria"><i class="fa fa-plus" aria-hidden="true"></i></button>
     </div>
 </div>

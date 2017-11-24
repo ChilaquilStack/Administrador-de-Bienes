@@ -71,43 +71,45 @@ function guardar_credito(){
     //Refrescamos la tabla para que cargue el nuevo registro
 }
 
-function agregar_articulos(){
-    let articulo = { "categoria": {}, "subcategoria": {}, "subsubcategoria":{} };
-    articulo.numero_control = $("#numero_control").val();
-    articulo.cantidad = $("#cantidad").val()
-    articulo.categoria.valor = $("#categoria").val();
-    articulo.categoria.texto = $("#categoria :selected").text();
-    articulo.subcategoria.valor = $("#subcategoria").val();
-    articulo.subcategoria.texto = $("#subcategoria :selected").text();
-    articulo.subsubcategoria.valor = $("#subsubcategoria").val();
-    articulo.subsubcategoria.valor = $("#subsubcategoria :selected").text();
-    articulo.descripcion = $("#descripcion_articulo").val();
-    credito_fiscal.bien.articulos.push(articulo);
+
+function eliminar_articulo(indice) {
+    credito_fiscal.bien.articulos.splice(indice, 1);
     crear_tabla_articulos(credito_fiscal.bien.articulos);
 }
 
 function crear_tabla_articulos(articulos) {
-    var indice, numero_control = $("#numero_control").val();
-    $('#tabla_articulos_temporales tbody').html("");
+    var tabla = '', categorias_pluck, subcategorias_pluck = [], subsubcategorias_pluck = [];
+    categorias_pluck = [];
+    subcategorias_pluck = [];
+    subsubcategorias_pluck = [];
     $.each(articulos, function (index, articulo) {
-        indice = index + 1;
-        articulo.numero_control = numero_control + "." + indice;
-        $('#tabla_articulos_temporales tbody').append(
-            "<tr>" +
-                "<td>" + articulo.numero_control + "</td>" +
-                "<td>" + articulo.categoria.texto + "</td>" +
-                "<td>" + articulo.subcategoria.texto + "</td>" +
-                "<td>" + "algo" + "</td>" +
-                "<td>" + articulo.cantidad + "</td>" +
-                "<td>" + articulo.descripcion + "</td>" +
-                "<td>" + "<button type='button' class='btn btn-danger btn-sm' onclick='eliminar_articulo(" + index + "); return false;'><i class='fa fa-trash-o' aria-hidden='true'></i></button>" + "</td>" +
-            "</tr>"
-        );
+        $('#tabla_articulos_temporales tbody').html("");
+        tabla += "<tr><td>" + articulo.numero_control + "</td><td>";
+        $.each(articulo.categorias, function (i, categoria) {
+            categorias_pluck.push(categoria.value);
+            $.each(categoria.subcategorias, function (i, subcategoria) {
+                subcategorias_pluck.push(subcategoria.value);
+                $.each(subcategoria.subsubcategorias, function (i, subsubcategoria) {
+                    subsubcategorias_pluck.push(subsubcategoria.value);
+                });
+            });
+        });
+        tabla += categorias_pluck.join(' , ');
+        tabla += "</td><td>";
+        tabla += subcategorias_pluck.join(' , ');
+        tabla += "</td><td>";
+        tabla += subsubcategorias_pluck.join(' , ');
+        tabla += "</td><td>" + articulo.cantidad + "</td><td>" + articulo.descripcion + "</td><td><button type='button' class='btn btn-danger btn-sm' onclick='eliminar_articulo(" + index + ")'><i class='fa fa-trash-o' aria-hidden='true'></i></button></td></tr>";
     });
+    $('#tabla_articulos_temporales tbody').append(tabla);
 }
 
-function eliminar_articulo(indice) {
-    credito_fiscal.bien.articulos.splice(indice, 1);
+function agregar_articulos() {
+    var articulo = {"categorias": [], "subcategorias": [], "subsubcategorias": []};
+    articulo.numero_control = $("#numero_control").val();
+    articulo.cantidad = $("#cantidad").val();
+    articulo.descripcion = $("#descripcion_articulo").val();
+    credito_fiscal.bien.articulos.push(articulo);
     crear_tabla_articulos(credito_fiscal.bien.articulos);
 }
 
@@ -156,72 +158,116 @@ function actualizar_credito(folio, tabla) {
     ajax("/creditos/update", "post", {"folio": folio, "credito": datos}, tabla);
 }
 
-function addImage1(e){
-    var file = e.target.files[0],
-    imageType = /image.*/;
-
-    if (!file.type.match(imageType))
-        return;
-
-    var reader = new FileReader();
-    reader.onload = fileOnload1;
-    reader.readAsDataURL(file);
+function mostrar_categorias() {
+    $.ajax({
+        "url": "/categorias/subcategorias",
+        "method": "get",
+        "data": {
+            "id": $("#categoria option:selected").val()
+        },
+        "success": function(data) {
+            $("#subcategoria").html('');
+            $.each(data, function(i, obj) {
+                $("#subcategoria").append("<option value='" + obj.id + "'>" + obj.nombre + "</option>");
+            });
+        },
+        "error": function(data){
+            console.log("error");
+        }
+    });
 }
 
-function addImage2(e){
-    var file = e.target.files[0],
-    imageType = /image.*/;
-
-    if (!file.type.match(imageType))
-        return;
-
-    var reader = new FileReader();
-    reader.onload = fileOnload2;
-    reader.readAsDataURL(file);
+function mostrar_subcategorias() {
+    $.ajax({
+        "url": "/categorias/subsubcategorias",
+        "method": "get",
+        "data": {
+            "id": $("#subcategoria option:selected").val()
+        },
+        "success": function(data) {
+            $("#subsubcategoria").html('');
+            $.each(data, function(i, obj) {
+                $("#subsubcategoria").append("<option value='" + obj.id + "'>" + obj.nombre + "</option>");
+            });
+        },
+        "error": function () {
+            console.log("error");
+        }
+    });
 }
 
-function addImage3(e){
-    var file = e.target.files[0],
-    imageType = /image.*/;
-
-    if (!file.type.match(imageType))
-        return;
-
-    var reader = new FileReader();
-    reader.onload = fileOnload3;
-    reader.readAsDataURL(file);
+function estados_contribuyente() {
+    $.ajax({
+        "url": "/creditos/municipios",
+        "method": "get",
+        "data": {
+            "id": $("#estado option:selected").val()
+        },
+        "success": function (data) {
+            $("#municipio").html('');
+            $.each(data, function(i, obj) {
+                $("#municipio").append("<option value='" + obj.id + "'>" + obj.nombre + "</option>");
+            });
+        },
+        "error": function (){
+            console.log("error");
+        }
+    });
 }
 
-function addImage4(e){
-    var file = e.target.files[0],
-    imageType = /image.*/;
-
-    if (!file.type.match(imageType))
-        return;
-
-    var reader = new FileReader();
-    reader.onload = fileOnload4;
-    reader.readAsDataURL(file);
+function estados_depositario() {
+    $.ajax({
+        "url": "/creditos/municipios",
+        "method": "get",
+        "data": {
+            "id": $("#estado_deposito option:selected").val()
+        },
+        "success": function (data) {
+            $("#municipio_deposito").html('');
+            $.each(data, function(i, obj) {
+                $("#municipio_deposito").append("<option value='" + obj.id + "'>" + obj.nombre + "</option>");
+            });
+        },
+        "error": function (){
+            console.log("error");
+        }
+    });
 }
 
-function fileOnload1(e) {
-    var result=e.target.result;
-    $('#imgSalida1').attr("src",result);
+function agregar_categoria() {
+    var articulo = credito_fiscal.bien.articulos.find(function (a) {
+        return a.numero_control === $("#numero_control").val();
+    });
+    articulo.categorias.push({"id": $("#categoria option:selected").val(), "value": $("#categoria option:selected").text(), "subcategorias": []});
+    crear_tabla_articulos(credito_fiscal.bien.articulos);
 }
 
-function fileOnload2(e) {
-    var result=e.target.result;
-    $('#imgSalida2').attr("src",result);
+function agregar_subcategoria() {
+    var articulo = credito_fiscal.bien.articulos.find(function (a) {
+        return a.numero_control === $("#numero_control").val();
+    });
+    var categoria = articulo.categorias.find(function (c) {
+        return c.id === $("#categoria option:selected").val()
+    });
+    categoria.subcategorias.push({"id": $("#subcategoria option:selected").val(), "value": $("#subcategoria option:selected").text()});
+    crear_tabla_articulos(credito_fiscal.bien.articulos);
 }
 
-function fileOnload3(e) {
-    var result=e.target.result;
-    $('#imgSalida3').attr("src",result);
-}
+function agregar_subsubcategoria() {
+    var articulo = credito_fiscal.bien.articulos.find(function (a) {
+        return a.numero_control === $("#numero_control").val();
+    });
 
-function fileOnload4(e) {
-    var result=e.target.result;
-    $('#imgSalida4').attr("src",result);
+    var categoria = articulo.categoria.find(function (categoria) {
+        return categoria.id === $("#categoria option:selected").val()
+    });
+
+    var subcategoria = categoria.subcategoria.find(function (subcategoria) {
+        return subcategoria.id === $("#subcategoria option:selected").val()
+    });
+    subcategoria.subsubcategorias = [];
+    subcategoria.subsubcategorias.push({"id": $("#subsubcategoria option:selected").val(), "value": $("#subsubcategoria option:selected").text()});
+    crear_tabla_articulos(credito_fiscal.bien.articulos);
 }
 
 function start() {
@@ -273,28 +319,15 @@ function start() {
         agregar_articulos();
     });
 
-    $("#guardar_credito_fiscal").click(function(){
-        guardar_credito();
-    });
-
-    $('#loadImage1').change(function (e) {
-        addImage1(e);
-    });
-
-    $('#loadImage2').change(function (e) {
-        addImage2(e);
-    });
-
-    $('#loadImage3').change(function (e) {
-        addImage3(e);
-    });
-
-    $('#loadImage4').change(function (e) {
-        addImage4(e);
-    });
-
+    $("#categoria").change(mostrar_categorias);
+    $("#subcategoria").change(mostrar_subcategorias);
+    $("#estado").change(estados_contribuyente);
+    $("#estado_deposito").change(estados_depositario);
+    $("#agregar_categoria").click(agregar_categoria);
+    $("#agregar_subcategoria").click(agregar_subcategoria);
+    $("#agregar_subsubcategoria").click(agregar_subsubcategoria);
+    $("#guardar_credito_fiscal").click(guardar_credito);
 }
-
 $(function () {
     start();
 });
