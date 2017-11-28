@@ -10,14 +10,6 @@ class Articulo extends Model {
     protected $fillable = ['id','descripcion', 'cantidad', 'bienes_numero_control'];
     public $timestamps = false;
     
-    public function categorias() {
-        return $this->belongsToMany("App\Categoria_bien","articulos_categorias","articulos_id","categorias_id");
-    }
-
-    public function subcategorias() {
-        return $this->belongsToMany("App\Subcategoria_bien","articulos_subcategorias","articulos_id","subcategorias_id");
-    }
-
     public function imagenes() {
         return $this->hasMany("App\Imagen","Productos_id","id");
     }
@@ -40,5 +32,6 @@ class Articulo extends Model {
     public static function activos(){
         return static::where("estado", 1)->get();
     }
+
 
 }

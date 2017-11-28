@@ -43,9 +43,29 @@ class AvaluosController extends Controller
     }
 
     public function show($id) {
-        $subcategorias = DB::select("select id, descripcion from subcategorias");
         $articulo = Articulo::where("id", $id)->firstOrFail();
-        return view("avaluos.add", ["articulo" => $articulo, "categorias" => $articulo->categorias, "subcategorias" => $subcategorias]);
+        $articulo->categorias = DB::table("articulos_categorias")
+        ->join("categorias", "articulos_categorias.categorias_id", "=", "categorias.id")
+        ->select("categorias.nombre","categorias.id")
+        ->where("articulos_categorias.articulos_id",$articulo->id)
+        ->groupBy("categorias.id")
+        ->get();
+
+        foreach($articulo->categorias as $categoria) {
+            $categoria->subcategorias = DB::table("articulos_categorias")
+            ->join("subcategorias", "articulos_categorias.subcategoria_id", "=", "subcategorias.id")
+            ->select("subcategorias.nombre","subcategorias.id")
+            ->where("articulos_categorias.categorias_id",$categoria->id)
+            ->get();
+            foreach($categoria->subcategorias as $subcategoria){
+                $subcategoria->subsubcategorias = DB::table("articulos_categorias")
+                ->join("subsubcategorias", "articulos_categorias.subsubcategoria_id", "=", "subsubcategorias.id")
+                ->select("subsubcategorias.nombre","subsubcategorias.id")
+                ->where("articulos_categorias.subcategoria_id",$subcategoria->id)
+                ->get();
+            }
+        }
+        return view("avaluos.add", ["articulo" => $articulo]);
     }
 
     public function edit($id)

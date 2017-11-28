@@ -157,12 +157,12 @@ columnas_articulos = [
     {
         "title": "Categorias",
         "data": "categorias",
-        "render": "[, ].descripcion"
+        "render": "[, ].nombre"
     },
     {
         "title": "Subcategorias",
         "data": "subcategorias",
-        "render": "[, ].descripcion"
+        "render": "[, ].nombre"
     },
     {
         "title": "Depositario",
@@ -292,7 +292,7 @@ columnas_articulos_bienes = [
     {
         "title": "Categorias",
         "data": "categorias",
-        "render": "[, ].descripcion"
+        "render": "[, ].nombre"
     },
     {
         "title": "Subcategorias",

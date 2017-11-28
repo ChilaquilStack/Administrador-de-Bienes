@@ -71,7 +71,6 @@ function guardar_credito(){
     //Refrescamos la tabla para que cargue el nuevo registro
 }
 
-
 function eliminar_articulo(indice) {
     credito_fiscal.bien.articulos.splice(indice, 1);
     crear_tabla_articulos(credito_fiscal.bien.articulos);
@@ -79,18 +78,19 @@ function eliminar_articulo(indice) {
 
 function crear_tabla_articulos(articulos) {
     var tabla = '', categorias_pluck, subcategorias_pluck = [], subsubcategorias_pluck = [];
-    categorias_pluck = [];
-    subcategorias_pluck = [];
-    subsubcategorias_pluck = [];
     $.each(articulos, function (index, articulo) {
         $('#tabla_articulos_temporales tbody').html("");
         tabla += "<tr><td>" + articulo.numero_control + "</td><td>";
+        categorias_pluck = [];
+        subcategorias_pluck = [];
+        subsubcategorias_pluck = [];
         $.each(articulo.categorias, function (i, categoria) {
             categorias_pluck.push(categoria.value);
             $.each(categoria.subcategorias, function (i, subcategoria) {
                 subcategorias_pluck.push(subcategoria.value);
                 $.each(subcategoria.subsubcategorias, function (i, subsubcategoria) {
                     subsubcategorias_pluck.push(subsubcategoria.value);
+                    console.log(subsubcategorias_pluck);
                 });
             });
         });
@@ -105,7 +105,7 @@ function crear_tabla_articulos(articulos) {
 }
 
 function agregar_articulos() {
-    var articulo = {"categorias": [], "subcategorias": [], "subsubcategorias": []};
+    var articulo = {"categorias": []};
     articulo.numero_control = $("#numero_control").val();
     articulo.cantidad = $("#cantidad").val();
     articulo.descripcion = $("#descripcion_articulo").val();
@@ -156,44 +156,6 @@ function actualizar_credito(folio, tabla) {
     datos.documento= $("#nuevo_documento_determinante").val();
     datos.origen = $("#nuevo_origen").val();
     ajax("/creditos/update", "post", {"folio": folio, "credito": datos}, tabla);
-}
-
-function mostrar_categorias() {
-    $.ajax({
-        "url": "/categorias/subcategorias",
-        "method": "get",
-        "data": {
-            "id": $("#categoria option:selected").val()
-        },
-        "success": function(data) {
-            $("#subcategoria").html('');
-            $.each(data, function(i, obj) {
-                $("#subcategoria").append("<option value='" + obj.id + "'>" + obj.nombre + "</option>");
-            });
-        },
-        "error": function(data){
-            console.log("error");
-        }
-    });
-}
-
-function mostrar_subcategorias() {
-    $.ajax({
-        "url": "/categorias/subsubcategorias",
-        "method": "get",
-        "data": {
-            "id": $("#subcategoria option:selected").val()
-        },
-        "success": function(data) {
-            $("#subsubcategoria").html('');
-            $.each(data, function(i, obj) {
-                $("#subsubcategoria").append("<option value='" + obj.id + "'>" + obj.nombre + "</option>");
-            });
-        },
-        "error": function () {
-            console.log("error");
-        }
-    });
 }
 
 function estados_contribuyente() {
@@ -249,7 +211,7 @@ function agregar_subcategoria() {
     var categoria = articulo.categorias.find(function (c) {
         return c.id === $("#categoria option:selected").val()
     });
-    categoria.subcategorias.push({"id": $("#subcategoria option:selected").val(), "value": $("#subcategoria option:selected").text()});
+    categoria.subcategorias.push({"id": $("#subcategoria option:selected").val(), "value": $("#subcategoria option:selected").text(), "subsubcategorias": []});
     crear_tabla_articulos(credito_fiscal.bien.articulos);
 }
 
@@ -258,14 +220,14 @@ function agregar_subsubcategoria() {
         return a.numero_control === $("#numero_control").val();
     });
 
-    var categoria = articulo.categoria.find(function (categoria) {
-        return categoria.id === $("#categoria option:selected").val()
+    var categoria = articulo.categorias.find(function (c) {
+        return c.id === $("#categoria option:selected").val();
     });
 
-    var subcategoria = categoria.subcategoria.find(function (subcategoria) {
+    var subcategoria = categoria.subcategorias.find(function (subcategoria) {
         return subcategoria.id === $("#subcategoria option:selected").val()
     });
-    subcategoria.subsubcategorias = [];
+    //subcategoria.subsubcategorias = [];
     subcategoria.subsubcategorias.push({"id": $("#subsubcategoria option:selected").val(), "value": $("#subsubcategoria option:selected").text()});
     crear_tabla_articulos(credito_fiscal.bien.articulos);
 }
@@ -319,8 +281,6 @@ function start() {
         agregar_articulos();
     });
 
-    $("#categoria").change(mostrar_categorias);
-    $("#subcategoria").change(mostrar_subcategorias);
     $("#estado").change(estados_contribuyente);
     $("#estado_deposito").change(estados_depositario);
     $("#agregar_categoria").click(agregar_categoria);

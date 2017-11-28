@@ -44,5 +44,5 @@
 @endsection
 @section("scripts")
     {{Html::script("js/articulos.js")}}
-    {{Html::script("js/dropzone.js")}}
+    {{Html::script("js/sub_subsub_categorias.js")}}
 @endsection

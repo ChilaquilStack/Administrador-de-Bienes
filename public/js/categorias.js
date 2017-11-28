@@ -12,7 +12,7 @@ function nueva_subcategoria(nombre, subsubcategorias) {
 }
 
 function crear_tabla() {
-    var tabla, numero_subcategorias;
+    var tabla = "", numero_subcategorias;
 
     numero_subcategorias = categoria.subcategorias.length + 1;
     $.each(categoria.subcategorias, function (index, value) {

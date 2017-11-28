@@ -23,7 +23,8 @@ class CategoriasController extends Controller {
             }
             return response()->json("Se agrego la categoria correctamente ", 200);
         }
-        return view("categorias.index");
+        $categorias = Categoria_bien::all();
+        return view("categorias.index", ["categorias" => $categorias]);
     }
 
     public function subcategorias(request $request) {

@@ -191,9 +191,29 @@ class CreditosController extends Controller {
                 $articulo->depositario = $bien->depositario;
                 $bien->deposito->estado->nombre;
                 $articulo->deposito = $bien->deposito;
-                $articulo->categorias;
-                $articulo->subcategorias;
                 $articulo->ultima_valuacion = $articulo->valuaciones->first();
+                
+                $articulo->categorias = DB::table("articulos_categorias")
+                ->join("categorias", "articulos_categorias.categorias_id", "=", "categorias.id")
+                ->select("categorias.nombre","categorias.id")
+                ->where("articulos_categorias.articulos_id",$articulo->id)
+                ->groupBy("categorias.id")
+                ->get();
+
+                foreach($articulo->categorias as $categoria) {
+                    $categoria->subcategorias = DB::table("articulos_categorias")
+                    ->join("subcategorias", "articulos_categorias.subcategoria_id", "=", "subcategorias.id")
+                    ->select("subcategorias.nombre","subcategorias.id")
+                    ->where("articulos_categorias.categorias_id",$categoria->id)
+                    ->get();
+                    foreach($categoria->subcategorias as $subcategoria){
+                        $subcategoria->subsubcategorias = DB::table("articulos_categorias")
+                        ->join("subsubcategorias", "articulos_categorias.subsubcategoria_id", "=", "subsubcategorias.id")
+                        ->select("subsubcategorias.nombre","subsubcategorias.id")
+                        ->where("articulos_categorias.subcategoria_id",$subcategoria->id)
+                        ->get();
+                    }
+                }
                 $articulos->push($articulo);
             }
         }
@@ -218,26 +238,38 @@ class CreditosController extends Controller {
     }
 
     public function imagenes(Articulo $articulo, request $request){
-
-        $validator = Validator::make($request->all(), [
-            "file" => "required|image|unique:imagenes,directorio"
-        ]);
-
         if($request->isMethod("post")) {
             $imagen = $request->file("file");
             $nombre = $imagen->getClientOriginalName();
             $extencion = $imagen->guessExtension();
             $secureName = Hash::make($nombre);
             $dir = public_path().'/img';
-            $articulo->imagenes()->create([
-                "nombre" => $nombre
-            ]);
+            $articulo->imagenes()->create(["nombre" => $nombre]);
             $subir = $imagen->move($dir, $nombre);
-            //return redirect('/bienes')->with("status", "Se agrego la imagen con exito");
         } else {
-            $categorias = DB::select("select id, descripcion from categorias");
-            $subcategorias = DB::select("select id, descripcion from subcategorias");
-            return view("imagenes.index", ["articulo" => $articulo, "categorias" => $categorias, "subcategorias" => $subcategorias]);
+            $articulo->categorias = DB::table("articulos_categorias")
+            ->join("categorias", "articulos_categorias.categorias_id", "=", "categorias.id")
+            ->select("categorias.nombre","categorias.id")
+            ->where("articulos_categorias.articulos_id",$articulo->id)
+            ->groupBy("categorias.id")
+            ->get();
+            
+            foreach($articulo->categorias as $categoria) {
+                $categoria->subcategorias = DB::table("articulos_categorias")
+                ->join("subcategorias", "articulos_categorias.subcategoria_id", "=", "subcategorias.id")
+                ->select("subcategorias.nombre","subcategorias.id")
+                ->where("articulos_categorias.categorias_id",$categoria->id
+                )->get();
+                
+                foreach($categoria->subcategorias as $subcategoria) {
+                    $subcategoria->subsubcategorias = DB::table("articulos_categorias")
+                    ->join("subsubcategorias", "articulos_categorias.subsubcategoria_id", "=", "subsubcategorias.id")
+                    ->select("subsubcategorias.nombre","subsubcategorias.id")
+                    ->where("articulos_categorias.subcategoria_id",$subcategoria->id)
+                    ->get();
+            }
+        }
+            return view("imagenes.index", ["articulo" => $articulo]);
         }
     }
 
