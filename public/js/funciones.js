@@ -8,7 +8,7 @@ function crear_tabla(columnas, url, data, botones) {
             "data": data,
             "url": url,
             "dataSrc": function (json) {
-                return $.parseJSON(json);
+                return json;
             }
         },
         "columns": columnas,

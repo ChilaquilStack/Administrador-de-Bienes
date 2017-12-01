@@ -19,13 +19,18 @@
                                 <td>{{$credito->folio}}</td>
                                 <td>{{$credito->origen_credito}}</td>
                                 <td>${{number_format($credito->monto, 2)}}</td>
-                                <td>{{$credito->contribuyente->Nombre." ".$credito->contribuyente->Apellido_Paterno." ".$credito->contribuyente->Apellido_Materno}}</td>
+                                @if($credito->contribuyente->razon_social)
+                                    <td>{{$credito->contribuyente->razon_social}}</td>
+                                else
+                                    <td>{{$credito->contribuyente->Nombre." ".$credito->contribuyente->Apellido_Paterno." ".$credito->contribuyente->Apellido_Materno}}</td>
+                                @endif
                                 <td>{{$credito->bienes->first()->numero_control}}</td>
-                            <td>{{$credito->documento_determinante}}</td>
+                                <td>{{$credito->documento_determinante}}</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
+
             </div>
             <div class="panel-primary">
                 <div class="panel-heading">

@@ -8,7 +8,12 @@
         </div>
         <div class="panel panel-body">
             {!!Form::model($contribuyente, ["class" => "form-horizontal", "role" => "form"])!!}    
-                @include("contribuyentes.form-fisica")
+                @if($contribuyente->razon_social)
+                    @include("contribuyentes.form-moral")
+                @else
+                    @include("contribuyentes.form-fisica")
+                @endif
+                @include("contribuyentes.info-comun")
             {!!Form::close()!!}
         </div>
     </div>

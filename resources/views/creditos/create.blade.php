@@ -28,16 +28,18 @@
             </ul>
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane active" id="fisica">
-                    {!! Form::open([ "class"=>"form-horizontal", "role"=>"form" ]) !!}
+                    {{ Form::open([ "class"=>"form-horizontal", "role"=>"form" ]) }}
                         @include('contribuyentes.form-fisica')
+                        @include('contribuyentes.info-comun')
                         @include('domicilios.contribuyentes')
-                    {!! Form ::close() !!}
+                    {{ Form ::close() }}
                 </div>
                 <div role="tabpanel" class="tab-pane" id="moral">
-                    {!! Form::open([ "class"=>"form-horizontal", "role"=>"form" ]) !!}
+                    {{Form::open([ "class"=>"form-horizontal", "role"=>"form" ]) }}
                         @include('contribuyentes.form-moral')
+                        @include('contribuyentes.info-comun')
                         @include('domicilios.contribuyentes')
-                    {!! Form ::close() !!}
+                    {{ Form ::close() }}
                 </div>
             </div>
         </div>

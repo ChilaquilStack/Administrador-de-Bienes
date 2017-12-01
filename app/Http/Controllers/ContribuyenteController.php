@@ -58,12 +58,12 @@ class ContribuyenteController extends Controller
             $contribuyente->domicilio->estado = $contribuyente->domicilios()->first()->estado->nombre;
             $contribuyentes->push($contribuyente);
         }
-        return response()->json(json_encode($contribuyentes), 200);
+        return response()->json($contribuyentes, 200);
     }
 
     public function creditos(Request $request){
         $id = $request->input("id");
         $creditos = Contribuyente::where("id", $id)->firstOrFail()->creditos;
-        return response()->json(json_encode($creditos), 200);
+        return response()->json($creditos, 200);
     }
 }

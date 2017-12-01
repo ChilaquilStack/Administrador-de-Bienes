@@ -4,6 +4,7 @@
     {{Html::style("css/dropzone.css")}}
 @endsection
 @section("content")
+    @include("layout.credito-details")
     {{Form::model($articulo, ["class" => "form-horizontal", "role" => "form" ])}}
         @include("articulos.form")
         @if($articulo->imagenes->isNotEmpty())

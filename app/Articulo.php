@@ -26,12 +26,14 @@ class Articulo extends Model {
 
     public function remates() {
         return $this->belongsToMany("App\Remate","lotes","articulos_id","remate_id");
-    
     }
 
     public static function activos(){
         return static::where("estado", 1)->get();
     }
 
+    public function categorias() {
+        return $this->belongsToMany("App\Categoria_bien","articulos_categorias","articulos_id","categorias_id");
+    }
 
 }

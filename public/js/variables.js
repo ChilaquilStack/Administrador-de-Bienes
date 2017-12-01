@@ -15,7 +15,7 @@ var botones_credito = [
         "titleAttr": "Excel",
         "filename": "reporte",
         "exportOptions": {
-            "columns":[0, 1, 2, 3]
+            "columns":[0, 1, 2, 3, 4]
         }
     },
     {
@@ -24,7 +24,7 @@ var botones_credito = [
         "className": "btn btn-info",
         "titleAttr": "PDF",
         "exportOptions": {
-            "columns":[0,1,2,3]
+            "columns":[0, 1, 2, 3, 4]
         }
     }
 ],
@@ -36,7 +36,7 @@ botones_bienes = [
         "titleAttr": "Excel",
         "filename": "reporte",
         "exportOptions": {
-            "columns":[0, 1, 2, 3]
+            "columns":[0, 1, 2, 3, 4, 5, 6]
         }
     },
     {
@@ -45,7 +45,7 @@ botones_bienes = [
         "className": "btn btn-info btn-sm",
         "titleAttr": "PDF",
         "exportOptions": {
-            "columns":[0,1,2,3]
+            "columns":[0,1,2,3,4,5,6]
         }
     }
 ],
@@ -71,7 +71,13 @@ columnas_creditos = [
         "title": "Contribuyente",
         "data": "contribuyente",
         "render": function(data) {
-            return "<a href='contribuyentes/" + data.id + "' target='_blank'><button type='button' class='btn btn-link'>" + data.Nombre + " " + data.Apellido_Paterno + " " + data.Apellido_Materno + "</button></a>";
+            var nombre = "";
+            if(data.nombre){
+                nombre = data.Nombre + " " + data.Apellido_Paterno + " " + data.Apellido_Materno;
+            } else {
+                nombre = data.razon_social;
+            }
+            return "<a href='contribuyentes/" + data.id + "' target='_blank'><button type='button' class='btn btn-link'>" + nombre + "</button></a>";
         }
     },
     {
@@ -161,8 +167,10 @@ columnas_articulos = [
     },
     {
         "title": "Subcategorias",
-        "data": "subcategorias",
-        "render": "[, ].nombre"
+        "data": "categorias",
+        "render": function(data) {
+            return data[0].subcategorias[0].nombre;
+        }
     },
     {
         "title": "Depositario",
@@ -214,7 +222,13 @@ columnas_contribuyentes= [
     {
         "title": "Nombre",
         "render": function(data, type, row){
-            return "<a href='contribuyentes/" + row.id + "'><button type='button' class='btn btn-link'>" + row.Nombre + " " + row.Apellido_Paterno + " " + row.Apellido_Materno + "</button></a>";
+            var nombre = "";
+            if(row.razon_social){
+                nombre = row.razon_social;
+            } else {
+                nombre = row.nombre + " " + row.apellido_paterno + " " + row.apellido_materno;
+            }
+            return "<a href='contribuyentes/" + row.id + "'><button type='button' class='btn btn-link'>" + nombre + "</button></a>";
         }
     },
     {

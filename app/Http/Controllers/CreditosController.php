@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\CreditosRequest;
-use App\Http\Requests\imagenRequest;
 use App\Credito;
 use App\Contribuyente;
 use App\Domicilio;
@@ -12,9 +11,7 @@ use App\Bien;
 use App\Articulo;
 use App\Depositario;
 use App\Estado;
-use Hash;
 use DB;
-use Validator;
 
 class CreditosController extends Controller {
 
@@ -23,12 +20,17 @@ class CreditosController extends Controller {
     }
 
     public function index() {
-        $bajas_creditos = DB::select("select id, descripcion from motivos_bajas_creditos_fiscales order by descripcion");
-        $bajas_articulos = DB::select("select id, descripcion from motivos_bajas_articulos order by descripcion");
-        return view("index", ["bajas_creditos" => $bajas_creditos, "bajas_articulos" => $bajas_articulos]);
+        
+    $bajas_creditos =  DB::table("motivos_bajas_creditos_fiscales")->select("id", "descripcion")->orderBy("descripcion", "asc")->get();
+        
+    $bajas_articulos = DB::table("motivos_bajas_articulos")->select("id", "descripcion")->orderBy("descripcion", "asc")->get();
+
+    return view("index", ["bajas_creditos" => $bajas_creditos, "bajas_articulos" => $bajas_articulos]);
+    
     }
 
-    public function create(request $request) {
+    public function create() {
+        
         $origenes_del_credito = [
             "1"=> "Anexo 18", 
             "2" => "ISTUV", 
@@ -36,28 +38,39 @@ class CreditosController extends Controller {
             "4" => "Multas Federales No Fiscales", 
             "5" => "Liquidaciones DAFE" 
         ];
-        $categorias = DB::select("select id, nombre from categorias order by nombre asc");
-        $subcategorias = DB::select("select id, nombre from subcategorias order by nombre asc");
-        $estados = DB::select("select id, nombre from estados order by nombre asc");    
-        $municipios = DB::select("select id, nombre from municipios order by nombre asc");
+
+        $categorias = DB::table("categorias")->select("id", "nombre")->orderBy("nombre", "asc")->get();
+        
+        $subcategorias = DB::table("subcategorias")->select("id", "nombre")->orderBy("nombre", "asc")->get();
+        
+        $estados = DB::table("estados")->select("id", "nombre")->orderBy("nombre", "asc")->get();
+
+        $municipios = DB::table("municipios")->select("id", "nombre")->orderBy("nombre", "asc")->get();
+        
         return view("creditos.create", [
-            "origenes" => $origenes_del_credito,  "categorias" => $categorias, "subcategorias" => $subcategorias,
-            "estados" => $estados, "municipios" => $municipios
+            "origenes" => $origenes_del_credito,  "categorias" => $categorias, "subcategorias" => $subcategorias, "estados" => $estados,
+            "municipios" => $municipios
         ]);
     }
 
     public function store(CreditosRequest $request) {
         
-        //return response()->json($request->all(), 200);
+        if($request->input("credito.contribuyente.curp")){
+            $id_contribuyente = $request->input("credito.contribuyente.curp");
+        } else {
+            $id_contribuyente = $request->input("credito.contribuyente.rfc");
+        }
 
         $contribuyente = new contribuyente([
-            "nombre" => $request->input("credito.contribuyente.nombre"),
-            "apellido_paterno" => $request->input("credito.contribuyente.apellido_paterno"),
-            "apellido_materno" => $request->input("credito.contribuyente.apellido_materno"),
-            "telefono" => $request->input("credito.contribuyente.telefono"),
-            "rfc" => $request->input("credito.contribuyente.rfc"),
-            "curp" => $request->input("credito.contribuyente.curp")
-        ]);
+                "nombre" => $request->input("credito.contribuyente.nombre"),
+                "apellido_paterno" => $request->input("credito.contribuyente.apellido_paterno"),
+                "apellido_materno" => $request->input("credito.contribuyente.apellido_materno"),
+                "telefono" => $request->input("credito.contribuyente.telefono"),
+                "rfc" => $request->input("credito.contribuyente.rfc"),
+                "id" => $id_contribuyente,
+                "razon_social" => $request->input("credito.contribuyente.razon_social")
+            ]);
+
         $contribuyente->save();
         
         $domicilio_contribuyente = new Domicilio([
@@ -71,7 +84,7 @@ class CreditosController extends Controller {
         ]);
         $domicilio_contribuyente->save();
 
-        $contribuyente->domicilios()->attach($domicilio_contribuyente->Id);
+        $contribuyente->domicilios()->attach($domicilio_contribuyente->id);
 
         $credito = new Credito([
             "folio" => $request->input("credito.folio"),
@@ -108,22 +121,24 @@ class CreditosController extends Controller {
         ]);
         $bien->save();
 
-        $articulos = $request->input('credito.bien.articulos');
-        foreach($articulos as $b){
+        foreach($request->input('credito.bien.articulos') as $b){
             $articulo = new Articulo([
+                "id" => $b["numero_control"],
                 "descripcion" => $b["descripcion"],
                 "cantidad" => $b["cantidad"],
                 "bienes_numero_control" => $numero_control
             ]);
             $articulo->save();
             foreach($b["categorias"] as $categoria) {
-                foreach($categoria["subcategorias"] as $subcategoria){
-                    if(array_has($subcategoria, 'subcategorias')){
-                        foreach($subcategoria["subsubcategorias"] as $subsubcategoria) {
-                            $articulo->categorias()->attach($categoria["id"], ["subcategoria_id" => $subcategoria["id"], "subsubcategoria_id" => $subsubcategoria["id"]]);
+                if(array_has($categoria, "subcategorias")) {
+                    foreach($categoria["subcategorias"] as $subcategoria) {
+                        if(array_has($subcategoria, 'subsubcategorias')){
+                            foreach($subcategoria["subsubcategorias"] as $subsubcategoria) {
+                                $articulo->categorias()->attach($categoria["id"], ["subcategoria_id" => $subcategoria["id"], "  subsubcategoria_id" => $subsubcategoria["id"]]);
+                            }
+                        } else {
+                            $articulo->categorias()->attach($categoria["id"], ["subcategoria_id" => $subcategoria["id"], "subsubcategoria_id" => null]);
                         }
-                    } else {
-                        $articulo->categorias()->attach($categoria["id"], ["subcategoria_id" => $subcategoria["id"], "subsubcategoria_id" => null]);
                     }
                 }
             }
@@ -180,10 +195,10 @@ class CreditosController extends Controller {
             $credito->contribuyente;
             $creditos->push($credito);
         }
-        return response()->json(json_encode($creditos), 200);
+        return response()->json($creditos, 200);
     }
 
-    public function bienes(Request $request){
+    public function bienes(Request $request) {
         $articulos = Collect();
         $bienes_folio = Credito::where("folio", $request->input("folio"))->firstOrFail()->bienes;
         foreach($bienes_folio as $bien) {
@@ -217,7 +232,7 @@ class CreditosController extends Controller {
                 $articulos->push($articulo);
             }
         }
-        return response()->json(json_encode($articulos), 200);
+        return response()->json(($articulos), 200);
     }
 
     public function add(Credito $credito, request $request) {

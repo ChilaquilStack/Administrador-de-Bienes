@@ -16,18 +16,7 @@
         {!!Form::text("Apellido_Materno",null,["class"=>"form-control", "placeholder"=>"Ingrese el apellido materno", "id" => "apellido_materno_contribuyente"])!!}
     </div>
 </div>
-<div class="form-group">
-    {!!Form::label("telefono","Telefono:",["class"=>"control-label col-sm-2"])!!}
-    <div class="col-sm-10">
-        {!!Form::text("Telefono",null,["class"=>"form-control", "placeholder"=>"Ingrese el telefono", "id" => "telefono_contribuyente"])!!}
-    </div>
-</div>
-<div class="form-group">
-    {!!Form::label("RFC","RFC:",["class"=>"control-label col-sm-2"])!!}
-    <div class="col-sm-10">
-        {!!Form::text("RFC",null,["class"=>"form-control", "placeholder"=>"Ingrese el RFC", "id" => "rfc_contribuyente"])!!}
-    </div>
-</div>
+
 <div class="form-group">
     {!!Form::label("CURP","CURP:",["class"=>"control-label col-sm-2"])!!}
     <div class="col-sm-10">

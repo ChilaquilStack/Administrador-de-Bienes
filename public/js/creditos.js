@@ -41,19 +41,20 @@ function guardar_credito(){
     credito_fiscal.documento = $("#documento").val();
     credito_fiscal.origen = $("#origen").val();
     credito_fiscal.monto = $("#monto").val();
+    credito_fiscal.contribuyente.razon_social = $("#razon_social").val();
     credito_fiscal.contribuyente.nombre = $("#nombre_contribuyente").val();
     credito_fiscal.contribuyente.apellido_paterno = $("#apellido_paterno_contribuyente").val();
     credito_fiscal.contribuyente.apellido_materno = $("#apellido_materno_contribuyente").val();
-    credito_fiscal.contribuyente.telefono = $("#telefono_contribuyente").val();
-    credito_fiscal.contribuyente.rfc = $("#rfc_contribuyente").val();
+    credito_fiscal.contribuyente.telefono = busqueda_elementos_por_clase(".telefono");
+    credito_fiscal.contribuyente.rfc = busqueda_elementos_por_clase(".rfc")
     credito_fiscal.contribuyente.curp = $("#curp_contribuyente").val();
-    credito_fiscal.contribuyente.domicilio.estado = $("#estado").val();
-    credito_fiscal.contribuyente.domicilio.municipio = $("#municipio").val();
-    credito_fiscal.contribuyente.domicilio.colonia = $("#colonia").val();
-    credito_fiscal.contribuyente.domicilio.cp = $("#codigo_postal").val();
-    credito_fiscal.contribuyente.domicilio.int = $("#int").val();
-    credito_fiscal.contribuyente.domicilio.ext = $("#ext").val();
-    credito_fiscal.contribuyente.domicilio.calle = $("#calle").val();
+    credito_fiscal.contribuyente.domicilio.estado = busqueda_elementos_por_clase(".estado option:selected");
+    credito_fiscal.contribuyente.domicilio.municipio = busqueda_elementos_por_clase(".municipio option:selected");
+    credito_fiscal.contribuyente.domicilio.colonia = busqueda_elementos_por_clase(".colonia");
+    credito_fiscal.contribuyente.domicilio.cp = busqueda_elementos_por_clase(".codigo_postal");
+    credito_fiscal.contribuyente.domicilio.int = busqueda_elementos_por_clase(".int");
+    credito_fiscal.contribuyente.domicilio.ext = busqueda_elementos_por_clase(".ext");
+    credito_fiscal.contribuyente.domicilio.calle = busqueda_elementos_por_clase(".calle");
     credito_fiscal.bien.numero_control = $("#numero_control").val();
     credito_fiscal.bien.documento_embargo = $("#documento_embargo").val();
     credito_fiscal.bien.deposito.estado = $("#estado_deposito").val();
@@ -102,6 +103,17 @@ function crear_tabla_articulos(articulos) {
         tabla += "</td><td>" + articulo.cantidad + "</td><td>" + articulo.descripcion + "</td><td><button type='button' class='btn btn-danger btn-sm' onclick='eliminar_articulo(" + index + ")'><i class='fa fa-trash-o' aria-hidden='true'></i></button></td></tr>";
     });
     $('#tabla_articulos_temporales tbody').append(tabla);
+}
+
+function busqueda_elementos_por_clase (clase) {
+    var data = '';
+    $.each($(clase), function(index, elemento) {
+        elemento = $(elemento);
+        if(elemento.val()) {
+            data =  elemento.val();
+        }
+    });
+    return data;
 }
 
 function agregar_articulos() {
@@ -263,7 +275,11 @@ function start() {
     $('#creditos tbody').on('click', 'td.view-bienes', function() {
         var data = tabla_creditos.row($(this).parents("tr")).data();
         $("#tabla_articulos caption h1").text("Bienes del credito fiscal:" + " " + data.folio);
-        $("#info-credito").text(data.contribuyente.Nombre + " " + data.contribuyente.Apellido_Materno + " " + data.contribuyente.Apellido_Paterno);
+        if(data.contribuyente.razon_social){
+            $("#info-credito").text(data.contribuyente.razon_social);
+        } else {
+            $("#info-credito").text(data.contribuyente.Nombre + " " + data.contribuyente.Apellido_Materno + " " + data.contribuyente.Apellido_Paterno);
+        }
         tabla_articulos = $("#tabla_articulos").DataTable(crear_tabla(columnas_articulos, "/creditos/bienes", {"folio": data.folio}, botones_bienes));
         // tabla_articulos.on( 'order.dt search.dt', function () {
         //     tabla_articulos.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {

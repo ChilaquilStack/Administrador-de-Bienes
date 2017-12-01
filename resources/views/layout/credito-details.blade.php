@@ -8,7 +8,11 @@
                     <td>{{$credito->folio}}</td>
                     <td>{{$credito->origen_credito}}</td>
                     <td>${{number_format($credito->monto, 2)}}</td>
-                    <td>{{$credito->contribuyente->Nombre." ".$credito->contribuyente->Apellido_Paterno." ".$credito->contribuyente->Apellido_Materno}}</td>
+                    @if($credito->contribuyente->nombre)
+                        <td>{{$credito->contribuyente->Nombre." ".$credito->contribuyente->Apellido_Paterno." ".$credito->contribuyente->Apellido_Materno}}</td>
+                    @else
+                        <td>{{$credito->contribuyente->razon_social}}</td>
+                    @endif
                     <td>{{$credito->pivot->bienes_numero_control}}</td>
                 </tr>
                 @endforeach

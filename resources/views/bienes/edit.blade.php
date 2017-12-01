@@ -11,13 +11,12 @@
             </div>
 
             <div class="panel-body">
-                {!!Form::model($articulo,[ "class"=>"form-horizontal", "role"=>"form" ])!!}
+                {!!Form::model($articulo,["route" => ["bienes.update", $articulo->id], "method" => "POST", "class"=>"form-horizontal", "role"=>"form" ])!!}
                     @include("articulos.form")
+                    <button type="submit" class="btn btn-success">Guardar</button>
                 {!!Form::close()!!}
             </div>
         </div>
-        <button type="button" id="btn_editar_articulo" class="btn btn-success">Guardar</button>
-
     </div>
 @endsection
 @section("scripts")

@@ -15,6 +15,7 @@ Route::resource("creditos", "CreditosController");
 Route::get("/bienes/bienes", "BienesController@bienes");
 Route::get("/bienes/articulos", "BienesController@articulos");
 Route::post("/bienes/destroy", "BienesController@destroy");
+Route::post("/bienes/{id?}/", "BienesController@update");
 Route::resource("bienes", "BienesController");
 //Rutas de los contribuyentes
 Route::get("/contribuyentes/contribuyentes", "ContribuyenteController@contribuyentes");

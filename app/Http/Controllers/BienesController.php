@@ -29,17 +29,11 @@ class BienesController extends Controller
     
     }
 
-    public function show($id)
-    {
-        //
-    }
+    public function show($id) {
 
-    public function edit($id) {
         $articulo = Articulo::where("id", $id)->firstOrFail();
         
-        $categorias = DB::table("categorias")
-                            ->select("id", "nombre")
-                            ->get();
+        $categorias = DB::table("categorias")->select("id", "nombre")->get();
         
         $articulo->categorias = DB::table("articulos_categorias")
             ->join("categorias", "articulos_categorias.categorias_id", "=", "categorias.id")
@@ -64,12 +58,44 @@ class BienesController extends Controller
         }
 
         return view("bienes.edit", ["articulo" => $articulo, "categorias" => $categorias]);
-        //return response()->json($articulo->categorias);
+        
     }
 
-    public function update(Request $request, $id)
-    {
-        
+    public function edit($id) {
+
+        $articulo = Articulo::where("id",$id)->firstOrFail();
+
+        $articulo->categorias = DB::table("articulos_categorias")
+        ->join("categorias", "articulos_categorias.categorias_id", "=", "categorias.id")
+        ->select("categorias.nombre","categorias.id")
+        ->where("articulos_categorias.articulos_id",$articulo->id)
+        ->groupBy("categorias.id")
+        ->get();
+    
+    foreach($articulo->categorias as $categoria) {
+        $categoria->subcategorias = DB::table("articulos_categorias")
+        ->join("subcategorias", "articulos_categorias.subcategoria_id", "=", "subcategorias.id")
+        ->select("subcategorias.nombre","subcategorias.id")
+        ->where("articulos_categorias.categorias_id",$categoria->id)
+        ->get();
+        foreach($categoria->subcategorias as $subcategoria){
+            $subcategoria->subsubcategorias = DB::table("articulos_categorias")
+            ->join("subsubcategorias", "articulos_categorias.subsubcategoria_id", "=", "subsubcategorias.id")
+            ->select("subsubcategorias.nombre","subsubcategorias.id")
+            ->where("articulos_categorias.subcategoria_id",$subcategoria->id)
+            ->get();
+        }
+    }
+
+        return view("bienes.edit", ["articulo" => $articulo, "categorias" => []]);
+    }
+
+    public function update(Request $request, $id) {
+
+        $articulo = Articulo::where("id",$id)->firstOrFail();
+        $articulo->fill($request->all());
+        $articulo->save();
+        return redirect("bienes");        
     }
 
     public function destroy(request $request) {
@@ -104,6 +130,6 @@ class BienesController extends Controller
             $articulo->bien->creditos;
             $articulo->ultima_valuacion = $articulo->valuaciones->last();
         }
-        return response()->json(json_encode($articulos), 200);
+        return response()->json($articulos, 200);
     }
 }
