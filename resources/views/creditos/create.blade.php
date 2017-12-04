@@ -51,7 +51,7 @@
         </div>
         <div class="panel-body">
             {!! Form::open([ "class"=>"form-horizontal", "role"=>"form" ]) !!}
-                @include('bienes.form')
+                @include('articulos.form')
                 <div class="form-group">
                     <label class="control-label col-sm-2" for="bienes"><button type="button" id="agregar" class="btn btn-success"><i class="fa fa-plus" aria-hidden="true"></i></button></label>
                 </div>
@@ -86,6 +86,6 @@
 @section("scripts")
     {{Html::script("js/variables.js")}}
     {{Html::script("js/funciones.js")}}
-	{{Html::script("js/creditos.js")}}
     {{Html::script("js/sub_subsub_categorias.js")}}
+    {{Html::script("js/crear_tabla.js")}}
 @endsection

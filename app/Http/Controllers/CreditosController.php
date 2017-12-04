@@ -62,12 +62,12 @@ class CreditosController extends Controller {
         }
 
         $contribuyente = new contribuyente([
+                "id" => $id_contribuyente,
                 "nombre" => $request->input("credito.contribuyente.nombre"),
                 "apellido_paterno" => $request->input("credito.contribuyente.apellido_paterno"),
                 "apellido_materno" => $request->input("credito.contribuyente.apellido_materno"),
                 "telefono" => $request->input("credito.contribuyente.telefono"),
                 "rfc" => $request->input("credito.contribuyente.rfc"),
-                "id" => $id_contribuyente,
                 "razon_social" => $request->input("credito.contribuyente.razon_social")
             ]);
 
@@ -85,15 +85,16 @@ class CreditosController extends Controller {
         $domicilio_contribuyente->save();
 
         $contribuyente->domicilios()->attach($domicilio_contribuyente->id);
-
+        
         $credito = new Credito([
             "folio" => $request->input("credito.folio"),
             "monto" => $request->input("credito.monto"),
             "documento_determinante" => $request->input("credito.documento"),
             "origen_credito" => $request->input("credito.origen"),
-            "contribuyentes_id" => $contribuyente->id
         ]);
-        $credito->save();
+
+        $contribuyente->creditos()->save($credito);
+
 
         $depositario = new Depositario([
             "nombre" => $request->input("credito.bien.depositario.nombre"),
@@ -113,37 +114,39 @@ class CreditosController extends Controller {
         ]);
         $deposito->save();
 
-        $numero_control = $request->input('credito.bien.numero_control');
         $bien = new Bien([
-            "numero_control" => $numero_control,
+            "numero_control" => $request->input('credito.bien.numero_control'),
             "depositarios_id" => $depositario->id,
-            "deposito_id" => $deposito->Id
+            "deposito_id" => $deposito->id
         ]);
         $bien->save();
 
-        foreach($request->input('credito.bien.articulos') as $b){
+        foreach($request->input('credito.bien.articulos') as $b) {
             $articulo = new Articulo([
                 "id" => $b["numero_control"],
                 "descripcion" => $b["descripcion"],
                 "cantidad" => $b["cantidad"],
-                "bienes_numero_control" => $numero_control
+                "bienes_numero_control" => $b["numero_control"]
             ]);
             $articulo->save();
             foreach($b["categorias"] as $categoria) {
                 if(array_has($categoria, "subcategorias")) {
                     foreach($categoria["subcategorias"] as $subcategoria) {
-                        if(array_has($subcategoria, 'subsubcategorias')){
+                        if(array_has($subcategoria, "subsubcategorias")){
                             foreach($subcategoria["subsubcategorias"] as $subsubcategoria) {
-                                $articulo->categorias()->attach($categoria["id"], ["subcategoria_id" => $subcategoria["id"], "  subsubcategoria_id" => $subsubcategoria["id"]]);
+                                $articulo->categorias()->attach($categoria["id"], ["subcategoria_id" => $subcategoria["id"], "subsubcategoria_id" => $subsubcategoria["id"]]);
                             }
                         } else {
-                            $articulo->categorias()->attach($categoria["id"], ["subcategoria_id" => $subcategoria["id"], "subsubcategoria_id" => null]);
+                            $articulo->categorias()->attach($categoria["id"], ["subcategoria_id" => $subcategoria["id"]]);
                         }
                     }
+                } else {
+                    $articulo->categorias()->attach($categoria["id"]);
                 }
             }
         }
-        $credito->bienes()->attach($numero_control, ['documento' => $request->input("bien.documento_embargo")]);
+
+        $credito->bienes()->attach($request->input("credito.bien.numero_control"), ['documento' => $request->input("credito.bien.documento_embargo")]);
         return response()->json("Credito Fiscal"." ".$credito->folio." "."Creado con Exito",200);
     }
 

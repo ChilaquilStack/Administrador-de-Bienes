@@ -16,7 +16,8 @@ class DatabaseSeeder extends Seeder
             "apellido_paterno" => "Villegas",
             "apellido_materno" => "Briseño",
             "email" => "edgar.villegas@jalisco.gob.mx",
-            "password" => bcrypt("123456")
+            "password" => bcrypt("123456"),
+            "roles_id" => 1
         ]);
         $this->call([
             //Contribuyentes::class,
@@ -25,6 +26,7 @@ class DatabaseSeeder extends Seeder
             Estados::class,
             Municipios::class,
             SubcategoriasBienesTableSeeder::class,
+            Subsubcategorias::class,
             //Depositarios::class,
             //Domicilios::class,
             //Bienes::class,

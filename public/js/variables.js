@@ -1,5 +1,15 @@
 'use strict';
-var botones_credito = [
+var tabla_creditos, tabla_articulos, credito_fiscal = {
+    "contribuyente": {
+        "domicilio": {}
+    },
+    "bien": {
+        "articulos": [],
+        "depositario": {},
+        "deposito": {}
+    }
+},
+botones_credito = [
     {
         "text": "<i id='add_credito' class='fa fa-plus' aria-hidden='true'></i>",
         "className": "btn btn-info",
@@ -73,7 +83,7 @@ columnas_creditos = [
         "render": function(data) {
             var nombre = "";
             if(data.nombre){
-                nombre = data.Nombre + " " + data.Apellido_Paterno + " " + data.Apellido_Materno;
+                nombre = data.nombre + " " + data.apellido_paterno + " " + data.apellido_materno;
             } else {
                 nombre = data.razon_social;
             }
@@ -107,10 +117,6 @@ columnas_creditos = [
     },
 ],
 columnas_bienes = [
-    {
-        "title": "Numero de Control",
-        "data": "numero_control"
-    },
     {
         "title": "Depositario",
         "data": "depositario",
@@ -153,6 +159,10 @@ columnas_bienes = [
 ],
 columnas_articulos = [
     {
+        "title": "#",
+        "data": "id"
+    },
+    {
         "title": "Descripion",
         "data": "descripcion"
     },
@@ -168,9 +178,7 @@ columnas_articulos = [
     {
         "title": "Subcategorias",
         "data": "categorias",
-        "render": function(data) {
-            return data[0].subcategorias[0].nombre;
-        }
+        "render": "[, ].nombre"
     },
     {
         "title": "Depositario",
@@ -283,11 +291,8 @@ columnas_creditos_contribuyente = [
         }
     }
 ],
+
 columnas_articulos_bienes = [
-    {
-        "title":"Numero de Control",
-        "data":"bienes_numero_control"
-    },
     {
         "title": "#",
         "data": "id"

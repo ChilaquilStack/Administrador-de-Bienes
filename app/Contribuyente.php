@@ -10,7 +10,7 @@ class Contribuyente extends Model
     protected $primaryKey = "id"; //CURP ó RFC
     protected $fillable = ["nombre", "apellido_paterno", "apellido_materno", "telefono", "rfc","id", "razon_social"];
     public $timestamps = false;
-    public $incrementing = false;    
+    public $incrementing = false;
 
     public function creditos() {
         return $this->hasMany('App\Credito',"contribuyentes_id");

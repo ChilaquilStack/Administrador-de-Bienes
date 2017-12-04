@@ -17,11 +17,11 @@ class RematesController extends Controller
 
     public function index() {
 
-        $creditos = Collect(Credito::where("estatus",1)->get());
+        $creditos = Credito::activos();
         $articulos = Collect();
-        foreach($creditos as $credito){
-            foreach($credito->bienes as $bien){
-                $articulos = $bien->articulos->filter(function($articulo){
+        foreach($creditos as $credito) {
+            foreach($credito->bienes as $bien) {
+                $articulos = $bien->articulos->filter(function($articulo) {
                     return $articulo->valuaciones()->count() > 0 && $articulo->imagenes()->count() > 0;
                 });
             }
@@ -30,7 +30,6 @@ class RematesController extends Controller
     }
 
     public function create() {
-        
     }
     
     public function store(Request $request) {

@@ -30,7 +30,6 @@
                         </tbody>
                     </table>
                 </div>
-
             </div>
             <div class="panel-primary">
                 <div class="panel-heading">
@@ -39,7 +38,11 @@
                 <div class="panel-body">
                     {{Form::open(["action" => ["CreditosController@add", $credito->folio] , "method" => "post", "class" => "form-horizontal"])}}
                         @include("articulos.form")
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="bienes"><button type="button" id="agregar" class="btn btn-success"><i class="fa fa-plus" aria-hidden="true"></i></button></label>
+                        </div>
                         <button type="submit" class="btn btn-success brtn-sm">Guardar</button>
+                        @include('articulos.tabla-articulos-temporales')
                     {{Form::close()}}
                 </div>
             </div>
@@ -48,6 +51,8 @@
 </div>
 @endsection
 @section("scripts")
-    {{Html::script("js/articulos.js")}}
+    {{Html::script("js/variables.js")}}
+    {{Html::script("js/funciones.js")}}
     {{Html::script("js/sub_subsub_categorias.js")}}
+    {{Html::script("js/crear_tabla.js")}}
 @endsection

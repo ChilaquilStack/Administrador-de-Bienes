@@ -55,7 +55,7 @@ class ContribuyenteController extends Controller
         $contribuyentes = Collect();
         foreach(contribuyente::all() as $contribuyente) {
             $contribuyente->domicilio = $contribuyente->domicilios()->first();
-            $contribuyente->domicilio->estado = $contribuyente->domicilios()->first()->estado->nombre;
+            //$contribuyente->domicilio->estado = $contribuyente->domicilios()->first()->estado->nombre;
             $contribuyentes->push($contribuyente);
         }
         return response()->json($contribuyentes, 200);

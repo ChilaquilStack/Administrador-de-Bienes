@@ -15,12 +15,11 @@ class User extends Authenticatable
         'email', 'password',
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function rol(){
+        return $this->belongsTo("App\Rol", "roles_id");
+    }
 }

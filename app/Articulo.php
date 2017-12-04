@@ -7,11 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class Articulo extends Model {
 
     protected $primaryKey = "id";
-    protected $fillable = ['id','descripcion', 'cantidad', 'bienes_numero_control'];
+    protected $fillable = ["id","descripcion", "cantidad", "bienes_numero_control"];
     public $timestamps = false;
+    public $incrementing = false;
     
     public function imagenes() {
-        return $this->hasMany("App\Imagen","Productos_id","id");
+        return $this->hasMany("App\Imagen","articulos_id","id");
     }
 
     public function valuaciones() {

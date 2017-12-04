@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Domicilio extends Model
 {
     protected $table = "Domicilios";
-    protected $primaryKey = "Id";
+    protected $primaryKey = "id";
     protected $fillable = ["estados_id","municipios_id","colonia","cp","int","ext","calle"];
     public $timestamps = false;
 
