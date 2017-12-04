@@ -11,13 +11,21 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $rols = [1 => "admin", 2 => "postor"];
+
+        foreach($rols as $key => $rol){
+            DB::table("rols")->insert([
+                "id" => $key,
+                "nombre" => $rol
+            ]);
+        }
         DB::table("users")->insert([
             "nombre" => "Edgar Enrique",
             "apellido_paterno" => "Villegas",
             "apellido_materno" => "Briseño",
             "email" => "edgar.villegas@jalisco.gob.mx",
             "password" => bcrypt("123456"),
-            "roles_id" => 1
+            "rols_id" => 1
         ]);
         $this->call([
             //Contribuyentes::class,

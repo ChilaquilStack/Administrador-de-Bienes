@@ -11,15 +11,17 @@ class User extends Authenticatable
     protected $datatable="usuarios";
     public $timestamps = false;
 
-    protected $fillable = [
-        'email', 'password',
-    ];
+    protected $fillable = ['email', 'password', 'apellido_paterno', 'apellido_materno','nombre'];
 
     protected $hidden = [
         'password', 'remember_token',
     ];
 
     public function rol(){
-        return $this->belongsTo("App\Rol", "roles_id");
+        return $this->belongsTo("App\Rol", "rols_id");
+    }
+
+    public static function activos(){
+        return static::where("estado", 1)->orderBy("id","asc")->get();
     }
 }

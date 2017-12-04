@@ -30,6 +30,8 @@ Route::group(['middleware' => ['checkRole']], function(){
     Route::match(["get", "post"], "/categorias","CategoriasController@index");
     Route::get("/categorias/subcategorias", "CategoriasController@subcategorias");
     Route::get("/categorias/subsubcategorias", "CategoriasController@subsubcategorias");
+
+    Route::resource("usuarios", "UsuariosController");
 });
 
 Auth::routes();
