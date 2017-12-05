@@ -6,10 +6,13 @@ use Illuminate\Http\Request;
 use DB;
 use App\Bien;
 use App\Articulo;
-class BienesController extends Controller
-{
+use App\Repositorios\Usuario;
+class BienesController extends Controller {
 
-    public function __construct() {
+    protected $users;
+
+    public function __construct(Usuario $users) {
+        $this->users = $users;
         $this->middleware('auth');
     }
 
@@ -35,25 +38,12 @@ class BienesController extends Controller
         
         $categorias = DB::table("categorias")->select("id", "nombre")->get();
         
-        $articulo->categorias = DB::table("articulos_categorias")
-            ->join("categorias", "articulos_categorias.categorias_id", "=", "categorias.id")
-            ->select("categorias.nombre","categorias.id")
-            ->where("articulos_categorias.articulos_id",$articulo->id)
-            ->groupBy("categorias.id")
-            ->get();
+        $articulo->categorias = $this->users->categorias($articulo->id);
         
-        foreach($articulo->categorias as $categoria) {
-            $categoria->subcategorias = DB::table("articulos_categorias")
-            ->join("subcategorias", "articulos_categorias.subcategoria_id", "=", "subcategorias.id")
-            ->select("subcategorias.nombre","subcategorias.id")
-            ->where("articulos_categorias.categorias_id",$categoria->id)
-            ->get();
+        foreach($articulo->categorias as $categoria){
+            $categoria->subcategorias = $this->users->subcategoria($categoria->id);
             foreach($categoria->subcategorias as $subcategoria){
-                $subcategoria->subsubcategorias = DB::table("articulos_categorias")
-                ->join("subsubcategorias", "articulos_categorias.subsubcategoria_id", "=", "subsubcategorias.id")
-                ->select("subsubcategorias.nombre","subsubcategorias.id")
-                ->where("articulos_categorias.subcategoria_id",$subcategoria->id)
-                ->get();
+                $subcategoria->subsubcategorias = $this->users->subcategoria($subcategoria->id);
             }
         }
 
@@ -64,28 +54,15 @@ class BienesController extends Controller
     public function edit($id) {
 
         $articulo = Articulo::where("id",$id)->firstOrFail();
-
-        $articulo->categorias = DB::table("articulos_categorias")
-        ->join("categorias", "articulos_categorias.categorias_id", "=", "categorias.id")
-        ->select("categorias.nombre","categorias.id")
-        ->where("articulos_categorias.articulos_id",$articulo->id)
-        ->groupBy("categorias.id")
-        ->get();
-    
-    foreach($articulo->categorias as $categoria) {
-        $categoria->subcategorias = DB::table("articulos_categorias")
-        ->join("subcategorias", "articulos_categorias.subcategoria_id", "=", "subcategorias.id")
-        ->select("subcategorias.nombre","subcategorias.id")
-        ->where("articulos_categorias.categorias_id",$categoria->id)
-        ->get();
-        foreach($categoria->subcategorias as $subcategoria){
-            $subcategoria->subsubcategorias = DB::table("articulos_categorias")
-            ->join("subsubcategorias", "articulos_categorias.subsubcategoria_id", "=", "subsubcategorias.id")
-            ->select("subsubcategorias.nombre","subsubcategorias.id")
-            ->where("articulos_categorias.subcategoria_id",$subcategoria->id)
-            ->get();
+        
+        $articulo->categorias = $this->users->categorias($articulo->id);
+        
+        foreach($articulo->categorias as $categoria){
+            $categoria->subcategorias = $this->users->subcategoria($categoria->id);
+            foreach($categoria->subcategorias as $subcategoria){
+                $subcategoria->subsubcategorias = $this->users->subcategoria($subcategoria->id);
+            }
         }
-    }
 
         return view("bienes.edit", ["articulo" => $articulo, "categorias" => []]);
     }
