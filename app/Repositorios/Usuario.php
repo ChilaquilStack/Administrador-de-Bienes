@@ -2,35 +2,35 @@
 
 namespace App\Repositorios;
 
-use App\Articulo;
+use App\Bien;
 use App\Categoria_bien;
 use App\Subcategoria_bien;
 use DB;
 
 class Usuario {
     
-    public function categorias(Articulo $articulo) {
-        return DB::table("articulos_categorias")
-                    ->join("categorias", "articulos_categorias.categorias_id", "=", "categorias.id")
+    public function categorias(Bien $bien) {
+        return DB::table("bienes_categorias")
+                    ->join("categorias", "bienes_categorias.categorias_id", "=", "categorias.id")
                     ->select("categorias.nombre","categorias.id")
-                    ->where("articulos_categorias.articulos_id",$articulo->id)
+                    ->where("bienes_categorias.bienes_numero_control",$bien->numero_control)
                     ->groupBy("categorias.id")
                     ->get();
     }
 
-    public function subcategorias(Categoria_bien $categoria) {
-        return DB::table("articulos_categorias")
-                    ->join("subcategorias", "articulos_categorias.subcategoria_id", "=", "subcategorias.id")
+    public function subcategorias($id) {
+        return DB::table("bienes_categorias")
+                    ->join("subcategorias", "bienes_categorias.subcategoria_id", "=", "subcategorias.id")
                     ->select("subcategorias.nombre","subcategorias.id")
-                    ->where("articulos_categorias.categorias_id", $categoria->id)
+                    ->where("bienes_categorias.categorias_id", $id)
                     ->get();
     }
 
-    public function subsubcategoriassu(Subcategoria_bien $subcategoria){
+    public function subsubcategoriassu($id){
         return DB::table("articulos_categorias")
                     ->join("subsubcategorias", "articulos_categorias.subsubcategoria_id", "=", "subsubcategorias.id")
                     ->select("subsubcategorias.nombre","subsubcategorias.id")
-                    ->where("articulos_categorias.subcategoria_id",$subcategoria->id)
+                    ->where("articulos_categorias.subcategoria_id",$id)
                     ->get();
     }
 

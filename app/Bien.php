@@ -8,8 +8,9 @@ class Bien extends Model
 {
     protected $table = "bienes";
     protected $primaryKey = "numero_control";
-    protected $fillable = ["numero_control","depositarios_id", "deposito_id"];
+    protected $fillable = ["numero_control","depositarios_id", "deposito_id", "descripcion", "cantidad"];
     public $timestamps = false;
+    public $incrementing = false;
 
     public function creditos() {
         return $this->belongsToMany('App\Credito','embargos','bienes_numero_control','creditos_fiscales_folio');
@@ -23,8 +24,26 @@ class Bien extends Model
         return $this->belongsTo("App\Depositario","depositarios_id");
     }
 
-    public function articulos() {
-        return $this->hasMany("App\Articulo","bienes_numero_control","numero_control");
+    public function imagenes() {
+        return $this->hasMany("App\Imagen","bienes_numero_control","id");
+    }
+
+    public function valuaciones() {
+        return $this->belongsToMany("App\Perito","valuaciones","bienes_numero_control","peritos_id")
+                    ->orderBy("fecha", "des")
+                    ->withPivot("monto","fecha", "numero_dictamen");
+    }
+
+    public function remates() {
+        return $this->belongsToMany("App\Remate","lotes","bienes_numero_control","remate_id");
+    }
+
+    public static function activos(){
+        return static::where("estado", 1)->get();
+    }
+
+    public function categorias() {
+        return $this->belongsToMany("App\Categoria_bien","bienes_categorias","bienes_numero_control","categorias_id");
     }
 
 }

@@ -22,7 +22,7 @@ class CreditosRequest extends FormRequest
             'credito.bien.articulos' => "required",
             'credito.bien.articulos.*.descripcion' => 'required|max:255',
             'credito.bien.articulos.*.categorias' => 'required',
-            'credito.bien.numero_control' => 'required|unique:bienes,numero_control',
+            'credito.bien.articulos.*.numero_control' => 'required|unique:bienes,numero_control',
             'credito.contribuyente.rfc' => 'unique:contribuyentes,id',
             'credito.contribuyente.rfc' => 'unique:contribuyentes,rfc',
             'credito.contribuyente.curp' => 'unique:contribuyentes,id',
@@ -57,7 +57,9 @@ class CreditosRequest extends FormRequest
             'credito.contribuyente.curp.unique' => 'El CURP ya existe',
             'credito.bien.deposito.municipio.required' => "Por favor introduzaca el municpio del depositario",
             'credito.bien.articulos.*.categorias.required' => "Existen articulos sin una o mas categoria",
-            'credito.bien.deposito.calle.required' => "Por favor introduzca la calle del deposito"
+            'credito.bien.deposito.calle.required' => "Por favor introduzca la calle del deposito",
+            'credito.bien.articulos.*.numero_control.required' => 'Ingrese el numero de control',
+            'credito.bien.articulos.*.numero_control.unique' => 'El numero de control ya existe'
         ];
     }
 

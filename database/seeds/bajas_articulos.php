@@ -15,7 +15,7 @@ class bajas_articulos extends Seeder
             "Credito",  
         ];
         foreach($bajas as $baja) {
-            DB::table("motivos_bajas_articulos")->insert([
+            DB::table("motivos_bajas_bienes")->insert([
                 "descripcion" => $baja
             ]);
         }

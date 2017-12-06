@@ -12,8 +12,8 @@ class Categoria_bien extends Model
     public $timestamps = false;
 
 
-    public function articulos() {
-        return $this->belongsToMany("App\Articulo", "articulos_categorias","categorias_id", "articulos_id");
+    public function bienes() {
+        return $this->belongsToMany("App\Articulo", "articulos_categorias","categorias_id", "bienes_numero_control");
     }
 
     public function subcategorias() {

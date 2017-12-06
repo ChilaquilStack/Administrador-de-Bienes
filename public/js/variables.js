@@ -160,7 +160,7 @@ columnas_bienes = [
 columnas_articulos = [
     {
         "title": "#",
-        "data": "id"
+        "data": "numero_control"
     },
     {
         "title": "Descripion",

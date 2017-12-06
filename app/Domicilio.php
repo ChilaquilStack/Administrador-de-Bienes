@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Domicilio extends Model
 {
-    protected $table = "Domicilios";
+    protected $table = "domicilios";
     protected $primaryKey = "id";
     protected $fillable = ["estados_id","municipios_id","colonia","cp","int","ext","calle"];
     public $timestamps = false;
@@ -16,7 +16,7 @@ class Domicilio extends Model
     }
     
     public function bienes() {
-        return $this->hasMany("App\Bien", "deposito_Id","Id");
+        return $this->hasMany("App\Bien", "deposito_Id","id");
     }
 
     public function estado() {
