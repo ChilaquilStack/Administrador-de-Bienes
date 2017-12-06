@@ -1,7 +1,7 @@
 <div class="form-group">
     {!!Form::label("numero_control", "Numero de control", ["class" => "control-label col-sm-2control-label col-sm-2"])!!}
     <div class="col-sm-10">
-        {!!Form::text("bienes_numero_control",null,["class" => "form-control", "placeholder" => "numero de control", "id" => "numero_control"])!!}
+        {!!Form::text("numero_control",null,["class" => "form-control", "placeholder" => "numero de control", "id" => "numero_control"])!!}
     </div>
 </div>
 
@@ -26,7 +26,7 @@
     </div>
 </div>
 
-@if(!empty($articulo))
+@if(!empty($bien))
     <div class="form-group">
         {{Form::label("categorias","Categorias", ["class" => "control-label col-sm-2"])}}
         <div class="col-sm-10">

@@ -13,7 +13,8 @@ class Bien extends Model
     public $incrementing = false;
 
     public function creditos() {
-        return $this->belongsToMany('App\Credito','embargos','bienes_numero_control','creditos_fiscales_folio');
+        return $this->belongsToMany('App\Credito','embargos','bienes_numero_control','creditos_fiscales_folio')
+                    ->withPivot('documento');
     }
 
     public function deposito() {
@@ -25,7 +26,7 @@ class Bien extends Model
     }
 
     public function imagenes() {
-        return $this->hasMany("App\Imagen","bienes_numero_control","id");
+        return $this->hasMany("App\Imagen","bienes_numero_control","numero_control");
     }
 
     public function valuaciones() {
@@ -45,5 +46,6 @@ class Bien extends Model
     public function categorias() {
         return $this->belongsToMany("App\Categoria_bien","bienes_categorias","bienes_numero_control","categorias_id");
     }
+
 
 }

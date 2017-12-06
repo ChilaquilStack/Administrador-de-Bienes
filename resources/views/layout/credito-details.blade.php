@@ -3,7 +3,7 @@
         <table class="table">
             <thead><tr><th>Crédifo Fiscal</th><th>Origen del Credito</th><th>Monto</th><th>Contribuyente</th><th>Numero de control</th></tr></thead>
             <tbody>
-                @foreach($articulo->bien->creditos as $credito)
+                @foreach($bien->creditos as $credito)
                 <tr>
                     <td>{{$credito->folio}}</td>
                     <td>{{$credito->origen_credito}}</td>

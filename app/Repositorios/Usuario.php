@@ -26,11 +26,11 @@ class Usuario {
                     ->get();
     }
 
-    public function subsubcategoriassu($id){
-        return DB::table("articulos_categorias")
-                    ->join("subsubcategorias", "articulos_categorias.subsubcategoria_id", "=", "subsubcategorias.id")
+    public function subsubcategorias($id){
+        return DB::table("bienes_categorias")
+                    ->join("subsubcategorias", "bienes_categorias.subsubcategoria_id", "=", "subsubcategorias.id")
                     ->select("subsubcategorias.nombre","subsubcategorias.id")
-                    ->where("articulos_categorias.subcategoria_id",$id)
+                    ->where("bienes_categorias.subcategoria_id",$id)
                     ->get();
     }
 

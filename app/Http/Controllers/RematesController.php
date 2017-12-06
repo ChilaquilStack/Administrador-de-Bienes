@@ -18,15 +18,13 @@ class RematesController extends Controller
     public function index() {
 
         $creditos = Credito::activos();
-        $articulos = Collect();
+        $remates = Collect();
         foreach($creditos as $credito) {
-            foreach($credito->bienes as $bien) {
-                $articulos = $bien->articulos->filter(function($articulo) {
-                    return $articulo->valuaciones()->count() > 0 && $articulo->imagenes()->count() > 0;
-                });
-            }
+            $remates = $credito->bienes->filter(function($bien) {
+                return $bien->valuaciones()->count() > 0 && $bien->imagenes()->count() > 0;
+            });
         }
-        return view("remates.index", ["articulos" => $articulos]);
+        return view("remates.index", ["bienes" => $remates]);
     }
 
     public function create() {

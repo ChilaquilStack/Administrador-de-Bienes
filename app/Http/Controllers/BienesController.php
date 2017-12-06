@@ -34,37 +34,38 @@ class BienesController extends Controller {
 
     public function show($id) {
 
-        $articulo = Articulo::where("id", $id)->firstOrFail();
+        $bien = Bien::where("numero_control", $id)->firstOrFail();
         
         $categorias = DB::table("categorias")->select("id", "nombre")->get();
         
-        $articulo->categorias = $this->users->categorias($articulo->id);
+        $bien->categorias = $this->users->categorias($bien);
         
-        foreach($articulo->categorias as $categoria){
-            $categoria->subcategorias = $this->users->subcategoria($categoria->id);
+        foreach($bien->categorias as $categoria){
+            $categoria->subcategorias = $this->users->subcategorias($categoria->id);
             foreach($categoria->subcategorias as $subcategoria){
-                $subcategoria->subsubcategorias = $this->users->subcategoria($subcategoria->id);
+                $subcategoria->subsubcategorias = $this->users->subcategorias($subcategoria->id);
             }
         }
 
-        return view("bienes.edit", ["articulo" => $articulo, "categorias" => $categorias]);
+        return view("bienes.show", ["bien" => $bien, "categorias" => $categorias]);
         
     }
 
     public function edit($id) {
 
-        $articulo = Articulo::where("id",$id)->firstOrFail();
+        $bien = Bien::where("numero_control",$id)->firstOrFail();
         
-        $articulo->categorias = $this->users->categorias($articulo->id);
+        $bien->categorias = $this->users->categorias($bien);
         
-        foreach($articulo->categorias as $categoria){
-            $categoria->subcategorias = $this->users->subcategoria($categoria->id);
+        $categorias = DB::table("categorias")->select("id", "nombre")->get();
+        foreach($bien->categorias as $categoria){
+            $categoria->subcategorias = $this->users->subcategorias($categoria->id);
             foreach($categoria->subcategorias as $subcategoria){
-                $subcategoria->subsubcategorias = $this->users->subcategoria($subcategoria->id);
+                $subcategoria->subsubcategorias = $this->users->subcategorias($subcategoria->id);
             }
         }
 
-        return view("bienes.edit", ["articulo" => $articulo, "categorias" => []]);
+        return view("bienes.edit", ["bien" => $bien, "categorias" => $categorias]);
     }
 
     public function update(Request $request, $id) {
@@ -77,36 +78,28 @@ class BienesController extends Controller {
 
     public function destroy(request $request) {
         $id = $request->input("id");
-        $articulo = Articulo::where("id", $id)->firstOrFail();
-        $articulo->estado = 0;
-        $articulo->save();
-        DB::insert("insert into bajas_articulos (motivos_bajas_articulos_id, articulos_id, usuarios_id, comentarios) values(?,?,?,?)", 
+        $bien = Bien::where("numero_control", $id)->firstOrFail();
+        $bien->estado = 0;
+        $bien->save();
+        DB::insert("insert into bajas_bienes(motivos_bajas_articulos_id, bienes_numero_control, usuarios_id, comentarios) values(?,?,?,?)", 
             [
-                $request->input("baja"), $articulo->id, 1, $request->input("comentarios")
+                $request->input("baja"), $articulo->id, Auth::user()->id, $request->input("comentarios")
             ]
         );
-        return response()->json("Credito Fiscal"." ".$articulo->id." "."se dio de Baja", 200);
+        return response()->json("Bien"." ".$bien->id." "."se dio de Baja", 200);
     }
 
     public function bienes(){
-        $bienes = Bien::all();  
+        $bienes = Bien::activos();
         foreach($bienes as $bien){
             $bien->deposito->estado;
             $bien->depositario;
             $bien->creditos;
-            $bien->cantidad = $bien->articulos()->count();
+            $bien->cantidad;
+            $bien->categorias;
+            $bien->creditos;
+            $bien->ultima_valuacion = $bien->valuaciones->first();
         }
-        return response()->json(json_encode($bienes), 200);
-    }
-
-    public function articulos(request $request) {
-        $articulos = Articulo::activos();
-        foreach($articulos as $articulo) {
-            $articulo->categorias;
-            $articulo->subcategorias;
-            $articulo->bien->creditos;
-            $articulo->ultima_valuacion = $articulo->valuaciones->last();
-        }
-        return response()->json($articulos, 200);
+        return response()->json($bienes, 200);
     }
 }

@@ -5,9 +5,9 @@
     {{Html::style("//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css")}}
 @endsection
 @section("content")
-@include('layout.modals.warning')
-@include('layout.modals.success')
-<input type="hidden" value="{{$articulo->id}}" id="id_articulo">
+{{--@include('layout.modals.warning')--}}
+{{--@include('layout.modals.success')--}}
+<input type="hidden" value="{{$bien->id}}" id="id_articulo">
 
 <div class="panel-group">
 
@@ -18,7 +18,7 @@
             <h1 class="panel-title">Bien</h1>    
         </div>
         <div class="panel-body">
-            {!!Form::model($articulo,["class" => "form-horizontal"])!!}
+                {!!Form::model($bien,["class" => "form-horizontal"])!!}
                 @include("articulos.form")
             {!!Form::close()!!}
         </div>

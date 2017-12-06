@@ -3,15 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Articulo;
+use App\Bien;
 use App\Perito;
 use DB;
 use Carbon\Carbon;
+use App\Repositorios\Usuario;
+
+
 class AvaluosController extends Controller
 {
-    
-    public function __construct() {
+    private $usuario;
+    public function __construct(Usuario $usuario) {
         $this->middleware('auth');
+        $this->usuario = $usuario;
     }
 
     public function index()
@@ -43,29 +47,15 @@ class AvaluosController extends Controller
     }
 
     public function show($id) {
-        $articulo = Articulo::where("id", $id)->firstOrFail();
-        $articulo->categorias = DB::table("articulos_categorias")
-        ->join("categorias", "articulos_categorias.categorias_id", "=", "categorias.id")
-        ->select("categorias.nombre","categorias.id")
-        ->where("articulos_categorias.articulos_id",$articulo->id)
-        ->groupBy("categorias.id")
-        ->get();
-
-        foreach($articulo->categorias as $categoria) {
-            $categoria->subcategorias = DB::table("articulos_categorias")
-            ->join("subcategorias", "articulos_categorias.subcategoria_id", "=", "subcategorias.id")
-            ->select("subcategorias.nombre","subcategorias.id")
-            ->where("articulos_categorias.categorias_id",$categoria->id)
-            ->get();
-            foreach($categoria->subcategorias as $subcategoria){
-                $subcategoria->subsubcategorias = DB::table("articulos_categorias")
-                ->join("subsubcategorias", "articulos_categorias.subsubcategoria_id", "=", "subsubcategorias.id")
-                ->select("subsubcategorias.nombre","subsubcategorias.id")
-                ->where("articulos_categorias.subcategoria_id",$subcategoria->id)
-                ->get();
+        $bien = Bien::where("numero_control", $id)->firstOrFail();
+        $bien->categorias = $this->usuario->categorias($bien);
+        foreach ($bien->categorias as $categoria) {
+            $categoria->subcategorias = $this->usuario->subcategorias($categoria->id);
+            foreach ($categoria->subcategorias as $subcategoria) {
+                $subcategoria->subsubcategorias = $this->usuario->subsubcategorias($subcategoria->id);
             }
         }
-        return view("avaluos.add", ["articulo" => $articulo]);
+        return view("avaluos.add", ["bien" => $bien, "categorias" => [] ]);
     }
 
     public function edit($id)

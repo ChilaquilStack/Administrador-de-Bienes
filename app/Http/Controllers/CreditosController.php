@@ -173,16 +173,17 @@ class CreditosController extends Controller {
         $credito = Credito::where("folio", $folio)->firstOrFail();
         $credito->estatus = 0;
         $credito->save();
+        $contribuyente = $credito->contribuyente;
+        $contribuyente->estado = 0;
+        $contribuyente->save();
         DB::insert("insert into bajas_creditos_fiscales (creditos_fiscales_folio, baja, usuarios_id, comentarios) values(?,?,?,?)", 
             [
                 $credito->folio, $request->input("baja"), 1, $request->input("comentarios")
             ]
         );
-        foreach($credito->bienes as $bien){
-            foreach($bien->articulos as $articulo){
-                $articulo->estado = 0;
-                $articulo->save();
-            }
+        foreach($credito->bienes as $bien) {
+                $bien->estado = 0;
+                $bien->save();
         }
         return response()->json("Credito Fiscal"." ".$credito->folio." "."se dio de Baja", 200);
     }
@@ -202,16 +203,16 @@ class CreditosController extends Controller {
         $bienes = Collect();
         $credito = Credito::where("folio", $request->input("folio"))->firstOrFail();
         foreach($credito->bienes as $bien) {
+            $subcategorias = Collect();
             $bien->depositario;
             $bien->deposito->estado->nombre; 
             $bien->valuaciones->first();
-            $bien->categorias = $this->users->categorias($bien);
             foreach($bien->categorias as $categoria){
-                $categoria->subcategorias = $this->users->subcategorias($categoria->id);
-                foreach($categoria->subcategorias as $subcategoria){
-                    $subcategoria->subsubcategorias = $this->users->subcategorias($subcategoria->id);
-                }
-            }
+                $bien->subcategorias = $this->users->subcategorias($categoria->id);
+                foreach($bien->subcategorias as $subcategoria) {
+                    $bien->subsubcategorias = $this->users->subsubcategorias($subcategoria->id);
+                }    
+            }   
             $bienes->push($bien);
         }
         return response()->json($bienes, 200);
@@ -234,40 +235,23 @@ class CreditosController extends Controller {
         return view("articulos.add", ["categorias" => $categorias, "subcategorias" => $subcategorias, "credito" => $credito]);
     }
 
-    public function imagenes(Articulo $articulo, request $request){
+    public function imagenes(Bien $bien, request $request){
         if($request->isMethod("post")) {
             $imagen = $request->file("file");
             $nombre = $imagen->getClientOriginalName();
             $extencion = $imagen->guessExtension();
-            $secureName = Hash::make($nombre);
             $dir = public_path().'/img';
-            $articulo->imagenes()->create(["nombre" => $nombre]);
+            $bien->imagenes()->create(["nombre" => $nombre]);
             $subir = $imagen->move($dir, $nombre);
         } else {
-            $articulo->categorias = DB::table("articulos_categorias")
-            ->join("categorias", "articulos_categorias.categorias_id", "=", "categorias.id")
-            ->select("categorias.nombre","categorias.id")
-            ->where("articulos_categorias.articulos_id",$articulo->id)
-            ->groupBy("categorias.id")
-            ->get();
-            
-            foreach($articulo->categorias as $categoria) {
-                $categoria->subcategorias = DB::table("articulos_categorias")
-                ->join("subcategorias", "articulos_categorias.subcategoria_id", "=", "subcategorias.id")
-                ->select("subcategorias.nombre","subcategorias.id")
-                ->where("articulos_categorias.categorias_id",$categoria->id
-                )->get();
-                
-                foreach($categoria->subcategorias as $subcategoria) {
-                    $subcategoria->subsubcategorias = DB::table("articulos_categorias")
-                    ->join("subsubcategorias", "articulos_categorias.subsubcategoria_id", "=", "subsubcategorias.id")
-                    ->select("subsubcategorias.nombre","subsubcategorias.id")
-                    ->where("articulos_categorias.subcategoria_id",$subcategoria->id)
-                    ->get();
+            foreach($bien->categorias as $categoria) {
+                $categoria->subcategorias = $this->users->subcategorias($categoria->id);
+                foreach ($categoria->subcategorias as $subcategoria) {
+                    $subcategoria->subsubcategorias = $this->users->subsubcategorias($subcategoria->id);
+                }
             }
         }
-            return view("imagenes.index", ["articulo" => $articulo]);
-        }
+            return view("imagenes.index", ["bien" => $bien, "categorias" => []]);
     }
 
     public function municipios(request $request){

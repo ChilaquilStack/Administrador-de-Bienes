@@ -1,5 +1,5 @@
 <div class="list-group">
-    @foreach($articulo->categorias as $categoria)
+    @foreach($bien->categorias as $categoria)
         <div class="list-group-item">
             <h4 class="list-group-item-heading">{{$categoria->nombre}}</h4>
             <div class="list-group">

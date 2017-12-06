@@ -21,6 +21,6 @@ class Contribuyente extends Model
     }
 
     public static function activos(){
-        return static::where("estatus", 1)->orderBy("folio","asc")->get();
+        return static::where("estado", 1)->orderBy("id","asc")->get();
     }
 }

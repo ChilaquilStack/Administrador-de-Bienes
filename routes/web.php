@@ -11,11 +11,10 @@ Route::group(['middleware' => ['checkRole']], function(){
     Route::get("/creditos/municipios",  "CreditosController@municipios");
     
     Route::match(["get", "post"] , "/creditos/{credito?}/add",  "CreditosController@add");
-    Route::match(["get","post"], "/creditos/{articulo?}/imagenes","CreditosController@imagenes");
+    Route::match(["get","post"], "/creditos/{bien?}/imagenes","CreditosController@imagenes");
     Route::resource("creditos", "CreditosController");
     //Ruta de los bienes
     Route::get("/bienes/bienes", "BienesController@bienes");
-    Route::get("/bienes/articulos", "BienesController@articulos");
     Route::post("/bienes/destroy", "BienesController@destroy");
     Route::post("/bienes/{id?}/", "BienesController@update");
     Route::resource("bienes", "BienesController");
