@@ -205,7 +205,7 @@ class CreditosController extends Controller {
         foreach($credito->bienes as $bien) {
             $subcategorias = Collect();
             $bien->depositario;
-            $bien->deposito->estado->nombre; 
+            $bien->deposito->estado->nombre;
             $bien->valuaciones->first();
             foreach($bien->categorias as $categoria){
                 $bien->subcategorias = $this->users->subcategorias($categoria->id);
@@ -220,19 +220,26 @@ class CreditosController extends Controller {
 
     public function add(Credito $credito, request $request) {
         
+        $estados = DB::table("estados")->select("id", "nombre")->orderBy("nombre", "asc")->get();
+
         if($request->isMethod("post")) {
-            $articulo = $credito->bienes->first()->articulos()->create([
+            $bien = Bien::create([
+                "numero_control" => $request->input("numero_control"),
                 "descripcion" => $request->input("descripcion"),
-                "cantidad" => $request->input("cantidad")
+                "cantidad" => $request->input("cantidad"),
+                "depositos_id" => $request->input("deposito"),
+                "depositarios_id" => $request->intput("depositario")
             ]);
-            $articulo->categorias()->attach([$request->input("categoria")]);
-            $articulo->subcategorias()->attach([$request->input("subcategoria")]);
+            $bien->save();
+            $bien->categorias()->attach([$request->input("categoria")]);
+            $bien->subcategorias()->attach([$request->input("subcategoria")]);
+            $credito->attach($bien, ["documento" => $request->input("documento_embargo")]);
             return redirect("/bienes")->with("status", "Se agrego el bien correctamente");
         }
 
         $categorias = DB::select("select id, nombre from categorias");
         $subcategorias = DB::select("select id, nombre from subcategorias");
-        return view("articulos.add", ["categorias" => $categorias, "subcategorias" => $subcategorias, "credito" => $credito]);
+        return view("articulos.add", ["categorias" => $categorias, "subcategorias" => $subcategorias, "credito" => $credito, "estados" => $estados]);
     }
 
     public function imagenes(Bien $bien, request $request){

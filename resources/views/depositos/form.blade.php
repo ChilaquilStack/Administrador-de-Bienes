@@ -1,9 +1,7 @@
 
     <div class="form-group">
-        <div>
             <label class="control-label" for="nombre_depositario">Nombre:</label>
             <input type="text" class="form-control" id="nombre_depositario" placeholder="Nombre">
-        </div>
     </div>
     <div class="form-group">
         <div>

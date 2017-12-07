@@ -31,8 +31,7 @@ class AvaluosController extends Controller
     }
 
     public function store(Request $request) {
-        $id = $request->input("avaluo.articulo");
-        $articulo = Articulo::where("id",$id)->firstOrFail();
+        $bien = Bien::where("numero_control", $request->input("avaluo.bien"))->firstOrFail();
         $perito = new Perito([
             "nombre" => $request->input("avaluo.perito.nombre"),
             "apellido_paterno" => $request->input("avaluo.perito.apellido_paterno"),
@@ -42,7 +41,7 @@ class AvaluosController extends Controller
         $monto = $request->input("avaluo.monto");
         $numero_dictamen = $request->input("avaluo.numero_dictamen");
         $fecha_avaluo = new Carbon($request->input("avaluo.fecha"));
-        $articulo->valuaciones()->attach($perito->Id,["monto" => $monto, "numero_dictamen" => $numero_dictamen, "fecha" => $fecha_avaluo]);
+        $bien->valuaciones()->attach($perito->id,["monto" => $monto, "numero_dictamen" => $numero_dictamen, "fecha" => $fecha_avaluo]);
         return response()->json("Se Valuo el bien correctamente" ,200);
     }
 

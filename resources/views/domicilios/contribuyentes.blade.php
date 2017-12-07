@@ -33,14 +33,7 @@
 <div class="form-group">
     {{Form::label("cp","Codigo Postal:", ["class"=>"control-label col-sm-2"])}}
         <div class="col-sm-10">
-            {{Form::text("cp", null, ["class"=>"codigo_postal form-control", "placeholder" => "Ingrese la colonia", "id"=>"codigo_postal"])}}
-        </div>
-</div>
-
-<div class="form-group">
-    {{Form::label("int","Numero Interior:", ["class"=>"control-label col-sm-2"])}}
-        <div class="col-sm-10">
-            {{Form::text("int", null, ["class"=>"int form-control", "placeholder" => "Ingrese el numero interior", "id" => "int"])}}
+            {{Form::text("cp", null, ["class"=>"codigo_postal form-control", "placeholder" => "Ingrese el codigo postal", "id"=>"codigo_postal"])}}
         </div>
 </div>
 
@@ -50,6 +43,14 @@
         {{Form::text("ext", null, ["class"=>"ext contribuyente form-control", "placeholder" => "Ingrese el numero exterior", "id"=>"ext"])}}
     </div>
 </div>
+
+<div class="form-group">
+    {{Form::label("int","Numero Interior:", ["class"=>"control-label col-sm-2"])}}
+        <div class="col-sm-10">
+            {{Form::text("int", null, ["class"=>"int form-control", "placeholder" => "Ingrese el numero interior", "id" => "int"])}}
+        </div>
+</div>
+
 
 <div class="form-group">
     {!!Form::label("calle","Calle:", ["class"=>"control-label col-sm-2"])!!}

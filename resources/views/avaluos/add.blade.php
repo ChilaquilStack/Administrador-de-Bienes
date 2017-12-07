@@ -5,8 +5,8 @@
     {{Html::style("//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css")}}
 @endsection
 @section("content")
-{{--@include('layout.modals.warning')--}}
-{{--@include('layout.modals.success')--}}
+@include('layout.modals.warning')
+@include('layout.modals.success')
 <input type="hidden" value="{{$bien->id}}" id="id_articulo">
 
 <div class="panel-group">
@@ -50,6 +50,7 @@
 </div>
 @endsection
 @section("scripts")
+    {{Html::script("js/variables.js")}}
     {{Html::script("js/funciones.js")}}
     {{Html::script("js/avaluos.js")}}
 @endsection

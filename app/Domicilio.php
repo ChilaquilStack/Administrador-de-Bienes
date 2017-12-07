@@ -16,7 +16,7 @@ class Domicilio extends Model
     }
     
     public function bienes() {
-        return $this->hasMany("App\Bien", "deposito_Id","id");
+        return $this->hasMany("App\Bien", "numero_control","id");
     }
 
     public function estado() {
