@@ -1,9 +1,11 @@
 <div class="form-group">
     <div>
         <label class="control-label" for="estado_deposito">Estado:</label>
-        <select id="estado_deposito">
+        <select id="estado_deposito" name="estado">
             @foreach($estados as $estado)
-                <option value="{{$estado->id}}">{{$estado->nombre}}</option>
+                @if($estado->id == 14)
+                    <option value="{{$estado->id}}">{{$estado->nombre}}</option>
+                @endif
             @endforeach
         </select>
     </div>
@@ -12,14 +14,19 @@
 <div class="form-group">
     <div>
         <label class="control-label" for="municipio_deposito">Municipio:</label>
-        <select id="municipio_deposito"></select>
+        <select id="municipio_deposito" name="municipio">
+            <option value="">Seleccione un municipio</option>
+            @foreach($municipios as $municipio)
+                <option id = "{{$municipio->id}}">{{$municipio->nombre}}</option>
+            @endforeach
+        </select>
     </div>
 </div>
 
 <div class="form-group">
     <div>
         <label class="control-label" for="colonia_deposito">Colonia:</label>
-        <input class="form-control" id="colonia_deposito" placeholder="Ingrese la colonia" type="text">
+        {{Form::text("colonia", null, ["class" => "form-control", "id"=>"colonia_deposito", "placeholder"=>"Ingrese la colonia"])}}
     </div>
 </div>
 

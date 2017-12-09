@@ -51,29 +51,29 @@ function ajax(direccion, metodo = "get", data) {
 
 function crear_tabla_articulos(articulos) {
     var tabla = '', categorias_pluck, subcategorias_pluck = [], subsubcategorias_pluck = [];
-    $.each(articulos, function (index, articulo) {
-        $('#tabla_articulos_temporales tbody').html("");
-        tabla += "<tr><td>" + articulo.numero_control + "</td><td>";
-        categorias_pluck = [];
-        subcategorias_pluck = [];
-        subsubcategorias_pluck = [];
-        $.each(articulo.categorias, function (i, categoria) {
-            categorias_pluck.push(categoria.value);
-            $.each(categoria.subcategorias, function (i, subcategoria) {
-                subcategorias_pluck.push(subcategoria.value);
-                $.each(subcategoria.subsubcategorias, function (i, subsubcategoria) {
-                    subsubcategorias_pluck.push(subsubcategoria.value);
-                    console.log(subsubcategorias_pluck);
+    if(articulos.length){
+        $.each(articulos, function (index, articulo) {
+            $('#tabla_articulos_temporales tbody').html("");
+            tabla += "<tr><td>" + articulo.numero_control + "</td><td>";
+            categorias_pluck = [];
+            subcategorias_pluck = [];
+            subsubcategorias_pluck = [];
+            $.each(articulo.categorias, function (i, categoria) {
+                categorias_pluck.push(categoria.value);
+                $.each(categoria.subcategorias, function (i, subcategoria) {
+                    subcategorias_pluck.push(subcategoria.value);
+                    $.each(subcategoria.subsubcategorias, function (i, subsubcategoria) {
+                        subsubcategorias_pluck.push(subsubcategoria.value);
+                    });
                 });
             });
+            tabla += categorias_pluck.join(' , ');
+            tabla += "</td><td>";
+            tabla += subcategorias_pluck.join(' , ');
+            tabla += "</td><td>";
+            tabla += subsubcategorias_pluck.join(' , ');
+            tabla += "</td><td>" + articulo.cantidad + "</td><td>" + articulo.descripcion + "</td><td><button type='button' class='btn btn-danger btn-sm' onclick='eliminar_articulo(" + index + ")'><i class='fa fa-trash-o' aria-hidden='true'></i></button></td></tr>";
         });
-        tabla += categorias_pluck.join(' , ');
-        tabla += "</td><td>";
-        tabla += subcategorias_pluck.join(' , ');
-        tabla += "</td><td>";
-        tabla += subsubcategorias_pluck.join(' , ');
-        tabla += "</td><td>" + articulo.cantidad + "</td><td>" + articulo.descripcion + "</td><td><button type='button' class='btn btn-danger btn-sm' onclick='eliminar_articulo(" + index + ")'><i class='fa fa-trash-o' aria-hidden='true'></i></button></td></tr>";
-    });
     $('#tabla_articulos_temporales tbody').append(tabla);
 }
 

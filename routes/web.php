@@ -9,8 +9,7 @@ Route::group(['middleware' => ['checkRole']], function(){
     Route::post("/creditos/destroy", "CreditosController@destroy");
     Route::post("/creditos/update",  "CreditosController@update");
     Route::get("/creditos/municipios",  "CreditosController@municipios");
-    
-    Route::match(["get", "post"] , "/creditos/{credito?}/add",  "CreditosController@add");
+    Route::match(["get", "post"] , "/creditos/add",  "CreditosController@add");
     Route::match(["get","post"], "/creditos/{bien?}/imagenes","CreditosController@imagenes");
     Route::resource("creditos", "CreditosController");
     //Ruta de los bienes
@@ -22,14 +21,15 @@ Route::group(['middleware' => ['checkRole']], function(){
     Route::get("/contribuyentes/contribuyentes", "ContribuyenteController@contribuyentes");
     Route::get("/contribuyentes/creditos", "ContribuyenteController@creditos");
     Route::resource("contribuyentes", "ContribuyenteController");
-    //Otros
+    //Otras Rutas
     Route::resource("avaluos", "AvaluosController");
     Route::resource("remates", "RematesController");
-    
+    //Rutas de las categorias
     Route::match(["get", "post"], "/categorias","CategoriasController@index");
     Route::get("/categorias/subcategorias", "CategoriasController@subcategorias");
     Route::get("/categorias/subsubcategorias", "CategoriasController@subsubcategorias");
-
+    Route::get("/categorias/{id?}", "CategoriasController@destroy");
+    //Rutas de los usuarios
     Route::resource("usuarios", "UsuariosController");
 });
 

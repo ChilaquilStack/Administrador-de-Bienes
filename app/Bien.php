@@ -8,7 +8,7 @@ class Bien extends Model
 {
     protected $table = "bienes";
     protected $primaryKey = "numero_control";
-    protected $fillable = ["numero_control","depositarios_id", "deposito_id", "descripcion", "cantidad"];
+    protected $fillable = ["numero_control","depositarios_id", "depositos_id", "descripcion", "cantidad"];
     public $timestamps = false;
     public $incrementing = false;
 
@@ -18,7 +18,7 @@ class Bien extends Model
     }
 
     public function deposito() {
-        return $this->belongsTo("App\Domicilio","deposito_id");
+        return $this->belongsTo("App\Domicilio","depositos_id");
     }
 
     public function depositario() {

@@ -13,7 +13,7 @@ class Categoria_bien extends Model
 
 
     public function bienes() {
-        return $this->belongsToMany("App\Articulo", "articulos_categorias","categorias_id", "bienes_numero_control");
+        return $this->belongsToMany("App\Bien", "bienes_categorias","categorias_id", "bienes_numero_control");
     }
 
     public function subcategorias() {

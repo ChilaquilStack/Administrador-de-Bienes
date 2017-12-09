@@ -99,34 +99,32 @@ class CreditosController extends Controller {
 
         $contribuyente->creditos()->save($credito);
 
-
-        $depositario = new Depositario([
-            "nombre" => $request->input("credito.bien.depositario.nombre"),
-            "apellido_paterno" => $request->input("credito.bien.depositario.apellido_paterno"),
-            "apellido_materno" => $request->input("credito.bien.depositario.apellido_materno")
-        ]);
-        $depositario->save();
-        
-        $deposito = new Domicilio([
-            "cp" => $request->input("credito.bien.deposito.cp"),
-            "int" => $request->input("credito.bien.deposito.int"),
-            "ext" => $request->input("credito.bien.deposito.ext"),
-            "calle" => $request->input("credito.bien.deposito.calle"),
-            "colonia" => $request->input("credito.bien.deposito.colonia"),
-            "municipios_id" => $request->input("credito.bien.deposito.municipio"),
-            "estados_id" => $request->input("credito.bien.deposito.estado")
-        ]);
-        $deposito->save();
-
-        foreach($request->input('credito.bien.articulos') as $b) {
+        foreach($request->input('credito.bienes') as $b) {
+            $depositario = new Depositario([
+                "nombre" => $b["depositario"]["nombre"],
+                "apellido_paterno" => $b["depositario"]["apellido_paterno"],
+                "apellido_materno" => $b["depositario"]["apellido_materno"]
+            ]);
+            $depositario->save();
+            $deposito = new Domicilio([
+                "cp" => $b["deposito"]["cp"],
+                "int" => $b["deposito"]["int"],
+                "ext" => $b["deposito"]["ext"],
+                "calle" => $b["deposito"]["calle"],
+                "colonia" => $b["deposito"]["colonia"],
+                "municipios_id" => $b["deposito"]["municipio"],
+                "estados_id" => $b["deposito"]["estado"]
+            ]);
+            $deposito->save();
             $bien = new Bien([
                 "numero_control" => $b["numero_control"],
                 "descripcion" => $b["descripcion"],
                 "cantidad" => $b["cantidad"],
                 "depositarios_id" => $depositario->id,
-                "deposito_id" => $deposito->id
+                "depositos_id" => $deposito->id
             ]);
             $bien->save();
+
             foreach($b["categorias"] as $categoria) {
                 if(array_has($categoria, "subcategorias")) {
                     foreach($categoria["subcategorias"] as $subcategoria) {
@@ -222,6 +220,8 @@ class CreditosController extends Controller {
         
         $estados = DB::table("estados")->select("id", "nombre")->orderBy("nombre", "asc")->get();
 
+        $municipios = DB::table("municipios")->select("id", "nombre")->orderBy("nombre", "asc")->get();
+        
         if($request->isMethod("post")) {
             $bien = Bien::create([
                 "numero_control" => $request->input("numero_control"),
@@ -239,7 +239,7 @@ class CreditosController extends Controller {
 
         $categorias = DB::select("select id, nombre from categorias");
         $subcategorias = DB::select("select id, nombre from subcategorias");
-        return view("articulos.add", ["categorias" => $categorias, "subcategorias" => $subcategorias, "credito" => $credito, "estados" => $estados]);
+        return view("articulos.add", ["categorias" => $categorias, "subcategorias" => $subcategorias, "credito" => $credito, "estados" => $estados, "municipios" => $municipios]);
     }
 
     public function imagenes(Bien $bien, request $request){

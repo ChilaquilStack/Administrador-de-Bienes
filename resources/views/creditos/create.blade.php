@@ -11,7 +11,7 @@
             <h1 class="panel-title">Registro Crédito Fiscal</h1>    
         </div>
         <div class="panel-body">
-            {!!Form::open(["class"=>"form-inline", "rol"=>"form"])!!}
+            {!!Form::open(["class"=>"form-inline", "rol"=>"form", "id" => "formulario_credito"])!!}
         	    @include("creditos.form")
             {!!Form::close()!!}
         </div>
@@ -74,13 +74,11 @@
 
     <div class="panel panel-primary">
 	    <div class="panel-footer">
-		    <button type="button" class="btn btn-success btn-sm" id="guardar_credito_fiscal">Guardar Credito</button>
-		    <button type="button" class="btn btn-default btn-sm">Cancelar</button>
+		    <button type="button" class="btn btn-success btn-sm" id="guardar_credito_fiscal">Guardar</button>
 	    </div>
     </div>
 
 </div>
-
 
 @endsection
 @section("scripts")

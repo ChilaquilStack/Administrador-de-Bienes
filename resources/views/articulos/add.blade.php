@@ -23,7 +23,7 @@
                                     @if($credito->contribuyente->razon_social)
                                         <td>{{$credito->contribuyente->razon_social}}</td>
                                     @else
-                                        <td>{{$credito->contribuyente->Nombre." ".$credito->contribuyente->Apellido_Paterno." ".$credito->contribuyente->Apellido_Materno}}</td>
+                                        <td>{{$credito->contribuyente->nombre." ".$credito->contribuyente->apellido_paterno." ".$credito->contribuyente->apellido_materno}}</td>
                                     @endif
                                     <td>{{$credito->documento_determinante}}</td>
                                 </tr>
@@ -76,9 +76,8 @@
 </div>
 @endsection
 @section("scripts")
-    {{--{{Html::script("js/variables.js")}}
+    {{Html::script("js/variables.js")}}
     {{Html::script("js/funciones.js")}}
     {{Html::script("js/sub_subsub_categorias.js")}}
-    {{Html::script("js/crear_tabla.js")}}--}}
     {{Html::script("js/script.js")}}
 @endsection

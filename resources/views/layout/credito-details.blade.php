@@ -9,7 +9,7 @@
                     <td>{{$credito->origen_credito}}</td>
                     <td>${{number_format($credito->monto, 2)}}</td>
                     @if($credito->contribuyente->nombre)
-                        <td>{{$credito->contribuyente->Nombre." ".$credito->contribuyente->Apellido_Paterno." ".$credito->contribuyente->Apellido_Materno}}</td>
+                        <td>{{$credito->contribuyente->nombre." ".$credito->contribuyente->apellido_paterno." ".$credito->contribuyente->apellido_materno}}</td>
                     @else
                         <td>{{$credito->contribuyente->razon_social}}</td>
                     @endif
