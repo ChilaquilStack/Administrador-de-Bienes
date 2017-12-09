@@ -120,6 +120,7 @@ columnas_creditos = [
             return '<button type="button" class="btn btn-primary btn-sm" onclick=agregar_bienes_credito("' + (data) + '")>' + 
                 '<i class="fa fa-plus" aria-hidden="true"></i>' +
             '</button>'
+            
         }
     },
 ],

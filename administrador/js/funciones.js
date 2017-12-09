@@ -73,15 +73,20 @@ function mostrar_bienes_credito(credito) {
     $("#tabla_articulos caption h1").text("Bienes del credito fiscal:" + " " + credito);
     $("#info-credito").text(credito.contribuyente);
     tabla_articulos = $("#tabla_articulos").DataTable(crear_tabla(columnas_articulos, "creditos/bienes", {"folio": credito}, botones_bienes));
-    if($("#tabla_articulos").is(":hidden")) {
-        $("#tabla_articulos").slideDown("slow");
+    if($("#articulos").is(":hidden")) {
+        $("#articulos").slideDown("slow");
+        
     } else {
-        $("#tabla_articulos").slideUp("slow");
+        $("#articulos").slideUp("slow");
     }
 }
 
 function agregar_bienes_credito(credito){
-    alert(credito);
+    if($("#formulario_bienes").is(":hidden")) {
+        $("#formulario_bienes").slideDown("slow");
+    } else {
+        $("#formulario_bienes").slideUp("slow");
+    }
 }
 
 function crear_tabla_bienes(bienes) {

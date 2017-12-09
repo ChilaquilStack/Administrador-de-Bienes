@@ -16,20 +16,32 @@ use DB;
 
 class CreditosController extends Controller {
 
-    private $users;
+    private $users, $estados, $municipios, $categorias, $subcategorias;
     public function __construct(Usuario $users) {
         $this->middleware('auth');
         $this->users = $users;
+        $this->estados = DB::table("estados")->select("id", "nombre")->orderBy("nombre", "asc")->get();
+        $this->municipios = DB::table("municipios")->select("id", "nombre")->orderBy("nombre", "asc")->get();
+        $this->categorias = DB::table("categorias")->select("id", "nombre")->orderBy("nombre", "asc")->get();
+        $this->subcategorias = DB::table("subcategorias")->select("id", "nombre")->orderBy("nombre", "asc")->get();
     }
 
     public function index() {
         
-    $bajas_creditos =  DB::table("motivos_bajas_creditos_fiscales")->select("id", "descripcion")->orderBy("descripcion", "asc")->get();
+    $bajas_creditos = DB::table("motivos_bajas_creditos_fiscales")
+                        ->select("id", "descripcion")->orderBy("descripcion", "asc")
+                        ->get();
         
     $bajas_articulos = DB::table("motivos_bajas_bienes")->select("id", "descripcion")->orderBy("descripcion", "asc")->get();
 
-    return view("index", ["bajas_creditos" => $bajas_creditos, "bajas_articulos" => $bajas_articulos]);
-    
+    return view("index",
+        [
+            "bajas_creditos" => $bajas_creditos,
+            "bajas_articulos" => $bajas_articulos, 
+            "categorias" => $this->categorias,
+            "estados" => $this->estados,
+            "municipios" => $this->municipios
+        ]);
     }
 
     public function create() {
