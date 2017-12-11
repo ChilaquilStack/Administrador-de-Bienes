@@ -1,11 +1,11 @@
 <div class="form-group">
-    <label class="control-label col-sm-2" for="nombre">Estado:</label>
+    {{Form::label("estado","Estado",["class"=>"control-label col-sm-2"])}}
     <div class="col-sm-10">
-        <select id="estado" class="estado" name="municipio">
+        <select id="estado" class="estado" name="estado">
             @foreach($estados as $estado)
                 @if($estado->id == 14)
                     <option value="{{$estado->id}}">{{$estado->nombre}}</option>
-                @endif
+				@endif
             @endforeach
         </select>
     </div>
@@ -16,9 +16,9 @@
         <div class="col-sm-10">
             <select id="municipio" class="municipio" name="municipio">
                <option value="">Seleccione un municipio</option>
-                @foreach($municipios as $municipio)
-                    <option value="{{$municipio->id}}">{{$municipio->nombre}}</option>
-                @endforeach
+                	@foreach($municipios as $municipio)
+                    	<option value="{{$municipio->id}}">{{$municipio->nombre}}</option>
+                	@endforeach
             </select>
         </div>
 </div>

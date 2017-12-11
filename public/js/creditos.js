@@ -19,32 +19,14 @@ function start() {
         }
     });
 
-    //Eliminar los creditos fiscales
-    $('#creditos tbody').on('click', 'td.delete-control', eliminar_credito);
-
     //Eliminar articulo
-    $('#tabla_articulos tbody').on('click', 'td.delete-bien', eliminar_articulo_credito);
-    
+    $("#agregar").click(agregar_bienes);
+    $("#agregar_categoria").click(agregar_categoria);
+    $("#agregar_subcategoria").click(agregar_subcategoria);
+    $("#agregar_subsubcategoria").click(agregar_subsubcategoria);
+    $("#btn_guardar_bien").click(guardar_bienes);
 
-    //Mostrar los bienes de un credito fiscal
-    $('#creditos tbody').on('click', 'td.view-bienes', function() {
-        var data = tabla_creditos.row($(this).parents("tr")).data();
-        $("#tabla_articulos caption h1").text("Bienes del credito fiscal:" + " " + data.folio);
-        if(data.contribuyente.razon_social){
-            $("#info-credito").text(data.contribuyente.razon_social);
-        } else {
-            $("#info-credito").text(data.contribuyente.Nombre + " " + data.contribuyente.Apellido_Materno + " " + data.contribuyente.Apellido_Paterno);
-        }
-        tabla_articulos = $("#tabla_articulos").DataTable(crear_tabla(columnas_articulos, "/creditos/bienes", {"folio": data.folio}, botones_bienes));
-        // tabla_articulos.on( 'order.dt search.dt', function () {
-        //     tabla_articulos.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
-        //         cell.innerHTML = i + 1;
-        //     });
-        // } ).draw();
-        $("#tabla_articulos").show();
-    });
 }
-
 $(function(){
     start();
 });

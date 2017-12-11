@@ -11,7 +11,7 @@
             </div>
 
             <div class="panel-body">
-                {{Form::model($bien,["route" => ["bienes.update", $bien->id], "method" => "POST", "class"=>"form-horizontal", "role"=>"form"])}}
+                {{Form::model($bien,["route" => ["bienes.update", $bien->id], "method" => "PUT", "class"=>"form-horizontal", "role"=>"form"])}}
                     @include("articulos.form")
                     <button type="submit" class="btn btn-success">Guardar</button>
                 {{Form::close()}}

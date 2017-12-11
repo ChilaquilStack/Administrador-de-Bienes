@@ -10,66 +10,71 @@
                     {{ session('status') }}
                 </div>
             @endif
-            {{Form::open(['class' => 'form-horizontal', 'role' => 'form'])}}
-                @include("categorias.form")
-            {{Form::close()}}
-            <table class="table table-striped table-condensed" id="tabla_categorias">
-                <thead>
-                    <tr><th>Categoria</th><th>Subcategoria</th><th>Subsubcategoria</th></tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-            <div class="panel">
-                <div class="panel panel-primary">
+            <div class="panel-group" id="categorias">
+                <div class="panel-primary">
                     <div class="panel-heading">
-                        <h1 class="panel-title">Categorias</h1>
+                        <div class="panel-title">Agregar</div>
                     </div>
                     <div class="panel-body">
-                        <div class="list-group">
-                            @if($categorias->isNotEmpty())
-                                @foreach($categorias as $categoria)
-                                    <div class="row">
-                                        <div class="col-sm-6 col-md-12">
-                                            <div class="list-group-item">
-                                                <h4 class="list-group-item-heading">
-                                                    {{$categoria->nombre}}
-                                                    <div class="btn-group pull-right">
-                                                        <a href="#">
-                                                            <button class="btn btn-success btn-sm">
-                                                                <i class="fa fa-plus" aria-hidden="true"></i>
-                                                            </button>
-                                                        </a>
-                                                        <a href="{{action('CategoriasController@destroy', ['categoria' => $categoria->id])}}">
-                                                            <button class="btn btn-danger btn-sm">
-                                                                <i class="fa fa-trash-o" aria-hidden="true"></i>
-                                                            </button>
-                                                        </a>
-                                                    </div>
-                                                </h4>
-                                                <div class="list-group">
-                                                    @if($categoria->subcategorias->isNotEmpty())
-                                                        @foreach($categoria->subcategorias as $subcategoria)
-                                                            <h5 class="list-group-item-heading">{{$subcategoria->nombre}}</h5>
-                                                            <div class="list-group">
-                                                                @if($subcategoria->subsubcategorias->isNotEmpty())
-                                                                    @foreach($subcategoria->subsubcategorias as $subsubcategoria)
-                                                                        <h6 class="list-group-item-heading">{{$subsubcategoria->nombre}}</h6>
-                                                                    @endforeach
-                                                                @endif
-                                                            </div>
-                                                        @endforeach
-                                                    @endif
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            @else
-                                {{"No existen categorias"}}
-                            @endif
-                        </div>
+                        {{Form::open(['class' => 'form-horizontal', 'role' => 'form'])}}
+                            @include("categorias.form")
+                        {{Form::close()}}
                     </div>
                 </div>
+                    @foreach($categorias as $categoria)
+                    <div class="panel-primary">
+                        <div class="panel-heading">
+                            <div class="panel-title">
+                                <a data-toggle="collapse" data-parent="#categorias" href="{{'#collapse'.$categoria->id}}">{{$categoria->nombre}}</a>
+                                <div class="btn-group pull-right control-group">
+                                    <button class="btn btn-success btn-sm" title="Agregar subcategorias" onclick="{{'crear_subcategoria('.$categoria->id.')'}}">
+                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                    </button>
+                                    <a href="{{action('CategoriasController@destroy', ['categoria' => $categoria->id])}}" title="eliminar categoria"><button class="btn btn-danger btn-sm"><i class="fa fa-trash-o" aria-hidden="true"></i></button></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="{{'collapse'.$categoria->id}}" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <ul class="list-group">
+                                    @foreach($categoria->subcategorias as $subcategoria)
+                                        <li class="list-group-item">
+                                            <div class="list-group-item-heading">
+                                                <div class="btn-group pull-right control-group">
+                                                    <button class="btn btn-success btn-sm" title="Agregar subsubcategorias" onclick="{{'crear_subsubcategoria('.$subcategoria->id.')'}}">
+                                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                                    </button>
+                                                    </a>
+                                                    <a href="{{action('CategoriasController@subcategoria_destroy', ['subcategoria' => $subcategoria->id])}}" title="eliminar subcategoria">
+                                                        <button class="btn btn-danger btn-sm">
+                                                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                                        </button>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <p class="list-group-item-text">{{$subcategoria->nombre}}</p>
+                                            <ul>
+                                                @foreach($subcategoria->subsubcategorias as $subsubcategoria)
+                                                    <li>
+                                                        <p class="list-group-item-text">
+                                                            {{$subsubcategoria->nombre}}
+                                                            <a href="{{action('CategoriasController@subsubcategoria_destroy', ['subsubcategoria' => $subsubcategoria->id])}}" title="eliminar subcategoria">
+                                                                <button class="btn btn-link btn-sm">
+                                                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                                                </button>
+                                                            </a>
+                                                        </p>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                @endforeach
             </div>
         </div>
     </div>

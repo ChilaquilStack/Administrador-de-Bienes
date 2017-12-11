@@ -1,6 +1,5 @@
 "use strict";
 function start() {
-    let tabla_contribuyentes, tabla_creditos;
     tabla_contribuyentes = $("#tabla_contribuyentes").DataTable(crear_tabla(columnas_contribuyentes, "/contribuyentes/contribuyentes", null, null));
     tabla_creditos = $("#creditos").DataTable(crear_tabla(columnas_creditos_contribuyente, "/contribuyentes/creditos", {"id": $("#id_contribuyente").val()}, null));
     //Mostrar los bienes de un credito fiscal

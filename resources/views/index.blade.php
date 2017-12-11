@@ -25,5 +25,6 @@
 @section("scripts")
     {{Html::script("js/variables.js")}}
     {{Html::script("js/funciones.js")}}
-    {{Html::script("js/creditos.js")}} 
+    {{Html::script("js/sub_subsub_categorias.js")}}
+    {{Html::script("js/creditos.js")}}
 @endsection

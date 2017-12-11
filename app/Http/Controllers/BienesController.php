@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 use App\Bien;
-use App\Articulo;
+use App\imagen;
 use App\Repositorios\Usuario;
+use Auth;
 class BienesController extends Controller {
 
     protected $users;
@@ -17,7 +18,16 @@ class BienesController extends Controller {
     }
 
     public function index() {
-        return view("bienes.index");
+        $bajas_creditos = DB::table("motivos_bajas_creditos_fiscales")
+                                ->select("id", "descripcion")->orderBy("descripcion", "asc")
+                                ->get();
+
+        $bajas_articulos = DB::table("motivos_bajas_bienes")
+                                ->select("id", "descripcion")
+                                ->orderBy("descripcion", "asc")
+                                ->get();
+
+        return view("bienes.index", ["bajas_creditos" => $bajas_creditos, "bajas_articulos" => $bajas_articulos]);
     }
 
     
@@ -83,10 +93,10 @@ class BienesController extends Controller {
         $bien->save();
         DB::insert("insert into bajas_bienes(motivos_bajas_articulos_id, bienes_numero_control, usuarios_id, comentarios) values(?,?,?,?)", 
             [
-                $request->input("baja"), $articulo->id, Auth::user()->id, $request->input("comentarios")
+                $request->input("baja"), $bien->numero_control, Auth::user()->id, $request->input("comentarios")
             ]
         );
-        return response()->json("Bien"." ".$bien->id." "."se dio de Baja", 200);
+        return response()->json("Bien"." ".$bien->numero_control." "."se dio de Baja", 200);
     }
 
     public function bienes(){
@@ -96,10 +106,39 @@ class BienesController extends Controller {
             $bien->depositario;
             $bien->creditos;
             $bien->cantidad;
-            $bien->categorias;
+            foreach($bien->categorias as $categoria){
+                $bien->subcategorias = $this->users->subcategorias($categoria->id);
+                foreach($bien->subcategorias as $subcategoria) {
+                    $bien->subsubcategorias = $this->users->subsubcategorias($subcategoria->id);
+                }    
+            }
             $bien->creditos;
             $bien->ultima_valuacion = $bien->valuaciones->first();
         }
         return response()->json($bienes, 200);
+    }
+    
+    public function imagenes(Bien $bien, request $request){
+        if($request->isMethod("post")) {
+            $imagen = $request->file("file");
+            $nombre = uniqid() . $imagen->getClientOriginalName();
+            $extencion = $imagen->guessExtension();
+            $dir = public_path().'/img';
+            $bien->imagenes()->create(["nombre" => $nombre]);
+            $subir = $imagen->move($dir, $nombre);
+        } else {
+            foreach($bien->categorias as $categoria) {
+                $categoria->subcategorias = $this->users->subcategorias($categoria->id);
+                foreach ($categoria->subcategorias as $subcategoria) {
+                    $subcategoria->subsubcategorias = $this->users->subsubcategorias($subcategoria->id);
+                }
+            }
+        }
+            return view("imagenes.index", ["bien" => $bien, "categorias" => []]);
+    }
+
+    public function imagen_destroy(imagen $imagen){
+        $imagen->delete();
+        return back();
     }
 }

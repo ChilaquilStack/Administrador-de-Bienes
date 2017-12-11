@@ -1,11 +1,8 @@
 "use strict";
 
 function enviar() {
-    var avaluo;
-    avaluo = {
-        perito: {}
-    };
-    avaluo.articulo = $("#id_articulo").val()
+    var avaluo = {perito: {}};
+    avaluo.bien = $("#numero_control").val()
     avaluo.perito.nombre = $("#nombre_perito").val();
     avaluo.perito.apellido_paterno = $("#apellido_paterno_perito").val();
     avaluo.perito.apellido_materno = $("#apellido_materno_perito").val();

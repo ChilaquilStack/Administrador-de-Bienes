@@ -1,12 +1,12 @@
 "use strict";
-function crear_tabla(columnas, url, data, botones) {
+function crear_tabla(columnas, direccion, data, botones) {
     var obj;
     obj = {
         "contentType": "application/json; charset=utf-8",
         "dataType": "json",
         "ajax": {
             "data": data,
-            "url": url,
+            "url": url + direccion,
             "dataSrc": function (json) {
                 return json;
             }
@@ -24,14 +24,32 @@ function crear_tabla(columnas, url, data, botones) {
     return obj;
 }
 
+function borrar_tabla(tabla){
+    $(tabla).html("");
+}
+
+function mensaje_alerta(mensaje){
+    $("#warning #mensaje").html("");
+    $("#warning #mensaje").append("<p>" + mensaje + "</p>");
+    $("#warning").modal();
+}
+
+function mensaje_exito(mensaje){
+    $("#success #mensaje").html("");
+    $("#success #mensaje").append("<p>" + mensaje + "</p>");
+    $("#success").modal();   
+}
+
 function ajax(direccion, metodo = "get", data) {
     $.ajax({
-        "url": direccion,
+        "url": url + direccion,
         "type": metodo,
         "data": data,
         "success": function(msj) {
             $("#success #mensaje").text(msj);
             $("#success").modal();
+            limpiar_formularios()
+            location.reload(true);
         },
         "error": function(msj) {
             $("#warning #mensaje").text("");
@@ -49,84 +67,213 @@ function ajax(direccion, metodo = "get", data) {
     });
 }
 
-function crear_tabla_articulos(articulos) {
+function mostrar_bienes_credito(credito) {
+    //Mostrar los bienes de un credito fiscal
+    $("#tabla_articulos caption h1").text("Bienes del credito fiscal:" + " " + credito);
+    $("#info-credito").text(credito.contribuyente);
+    tabla_articulos = $("#tabla_articulos").DataTable(crear_tabla(columnas_articulos, "creditos/bienes", {"folio": credito}, botones_bienes));
+    if($("#articulos").is(":hidden")) {
+        $("#articulos").slideDown("slow");
+        
+    } else {
+        $("#articulos").slideUp("slow");
+    }
+}
+
+function agregar_bienes_credito(credito) {
+    $("#credito_hidden").val(credito);
+    if($("#formulario_bienes").is(":hidden")) {
+        $("#formulario_bienes").slideDown("slow");
+    } else {
+        $("#formulario_bienes").slideUp("slow");
+    }
+}
+
+function crear_tabla_bienes(bienes) {
     var tabla = '', categorias_pluck, subcategorias_pluck = [], subsubcategorias_pluck = [];
-    if(articulos.length){
-        $.each(articulos, function (index, articulo) {
-            $('#tabla_articulos_temporales tbody').html("");
-            tabla += "<tr><td>" + articulo.numero_control + "</td><td>";
-            categorias_pluck = [];
-            subcategorias_pluck = [];
-            subsubcategorias_pluck = [];
-            $.each(articulo.categorias, function (i, categoria) {
-                categorias_pluck.push(categoria.value);
-                $.each(categoria.subcategorias, function (i, subcategoria) {
-                    subcategorias_pluck.push(subcategoria.value);
-                    $.each(subcategoria.subsubcategorias, function (i, subsubcategoria) {
-                        subsubcategorias_pluck.push(subsubcategoria.value);
-                    });
+    mostrar_tabla();
+    $('#tabla_articulos_temporales tbody').html("");
+    $.each(bienes, function (index, bien) {
+        tabla += "<tr><td>" + bien.numero_control + "</td><td>";
+        categorias_pluck = [];
+        subcategorias_pluck = [];
+        subsubcategorias_pluck = [];
+        $.each(bien.categorias, function (i, categoria) {
+            categorias_pluck.push(categoria.value);
+            $.each(categoria.subcategorias, function (i, subcategoria) {
+                subcategorias_pluck.push(subcategoria.value);
+                $.each(subcategoria.subsubcategorias, function (i, subsubcategoria) {
+                    subsubcategorias_pluck.push(subsubcategoria.value);
                 });
             });
-            tabla += categorias_pluck.join(' , ');
-            tabla += "</td><td>";
-            tabla += subcategorias_pluck.join(' , ');
-            tabla += "</td><td>";
-            tabla += subsubcategorias_pluck.join(' , ');
-            tabla += "</td><td>" + articulo.cantidad + "</td><td>" + articulo.descripcion + "</td><td><button type='button' class='btn btn-danger btn-sm' onclick='eliminar_articulo(" + index + ")'><i class='fa fa-trash-o' aria-hidden='true'></i></button></td></tr>";
         });
+        tabla += categorias_pluck.join(' , ');
+        tabla += "</td><td>";
+        tabla += subcategorias_pluck.join(' , ');
+        tabla += "</td><td>";
+        tabla += subsubcategorias_pluck.join(' , ');
+        tabla += "</td><td>" + bien.cantidad + "</td><td>" + bien.descripcion + "</td><td>" + 
+        bien.depositario.nombre + " " + bien.depositario.apellido_paterno + " " + bien.depositario.apellido_materno + "</td><td>" + 
+        bien.deposito.calle + " " + "#" +bien.deposito.ext + " " + "int" + bien.deposito.int  + " " + 
+        "col. " + bien.deposito.colonia + " " + "cp." + bien.deposito.cp + " " + 
+        bien.deposito.municipio + " " + bien.deposito.estado;
+        tabla += "</td><td><button type='button' class='btn btn-danger btn-sm' onclick='eliminar_articulo(" + index + ")'><i class='fa fa-trash-o' aria-hidden='true'></i></button></td></tr>";
+    });
     $('#tabla_articulos_temporales tbody').append(tabla);
 }
 
-function agregar_articulos() {
-    var articulo = {"categorias": []};
-    articulo.numero_control = $("#numero_control").val();
-    articulo.cantidad = $("#cantidad").val();
-    articulo.descripcion = $("#descripcion_articulo").val();
-    credito_fiscal.bien.articulos.push(articulo);
-    crear_tabla_articulos(credito_fiscal.bien.articulos);
+function agregar_bienes() {
+    var bien = obtener_bien();
+    if(bien){
+        if(validar_bien(bien)){
+            bienes.push(bien);
+            crear_tabla_bienes(bienes);
+        }
+    } else {
+        mensaje_alerta("Por favor agrege un bien")
+    }
+}
+
+function validar_credito(credito){
+    if(!credito.folio){
+        mensaje_alerta("Ingrese el numero de credito fiscal");
+        return false;
+    } else if (!credito.documento){
+        mensaje_alerta("ingrese el documento determinante");
+        return false
+    } else if(!credito.origen){
+        mensaje_alerta("seleccione el origen del credito")
+        return false;
+    } else if(!credito.monto){
+        mensaje_alerta("cual es el monto del credito")
+        return false;
+    } else if(!validar_contribuyente(credito.contribuyente)){
+        return false;
+    }
+    return true;
+}
+
+function validar_contribuyente(contribuyente) {
+    console.log(contribuyente);
+    if(!contribuyente.curp && !contribuyente.rfc){
+        mensaje_alerta("ingrese el curp ó el rfc")
+        return false;
+    } else if(!validar_nombre(contribuyente)){
+        return false;
+    } else if(!validar_domicilio(contribuyente.domicilio, "del contribuyente")){
+        return false;
+    } else if(!contribuyente.telefono){
+        mensaje_alerta("ingrese el numero de telefono");
+        return false;
+    }
+    return true;
+}
+
+function validar_bien(bien) {
+    if(!bien.numero_control) {
+        mensaje_alerta("El bien no tienen numero de control");
+        return false;
+    } else if(!bien.cantidad) {
+        mensaje_alerta("El bien no tiene cantidad");
+        return false;
+    } else if(!bien.descripcion) {
+        mensaje_alerta("El bien no tienen descripcion");
+        return false;
+    } else if(!bien.documento_embargo) {
+        mensaje_alerta("El bien no tienen documento de embargo");
+        return false;
+    } else if(!validar_domicilio(bien.deposito, "del deposito")) {
+        return false;
+    } else if(!validar_nombre(bien.depositario, "del despositario")){
+         return false;
+    }
+    return true;
+}
+
+function validar_domicilio(domicilio, texto = "") {
+    if(!domicilio.calle) {
+        mensaje_alerta("Ingrese la calle" + " " + texto);
+        return false;
+    } else if(!domicilio.ext) {
+        mensaje_alerta("Ingrese el numero exterior" + " " + texto);
+        return false;
+    } else if(!domicilio.colonia) {
+        mensaje_alerta("Ingregse la colonia" + " " + texto);
+        return false;
+    } else if(!domicilio.cp) {
+        mensaje_alerta("Ingrese el codigo postal" + " " + texto);
+        return false;
+    } else if(!domicilio.municipio){
+        mensaje_alerta("Ingrese el municipio" + " " + texto);
+        return false;
+    }
+    return true;
+}
+
+function validar_nombre(persona, texto = ""){
+    if(!persona.razon_social && !persona.nombre && !persona.apellido_paterno && !persona.apellido_materno){
+        if(!persona.nombre){
+            mensaje_alerta("Ingrese el nombre" + " " + texto )
+            return false;
+        } else if(!persona.apellido_paterno){
+            mensaje_alerta("Ingrese el apellido paterno" + " " + texto)
+            return false;
+        } else if(!persona.apellido_materno) {
+            mensaje_alerta("Ingrese el apellido materno" + " " + texto)
+            return false;
+        } else if(!persona.razon_social){
+            mensaje_alerta("Ingrese la razon social")
+            return false;
+        }
+    }
+    return true;
 }
 
 function agregar_categoria() {
-    var articulo = credito_fiscal.bien.articulos.find(function (a) {
+    var bien = bienes.find(function (a) {
         return a.numero_control === $("#numero_control").val();
     });
-    articulo.categorias.push({"id": $("#categoria option:selected").val(), "value": $("#categoria option:selected").text(), "subcategorias": []});
-    crear_tabla_articulos(credito_fiscal.bien.articulos);
+    if(bien) {
+        bien.categorias.push({"id": $("#categoria option:selected").val(), "value": $("#categoria option:selected").text(), "subcategorias": []});
+        crear_tabla_bienes(bienes);
+    } else {
+            mensaje_alerta("Agregue un bien");
+    }
 }
 
 function agregar_subcategoria() {
-    var articulo = credito_fiscal.bien.articulos.find(function (a) {
+    var bien, categoria;
+    bien = bienes.find(function (a) {
         return a.numero_control === $("#numero_control").val();
     });
-    var categoria = articulo.categorias.find(function (c) {
-        return c.id === $("#categoria option:selected").val()
+    categoria = bien.categorias.find(function (c) {
+            return c.id === $("#categoria option:selected").val()
     });
     categoria.subcategorias.push({"id": $("#subcategoria option:selected").val(), "value": $("#subcategoria option:selected").text(), "subsubcategorias": []});
-    crear_tabla_articulos(credito_fiscal.bien.articulos);
+    console.log(categoria);
+    crear_tabla_bienes(bienes);
 }
 
-function agregar_subsubcategoria() {
-    var articulo = credito_fiscal.bien.articulos.find(function (a) {
+function agregar_subsubcategoria(bienes) {
+    var bien = bienes.find(function (a) {
         return a.numero_control === $("#numero_control").val();
     });
 
-    var categoria = articulo.categorias.find(function (c) {
+    var categoria = bien.categorias.find(function (c) {
         return c.id === $("#categoria option:selected").val();
     });
 
     var subcategoria = categoria.subcategorias.find(function (subcategoria) {
         return subcategoria.id === $("#subcategoria option:selected").val()
     });
-    //subcategoria.subsubcategorias = [];
     subcategoria.subsubcategorias.push({"id": $("#subsubcategoria option:selected").val(), "value": $("#subsubcategoria option:selected").text()});
-    crear_tabla_articulos(credito_fiscal.bien.articulos);
+    crear_tabla_bienes(bienes);
 }
 
 function mostrar_tabla(){
     if($("#tabla_articulos_temporales").is(":hidden")) {
         $("#tabla_articulos_temporales").slideDown("slow");
     }
-    agregar_articulos();
 }
 
 function format ( d ) {
@@ -156,44 +303,86 @@ function format ( d ) {
 
 //Funcion para guardar los creditos fiscales
 function guardar_credito(){
-    credito_fiscal.folio = $("#folio").val();
-    credito_fiscal.documento = $("#documento").val();
-    credito_fiscal.origen = $("#origen").val();
-    credito_fiscal.monto = $("#monto").val();
-    credito_fiscal.contribuyente.razon_social = $("#razon_social").val();
-    credito_fiscal.contribuyente.nombre = $("#nombre_contribuyente").val();
-    credito_fiscal.contribuyente.apellido_paterno = $("#apellido_paterno_contribuyente").val();
-    credito_fiscal.contribuyente.apellido_materno = $("#apellido_materno_contribuyente").val();
-    credito_fiscal.contribuyente.telefono = busqueda_elementos_por_clase(".telefono");
-    credito_fiscal.contribuyente.rfc = busqueda_elementos_por_clase(".rfc")
-    credito_fiscal.contribuyente.curp = $("#curp_contribuyente").val();
-    credito_fiscal.contribuyente.domicilio.estado = busqueda_elementos_por_clase(".estado option:selected");
-    credito_fiscal.contribuyente.domicilio.municipio = busqueda_elementos_por_clase(".municipio option:selected");
-    credito_fiscal.contribuyente.domicilio.colonia = busqueda_elementos_por_clase(".colonia");
-    credito_fiscal.contribuyente.domicilio.cp = busqueda_elementos_por_clase(".codigo_postal");
-    credito_fiscal.contribuyente.domicilio.int = busqueda_elementos_por_clase(".int");
-    credito_fiscal.contribuyente.domicilio.ext = busqueda_elementos_por_clase(".ext");
-    credito_fiscal.contribuyente.domicilio.calle = busqueda_elementos_por_clase(".calle");
-    credito_fiscal.bien.numero_control = Math.trunc($("#numero_control").val());
-    credito_fiscal.bien.documento_embargo = $("#documento_embargo").val();
-    credito_fiscal.bien.deposito.estado = $("#estado_deposito").val();
-    credito_fiscal.bien.deposito.municipio = $("#municipio_deposito").val();
-    credito_fiscal.bien.deposito.colonia = $("#colonia_deposito").val();
-    credito_fiscal.bien.deposito.cp = $("#codigo_postal_deposito").val();
-    credito_fiscal.bien.deposito.int = $("#int_deposito").val();
-    credito_fiscal.bien.deposito.ext = $("#ext_deposito").val();
-    credito_fiscal.bien.deposito.calle = $("#calle_deposito").val();
-    credito_fiscal.bien.depositario.nombre = $("#nombre_depositario").val();
-    credito_fiscal.bien.depositario.apellido_paterno = $("#apellido_paterno_depositario").val();
-    credito_fiscal.bien.depositario.apellido_materno = $("#apellido_materno_depositario").val();
+    var credito = {
+        contribuyente: {},
+        bienes: []
+    }
+    credito.folio = $("#folio").val();
+    credito.documento = $("#documento").val();
+    credito.origen = $("#origen").val();
+    credito.monto = $("#monto").val();
+    credito.contribuyente = obtener_contribuyente();
     //Se envian los datos al servidor
-        ajax("/creditos/create", "post", {"credito": credito_fiscal}, $("#success"), $("#success #mensaje"), tabla_creditos);
-    //Refrescamos la tabla para que cargue el nuevo registro
+    if(validar_credito(credito)){
+        ajax("creditos/store", "post", {"credito": credito});
+    }
+}
+
+function guardar_bienes(){
+    var folio = $("#credito_hidden").val();
+    ajax("creditos/add", "post", {"folio": folio, "bienes":bienes});
+}
+
+function obtener_contribuyente() {
+    var contribuyente = {domicilio: {}};
+    contribuyente.razon_social = $("#razon_social").val();
+    contribuyente.nombre = $("#nombre_contribuyente").val();
+    contribuyente.apellido_paterno = $("#apellido_paterno_contribuyente").val();
+    contribuyente.apellido_materno = $("#apellido_materno_contribuyente").val();
+    contribuyente.telefono = busqueda_elementos_por_clase(".telefono");
+    contribuyente.rfc = busqueda_elementos_por_clase(".rfc")
+    contribuyente.curp = $("#curp_contribuyente").val();
+    contribuyente.domicilio = obtener_domicilio();
+    return contribuyente;
+}
+
+function obtener_bien(){
+    var bien = {depositario:{}, deposito:{}};
+    bien.numero_control = $("#numero_control").val();
+    bien.documento_embargo = $("#documento_embargo").val();
+    bien.descripcion = $("#descripcion_articulo").val();
+    bien.cantidad = $("#cantidad").val()
+    bien.deposito = obtener_deposito();
+    bien.depositario = obtener_depositario();
+    bien.categorias = [];
+    return bien;
+}
+
+function obtener_domicilio(){
+    var domicilio = {};
+    domicilio.estado = busqueda_elementos_por_clase(".estado option:selected");
+    domicilio.municipio = busqueda_elementos_por_clase(".municipio option:selected");
+    domicilio.colonia = busqueda_elementos_por_clase(".colonia");
+    domicilio.cp = busqueda_elementos_por_clase(".codigo_postal");
+    domicilio.int = busqueda_elementos_por_clase(".int");
+    domicilio.ext = busqueda_elementos_por_clase(".ext");
+    domicilio.calle = busqueda_elementos_por_clase(".calle");
+    return domicilio;
+}
+
+function obtener_deposito(){
+    var deposito = {};
+    deposito.estado = $("#estado_deposito option:selected").val();
+    deposito.municipio = $("#municipio_deposito option:selected").val();
+    deposito.colonia = $("#colonia_deposito").val();
+    deposito.cp = $("#codigo_postal_deposito").val();
+    deposito.int = $("#int_deposito").val();
+    deposito.ext = $("#ext_deposito").val();
+    deposito.calle = $("#calle_deposito").val();
+    return deposito;
+}
+
+function obtener_depositario() {
+    var depositario = {};
+    depositario.nombre = $("#nombre_depositario").val();
+    depositario.apellido_paterno = $("#apellido_paterno_depositario").val();
+    depositario.apellido_materno = $("#apellido_materno_depositario").val();
+    return depositario;
 }
 
 function eliminar_articulo(indice) {
-    credito_fiscal.bien.articulos.splice(indice, 1);
-    crear_tabla_articulos(credito_fiscal.bien.articulos);
+    bienes.splice(indice, 1);
+    crear_tabla_bienes(bienes);
 }
 
 function busqueda_elementos_por_clase (clase) {
@@ -205,15 +394,6 @@ function busqueda_elementos_por_clase (clase) {
         }
     });
     return data;
-}
-
-function agregar_articulos() {
-    var articulo = {"categorias": []};
-    articulo.numero_control = $("#numero_control").val();
-    articulo.cantidad = $("#cantidad").val();
-    articulo.descripcion = $("#descripcion_articulo").val();
-    credito_fiscal.bien.articulos.push(articulo);
-    crear_tabla_articulos(credito_fiscal.bien.articulos);
 }
 
 function eliminar_credito() {
@@ -236,7 +416,8 @@ $("#aceptar_eliminar_credito").click(function(){
 
 function eliminar_articulo_credito() {
     var data = tabla_articulos.row($(this).parents("tr")).data();
-    $("#data_articulo").val(data.id);
+    console.log(data);
+    $("#data_articulo").val(data.numero_control);
     $("#confirmar_warning").click(function() {
         $("#eliminar_articulo").modal();
     });
@@ -282,7 +463,7 @@ function estados_contribuyente() {
 
 function estados_depositario() {
     $.ajax({
-        "url": "/creditos/municipios",
+        "url": url + "creditos/municipios",
         "method": "get",
         "data": {
             "id": $("#estado_deposito option:selected").val()
@@ -298,3 +479,13 @@ function estados_depositario() {
         }
     });
 }
+
+function limpiar_formularios(){
+    $.each($("form"), function(index, formulario){
+        $(formulario)[0].reset();
+    });
+}
+
+$('#creditos tbody').on('click', 'td.delete-control', eliminar_credito);
+
+ $('#tabla_articulos tbody').on('click', 'td.delete-bien', eliminar_articulo_credito);

@@ -15,4 +15,3 @@
             <input type="text" class="form-control" id="apellido_materno_depositario" placeholder="Apellido Materno">
         </div>
     </div>
-    @include('domicilios.deposito')

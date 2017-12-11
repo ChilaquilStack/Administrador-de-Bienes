@@ -1,7 +1,11 @@
 @extends("layout.master")
 @section("title","Bienes")
 @section("content")
-@if (session('status'))
+@include('layout.modals.warning')
+@include('layout.modals.success')
+@include('layout.modals.eliminar_credito')
+@include('layout.modals.eliminar_articulo')
+@if(session('status'))
     <div class="alert alert-success">
         {{ session('status') }}
     </div>

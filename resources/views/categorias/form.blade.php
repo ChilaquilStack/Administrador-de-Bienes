@@ -3,6 +3,9 @@
     <div class="col-sm-9">
         {{Form::text("categoria",null,["class" => "form-control", "placeholder" => "Categoria", "id" => "categoria"])}}
     </div>
+    <div class="col-sm-1">
+        <button type="button" class="btn btn-success btn-sm" id="btn_agregar_categoria"><i class="fa fa-plus" aria-hidden="true"></i></button>
+    </div>
 </div>
 
 <div class="form-group">
@@ -10,26 +13,11 @@
     <div class="col-sm-9">
         {{Form::text("subcategoria",null,["class" => "form-control", "placeholder"=>"subcategoria", "id" => "subcategoria"])}}
     </div>
-    <div class="col-sm-1">
-        <button type="button" class="btn btn-success btn-sm" id="agregar_subcategoria"><i class="fa fa-plus" aria-hidden="true"></i></button>
-    </div>
 </div>
 
 <div class="form-group">
     {!!Form::label("subsubcategorias","Sub-subcategorias", ["class" => "control-label col-sm-2"])!!}
     <div class="col-sm-9">
         {{Form::text("subsubcategorias",null,["class" => "form-control", "placeholder"=>"sub-subcategoria", "id" => "subsubcategoria"])}}
-    </div>
-    <div class="col-sm-1">
-        <button type="button" class="btn btn-success btn-sm" id="agregar_subsubcategoria"><i class="fa fa-plus" aria-hidden="true"></i></button>
-    </div>
-</div>
-
-<div class="form-group">
-    <div class="col-sm-9">
-        <div class="btn-group">
-            <button type="button" class="btn btn-success btn-sm" id="guardar_categoria">Guardar</button>
-            <button type="button" class="btn btn-danger btn-sm" id="eliminar_categoria">Eliminar</button>
-        </div>
     </div>
 </div>

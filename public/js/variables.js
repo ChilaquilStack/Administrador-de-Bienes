@@ -1,5 +1,8 @@
+//var url = "http://transparencia-financiera.app.jalisco.gob.mx/administrador/",
+//var url = "",
 'use strict';
-var tabla_creditos, tabla_articulos, credito_fiscal = {
+var url = "http://localhost/administrador/",
+bienes = [] ,tabla_creditos, tabla_articulos, tabla_contribuyentes, tabla_creditos, credito_fiscal = {
     "contribuyente": {
         "domicilio": {}
     },
@@ -13,9 +16,9 @@ botones_credito = [
     {
         "text": "<i id='add_credito' class='fa fa-plus' aria-hidden='true'></i>",
         "className": "btn btn-info",
-        "titleAttr": "Mostrar Formulario",
+        "titleAttr": "Agregar Crédito",
         "action": function () {
-            window.location = "/creditos/create";
+            window.location = url + "creditos/create";
         }
     },
     {
@@ -82,19 +85,23 @@ columnas_creditos = [
         "data": "contribuyente",
         "render": function(data) {
             var nombre = "";
+            var direcion = url + "contribuyentes/" + data.id;
             if(data.nombre){
                 nombre = data.nombre + " " + data.apellido_paterno + " " + data.apellido_materno;
             } else {
                 nombre = data.razon_social;
             }
-            return "<a href='contribuyentes/" + data.id + "' target='_blank'><button type='button' class='btn btn-link'>" + nombre + "</button></a>";
+            return "<a href='" + direcion + "' target='_blank'><button type='button' class='btn btn-link'>" + nombre + "</button></a>";
         }
     },
     {
         "title": "Ver Bienes",
-        "defaultContent": "<button type='button' class='btn btn-default btn-sm'><i class='glyphicon glyphicon-eye-open'></i></button>",
-        "data": null,
-        "className": "view-bienes"
+        "data": "folio",
+        "render": function(data, type, row) {
+            return '<button type="button" class="btn btn-default btn-sm" onclick=mostrar_bienes_credito("' + (data) + '")>' + 
+                '<i class="glyphicon glyphicon-eye-open" aria-hidden="true"></i>' +
+            '</button>'
+        }
     },
     {
         "title": "Editar",
@@ -111,51 +118,13 @@ columnas_creditos = [
         "data": "folio",
         "title": "Agregar Bienes",
         "titleAttr": "Agregar Bién",
-        "render": function(data){
-            return "<a href='/creditos/" + data + "/add' target='_blank><button type='button' class='btn btn-primary btn-sm''><i id='add_credito' class='fa fa-plus' aria-hidden='true'></i></button></a>";
+        "render": function(data, type, row) {
+            return '<button type="button" class="btn btn-primary btn-sm" onclick=agregar_bienes_credito("' + (data) + '")>' + 
+                '<i class="fa fa-plus" aria-hidden="true"></i>' +
+            '</button>'
+            
         }
     },
-],
-columnas_bienes = [
-    {
-        "title": "Depositario",
-        "data": "depositario",
-        "render": function(data) {
-            return data.nombre + " " + data.apellido_paterno + " " + data.apellido_materno;
-        }
-    },
-    {
-        "title": "Deposito",
-        "data": "deposito",
-        "render": function(data){
-            return data.calle + " " + "#" + data.int + " " + "ext" + " " + data.ext + " " + data.colonia + " " + " " + "C.P" + " " +  data.cp + " " + data.estado.nombre;
-        }
-    },
-    {
-        "title": "Articulos",
-        "data": null,
-        "className": "view-bienes",
-        "defaultContent": "<button type='button' class='btn btn-default btn-sm'><i class='glyphicon glyphicon-eye-open'></i></button>"
-    },
-    {
-        "title": "Cantidad de Articulos",
-        "data": "cantidad"
-    },
-    {
-        "title": "Créditos Fiscales",
-        "data": "creditos",
-        "render": "[, ].folio"
-    },
-    {
-        "title": "Editar",
-        "data": null,
-        "defaultContent": "<button type='button' class='btn btn-success btn-sm'><i class='glyphicon glyphicon-edit'></i></button>"
-    },
-    {
-        "title": "Baja",
-        "data": null,
-        "defaultContent": "<button type='button' class='btn btn-danger btn-sm'><i class='fa fa-trash-o' aria-hidden='true'></i></button>"
-    }
 ],
 columnas_articulos = [
     {
@@ -177,7 +146,12 @@ columnas_articulos = [
     },
     {
         "title": "Subcategorias",
-        "data": "categorias",
+        "data": "subcategorias",
+        "render": "[, ].nombre"
+    },
+    {
+        "title": "Subsubcategorias",
+        "data": "subsubcategorias",
         "render": "[, ].nombre"
     },
     {
@@ -191,32 +165,38 @@ columnas_articulos = [
         "title": "Deposito",
         "data": "deposito",
         "render": function(data){
-            return data.calle + " " + data.int + " " + data.ext + " " + data.colonia + " " + data.estado.nombre;
+            if(data.int) {
+                return data.calle + " int: " + data.int + " #" + data.ext + " col. " + data.colonia + ", c.p: " + data.cp + " " + data.estado.nombre;
+            }
+            return data.calle + " #" + data.ext + " col. " + data.colonia + ", c.p: " + data.cp + " " + data.estado.nombre;
         }
     },
     {
         "title": "Valuacion",
         "data": "ultima_valuacion.pivot.monto",
         "render": function(data = "0", type, row){
+            var direccion = url + "avaluos/" + row.numero_control;
             if( data === "0" ) {
-                return "<a href='http://localhost:8000/avaluos/" + row.id  + "' target='_blank'><botton type='button' class='btn btn-warning btn-sm'>" + "$" + data.toLocaleString() + "</button></a>";
+                return "<a href='" + direccion + "' target='_blank'><botton type='button' class='btn btn-warning btn-sm'>" + "$" + data.toLocaleString() + "</button></a>";
             } else {
-                return "<a href='http://localhost:8000/avaluos/" + row.id  + "' target='_blank'><botton type='button' class='btn btn-info btn-sm'>" + "$" + data.toLocaleString() + "</button></a>"
+                return "<a href='" + direccion + "' target='_blank'><botton type='button' class='btn btn-info btn-sm'>" + "$" + data.toLocaleString() + "</button></a>"
             }
         }
     },
     {
         "title": "Imagenes",
-        "data": "id",
+        "data": "numero_control",
         "render": function(data,type, row) {
-            return "<a href='/creditos/" + data + "/imagenes' target='_blank'><i class='fa fa-picture-o' aria-hidden='true'></i></a>";
+        var direccion = url + "bienes/" + data + "/imagenes";
+            return "<a href='" + direccion + "' target='_blank'><i class='fa fa-picture-o' aria-hidden='true'></i></a>";
         }
     },
     {
-        "data":"id",
+        "data":"numero_control",
         "title": "Editar",
         "render": function(data) {
-            return "<a href='http://localhost:8000/bienes/" + data + "/edit' target='_blank'><button type='button' class='btn btn-success btn-sm'><i class='fa fa-pencil-square-o' aria-hidden='true'></i></button></a>";
+            var direccion = url + "bienes/" + data + "/edit";
+            return "<a href='" + direccion + "' target='_blank'><button type='button' class='btn btn-success btn-sm'><i class='fa fa-pencil-square-o' aria-hidden='true'></i></button></a>";
         }
     },
     {
@@ -230,20 +210,23 @@ columnas_contribuyentes= [
     {
         "title": "Nombre",
         "render": function(data, type, row){
-            var nombre = "";
+            var nombre = "", direccion = url + "contribuyentes/" + row.id;
             if(row.razon_social){
                 nombre = row.razon_social;
             } else {
                 nombre = row.nombre + " " + row.apellido_paterno + " " + row.apellido_materno;
             }
-            return "<a href='contribuyentes/" + row.id + "'><button type='button' class='btn btn-link'>" + nombre + "</button></a>";
+            return "<a href='" + direccion + "'><button type='button' class='btn btn-link'>" + nombre + "</button></a>";
         }
     },
     {
         "title": "Domicilio",
         "data": "domicilio",
         "render": function(data, type, row){
-            return data.calle + " " + data.int + " " + data.ext + " " + data.colonia + " " + data.estado;
+            if(data.int) {
+                return data.calle + " int: " + data.int + " #" + data.ext + " col. " + data.colonia + ", c.p: " + data.cp + " " + data.estado;
+            }
+            return data.calle + " #" + data.ext + " col. " + data.colonia + ", c.p: " + data.cp + " " + data.estado;
         }
     }
 ],
@@ -265,37 +248,11 @@ columnas_creditos_contribuyente = [
         "data": "monto",
         "render": $.fn.dataTable.render.number( ',', '.', 0, '$' )
     },
-    {
-        "title": "Bienes",
-        "defaultContent": "<button type='button' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-eye-open'></button>",
-        "data": null,
-        "className": "view-bienes"
-    },
-    {
-        "title": "Editar",
-        "defaultContent": "<button type='button' class='btn btn-success btn-sm'><span class='glyphicon glyphicon-edit'></span></button>",
-        "data": null,
-        "className": "details-control"
-    },
-    {
-        "title": "Baja",
-        "className": "delete-control",
-        "defaultContent": "<button type='button' class='btn btn-danger btn-sm'><i class='fa fa-trash-o' aria-hidden='true'></i></button>"
-    },
-    {
-        "data": "folio",
-        "title": "Agregar Bienes",
-        "titleAttr": "Agregar Bién",
-        "render": function(data){
-            return "<a href='/creditos/" + data + "/add' target='_blank><button type='button' class='btn btn-primary btn-sm''><i id='add_credito' class='fa fa-plus' aria-hidden='true'></i></button></a>";
-        }
-    }
 ],
-
 columnas_articulos_bienes = [
     {
         "title": "#",
-        "data": "id"
+        "data": "numero_control"
     },
     {
         "title": "Descripion",
@@ -316,43 +273,51 @@ columnas_articulos_bienes = [
     {
         "title": "Subcategorias",
         "data": "subcategorias",
-        "render": "[, ].descripcion"
+        "render": "[, ].nombre"
+    },
+    {
+        "title": "Subsubcategorias",
+        "data": "subsubcategorias",
+        "render": "[, ].nombre"
     },
     {
         "title": "Valuacion",
         "data": "ultima_valuacion.pivot.monto",
         "render": function(data = "0", type, row){
+            var direccion = url + "avaluos/" + row.numero_control;
             if( data === "0" ) {
-                return "<a href='http://localhost:8000/avaluos/" + row.id  + "'><botton type='button' class='btn btn-warning btn-sm'>" + "$" + data.toLocaleString() + "</button></a>"
+                return "<a href='" + direccion + "'><botton type='button' class='btn btn-warning btn-sm'>" + "$" + data.toLocaleString() + "</button></a>"
             } else {
-                return "<a href='http://localhost:8000/avaluos/" + row.id  + "'><botton type='button' class='btn btn-info btn-sm'>" + "$" + data.toLocaleString() + "</button></a>"
+                return "<a href='" + direccion + "'><botton type='button' class='btn btn-info btn-sm'>" + "$" + data.toLocaleString() + "</button></a>"
             }
         }
     },
     {
         "title":"Creditos Fiscales",
-        "data": "bien.creditos",
+        "data": "creditos",
         "render": "[, ].folio"
     },
     {
         "title": "Imagenes",
-        "data": "id",
+        "data": "numero_control",
         "render": function(data,type, row) {
-            return "<a href='/creditos/" + data + "/imagenes' target='_blank'><button class='btn btn-default btn-sm'><i class='fa fa-picture-o' aria-hidden='true'></i></button></a>";
+            var direccion = url + "bienes/" + data + "/imagenes";
+            return "<a href='" + direccion + "' target='_blank'><button class='btn btn-default btn-sm'><i class='fa fa-picture-o' aria-hidden='true'></i></button></a>";
         }
     },
     {
-        "data":"id",
+        "data":"numero_control",
         "title": "Editar",
         "className": "details-articulo",
         "render": function(data) {
-            return "<a href='http://localhost:8000/bienes/" + data + "/edit'><button type='button' class='btn btn-success btn-sm'><i class='fa fa-pencil-square-o' aria-hidden='true'></i></button></a>";
+            var direccion = url + "bienes/" + data + "/edit";
+            return "<a href='" + direccion + "' target='_blank'><button type='button' class='btn btn-success btn-sm'><i class='fa fa-pencil-square-o' aria-hidden='true'></i></button></a>";
         }
     },
     {
-        "data":null,
+        "data": null,
         "title": "Baja",
         "className": "delete-bien",
-        "defaultContent": "<button type='button' class='btn btn-danger btn-sm'><i class='fa fa-trash-o' aria-hidden='true'></i></button>"
+        "defaultContent": "<button type='button' class='btn btn-danger btn-sm' data-toggle='modal' data-target='#eliminar_articulo'><i class='fa fa-trash-o' aria-hidden='true'></i></button>"
     }
 ];

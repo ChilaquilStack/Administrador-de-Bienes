@@ -1,15 +1,15 @@
 "use strict";
 
-function obtener_datos_bien(){
-	$("#formulario_bien").on("submit", function({
-		console.log($(this).serialize());
-	});
-}
-
 function start() {
-	obtener_datos_bien;
+	$("#guardar").click();
+	$("#agregar").click(agregar_bienes);
+    $("#agregar_categoria").click(agregar_categoria);
+    $("#agregar_subcategoria").click(agregar_subcategoria);
+    $("#agregar_subsubcategoria").click(agregar_subsubcategoria);
+    $("#guardar_credito_fiscal").click(guardar_credito);
+    $("#estado_deposito").change(estados_depositario);
 }
 
-$(function){
+$(function(){
 	start();
-}
+}) 

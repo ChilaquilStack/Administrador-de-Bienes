@@ -15,9 +15,8 @@
     <div>
         <label class="control-label" for="municipio_deposito">Municipio:</label>
         <select id="municipio_deposito" name="municipio">
-            <option value="">Seleccione un municipio</option>
             @foreach($municipios as $municipio)
-                <option id = "{{$municipio->id}}">{{$municipio->nombre}}</option>
+                <option value ="{{$municipio->id}}">{{$municipio->nombre}}</option>
             @endforeach
         </select>
     </div>

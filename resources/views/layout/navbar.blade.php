@@ -9,7 +9,7 @@
 				<span class="icon-bar"></span>
 			</button>
             <a class="navbar-brand" href="#">
-                <img src="{{asset('/img/jal01.svg')}}" height="30px" width="30px" alt="logo jalisco"/>
+                <img src="{{asset('img/jal01.svg')}}" height="30px" width="30px" alt="logo jalisco"/>
             </a>
         </div>
     <!-- Collect the nav links, forms, and other content for toggling -->

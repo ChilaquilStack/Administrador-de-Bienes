@@ -29,11 +29,26 @@ class ContribuyenteController extends Controller
     }
 
     public function show($id) {
+        $bajas_creditos = DB::table("motivos_bajas_creditos_fiscales")
+                        ->select("id", "descripcion")->orderBy("descripcion", "asc")
+        ->get();
+        $bajas_articulos = DB::table("motivos_bajas_bienes")
+                        ->select("id", "descripcion")
+                        ->orderBy("descripcion", "asc")
+                        ->get();
+
         $estados = DB::select("select id, nombre from estados order by nombre asc");
         $municipios = DB::select("select id, nombre from municipios order by nombre asc");
         $contribuyente = Contribuyente::where("id",$id)->firstOrFail();
         $domicilios = $contribuyente->domicilios;
-        return view("contribuyentes.show", ["contribuyente" => $contribuyente, "domicilios" => $domicilios, "estados" => $estados, "municipios" => $municipios]);
+        return view("contribuyentes.show", [
+                "contribuyente" => $contribuyente, 
+                "domicilios" => $domicilios, 
+                "estados" => $estados, 
+                "municipios" => $municipios,
+                "bajas_articulos" => $bajas_articulos,
+                "bajas_creditos" => $bajas_creditos
+            ]);
     }
 
     public function edit($id)

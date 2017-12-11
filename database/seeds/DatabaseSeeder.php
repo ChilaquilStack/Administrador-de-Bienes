@@ -19,7 +19,8 @@ class DatabaseSeeder extends Seeder
             "apellido_paterno" => "Villegas",
             "apellido_materno" => "Briseño",
             "email" => "edgar.villegas@jalisco.gob.mx",
-            "password" => bcrypt("123456")
+            "password" => bcrypt("123456"),
+            "rols_id" => 1
         ]);
         $this->call([
             categorias::class,

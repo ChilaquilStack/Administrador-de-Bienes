@@ -4,7 +4,7 @@ var categorias = [];
 
 function mostrar_categorias() {
     $.ajax({
-        "url": "/categorias/subcategorias",
+        "url": url + "categorias/subcategorias",
         "method": "get",
         "data": {
             "id": $("#categoria option:selected").val()
@@ -23,7 +23,7 @@ function mostrar_categorias() {
 
 function mostrar_subcategorias() {
     $.ajax({
-        "url": "/categorias/subsubcategorias",
+        "url": url + "categorias/subsubcategorias",
         "method": "get",
         "data": {
             "id": $("#subcategoria option:selected").val()

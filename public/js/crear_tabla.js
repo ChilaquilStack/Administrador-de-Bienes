@@ -1,6 +1,6 @@
 "use strict";
 function start() {
-    $("#agregar").click(mostrar_tabla);
+    $("#agregar").click(agregar_bienes);
     $("#agregar_categoria").click(agregar_categoria);
     $("#agregar_subcategoria").click(agregar_subcategoria);
     $("#agregar_subsubcategoria").click(agregar_subsubcategoria);

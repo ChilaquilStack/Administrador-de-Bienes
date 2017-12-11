@@ -7,6 +7,8 @@
             <th>Subsubcategoria</th>
             <th>Cantidad</th>
             <th>Descripcion</th>
+            <th>Depositario</th>
+            <th>Deposito</th>
             <th>Baja</th>
         </tr>
     </thead>
