@@ -3,14 +3,16 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Repositorios\Usuario;
 
-class Bien extends Model
-{
+class Bien extends Model {
+
     protected $table = "bienes";
     protected $primaryKey = "numero_control";
     protected $fillable = ["numero_control","depositarios_id", "depositos_id", "descripcion", "cantidad"];
     public $timestamps = false;
     public $incrementing = false;
+    private $subcategorias;
 
     public function creditos() {
         return $this->belongsToMany('App\Credito','embargos','bienes_numero_control','creditos_fiscales_folio')
@@ -46,6 +48,5 @@ class Bien extends Model
     public function categorias() {
         return $this->belongsToMany("App\Categoria_bien","bienes_categorias","bienes_numero_control","categorias_id");
     }
-
 
 }

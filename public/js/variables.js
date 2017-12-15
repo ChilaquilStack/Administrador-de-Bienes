@@ -1,7 +1,7 @@
 //var url = "http://transparencia-financiera.app.jalisco.gob.mx/administrador/",
 //var url = "",
 'use strict';
-var url = "http://localhost/administrador/",
+var url = "http://localhost:8080/administrador/",
 bienes = [] ,tabla_creditos, tabla_articulos, tabla_contribuyentes, tabla_creditos, credito_fiscal = {
     "contribuyente": {
         "domicilio": {}
@@ -111,8 +111,12 @@ columnas_creditos = [
     },
     {
         "title": "Baja",
-        "className": "delete-control",
-        "defaultContent": "<button type='button' class='btn btn-danger btn-sm' data-toggle='modal' data-target='#eliminar_credito'><i class='fa fa-trash-o' aria-hidden='true'></i></button>"
+        "data": "folio",
+        "render": function(data){
+            return '<button type="button" class="btn btn-danger btn-sm" onclick=eliminar_credito("' + (data) + '")>' + 
+                '<i class="fa fa-trash-o" aria-hidden="true"></i>' +
+            '</button>'
+        }
     },
     {
         "data": "folio",

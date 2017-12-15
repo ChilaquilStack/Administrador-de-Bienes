@@ -37,8 +37,8 @@ class RematesController extends Controller
             "fecha_fin" => New Carbon($request->input("fecha_fin")),
         ]);
         $remate->save();
-        foreach($request->input("articulos") as $articulo){
-            $remate->articulos()->attach($articulo);
+        foreach($request->input("bienes") as $articulo){
+            $remate->bienes()->attach($articulo);
         }
         return redirect("/remates")->with('status',"Se creo el remate ".$remate->id." con exito");
     

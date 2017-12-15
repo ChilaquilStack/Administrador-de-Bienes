@@ -17,7 +17,8 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 CREATE SCHEMA IF NOT EXISTS `administrador` DEFAULT CHARACTER SET utf8 ;
 USE `administrador` ;
 
--- -----------------------------------------------------
+-- -----------------------------------------------------q
+
 -- Table `administrador`.`contribuyentes`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `administrador`.`contribuyentes` (

@@ -25,7 +25,7 @@ function start() {
     $("#agregar_subcategoria").click(agregar_subcategoria);
     $("#agregar_subsubcategoria").click(agregar_subsubcategoria);
     $("#btn_guardar_bien").click(guardar_bienes);
-
+    causas_eliminar_credito();
 }
 $(function(){
     start();

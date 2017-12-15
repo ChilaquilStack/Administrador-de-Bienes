@@ -6,12 +6,12 @@
         <tbody>
             @foreach($bienes as $bien)
                 <tr>
-                    <td>{{$bien->id}}</td>
+                    <td>{{$bien->numero_control}}</td>
                     <td>{{$bien->descripcion}}</td>
                     <td>{{$bien->cantidad}}</td>
                     <td>${{number_format($bien->valuaciones()->first()->pivot->monto, 2)}}</td>
                     @if($bien->remates->isEmpty())
-                        <td>{{Form::checkbox("biens[]", $bien->id)}}</td>
+                        <td>{{Form::checkbox("bienes[]", $bien->numero_control)}}</td>
                     @else
                         <td>{{$bien->remates->last()->id}}</td>
                         <td>{{$bien->remates->last()->fecha_inicio}}</td>

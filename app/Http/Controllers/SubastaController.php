@@ -6,19 +6,21 @@ use App\subasta;
 use Illuminate\Http\Request;
 use DB;
 use App\Remate;
-use App\Articulo;
+use App\Bien;
+
 class SubastaController extends Controller
 {
 
+    private $categorias;
     public function __construct() {
-        $this->middleware('auth');
+        $this->middleware('guest');
+        $this->categorias = DB::table("categorias")->select("id","nombre")->get();
     }
    
     public function index() {
 
-        $remates = Remate::activos();
-        $categorias = DB::table("categorias")->select("id","nombre")->get();
-        return view("subastas.index", ["categorias" => $categorias, "remates" => $remates]);
+        $remate = Remate::paginate(1);
+        return view("subastas.index", ["categorias" => $this->categorias, "remates" => $remates]);
     }
 
     public function create()
@@ -31,10 +33,9 @@ class SubastaController extends Controller
         //
     }
 
-    public function show($articulo) {
-        $articulo = Articulo::where("id", $articulo)->firstOrFail();
-        $categorias = DB::select("select id, nombre from categorias");
-        return view("subastas.show",["categorias" => $categorias, "articulo" => $articulo]);
+    public function show($bien) {
+        $bien = Bien::where("numero_control", $bien)->firstOrFail();
+        return view("subastas.show",["categorias" => $this->categorias, "bien" => $bien]);
     }
 
     public function edit(subasta $subasta)

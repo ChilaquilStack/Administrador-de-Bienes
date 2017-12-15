@@ -166,9 +166,9 @@ class CreditosController extends Controller {
             $bien->deposito->estado->nombre;
             $bien->ultima_valuacion = $bien->valuaciones->first();
             foreach($bien->categorias as $categoria){
-                $bien->subcategorias = $this->users->subcategorias($categoria->id);
+                $bien->subcategorias = $this->users->subcategorias($bien);
                 foreach($bien->subcategorias as $subcategoria) {
-                    $bien->subsubcategorias = $this->users->subsubcategorias($subcategoria->id);
+                    $bien->subsubcategorias = $this->users->subsubcategorias($bien);
                 }    
             }   
             $bienes->push($bien);

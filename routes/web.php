@@ -1,7 +1,7 @@
 <?php
 
 Route::group(['middleware' => ['checkRole']], function(){
-    Route::get('/', 'CreditosController@index');
+    Route::get('/creditos', 'CreditosController@index');
     //Rutas de los creditos
     Route::get("/creditos/bienes", "CreditosController@bienes");
     Route::get("/creditos/creditos", "CreditosController@creditos");
@@ -37,9 +37,12 @@ Route::group(['middleware' => ['checkRole']], function(){
     Route::post("/categorias/subsubcategoria/create", "CategoriasController@subsubcategoria_create");
     //Rutas de los usuarios
     Route::resource("usuarios", "UsuariosController");
+    
 });
-
-Auth::routes();
-Route::get('/home', 'HomeController@index')->name('home');
-Route::resource("subastas", "SubastaController");
-Route::get("/subastas/{articulo}", "SubastaController@show");
+Route::get("/", "HomeController@index");
+Route::get("/show/{bien}", "HomeController@show");
+Route::get("/categoria/{categoria?}", "HomeController@categorias");
+Route::get("/logout","Auth\LoginController@logout")->name("logout");
+Route::match(["post", "get"],"/login","Auth\LoginController@authenticate")->name("login");
+Route::post("/register","Auth\RegisterController@create")->name("register");
+Route::get("/register", "Auth\RegisterController@register");

@@ -26,7 +26,7 @@
 					@foreach($bien->imagenes as $imagen)
 						<div class="col-md-3 col-sm-6">
 							<div class="thumbnail">
-								<img src = "{{'/../Administrador-de-bienes/public/img/'.$imagen->nombre}}" class="img-responsive" alt="{{$imagen->nombre}}">
+								<img src = "{{'/../admon/public/img/'.$imagen->nombre}}" class="img-responsive" alt="{{$imagen->nombre}}">
 								<div class="caption">
 									<p class="pull-right">
 										<a href = "{{action('BienesController@imagen_destroy', ['imagen' => $imagen])}}" class = "btn btn-danger" role = "button">

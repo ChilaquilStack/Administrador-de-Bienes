@@ -2,21 +2,23 @@
 @section("title", "Subasta")
 @section("content")
 <div class="row">
-    @include("subastas.navbar-categorias")
+    <div class="col-md-3">
+        @include("subastas.navbar-categorias")
+    </div>
     <div class="col-lg-9">
         <div class="row carousel-holder">
             <div class="col-md-12">
-                <img src="/banner/banner.jpg" alt="" style="height:150px ;width:800px">
+                <img src="/../admon/public/img/banner/banner.jpg" alt="" style="height:150px ;width:800px">
                 <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
                     <ol class="carousel-indicators">
-                        @foreach($articulo->imagenes as $imagen)
-                        <li data-target="#carousel-example-generic" data-slide-to="0" class="active {{$loop->first ? 'active' : ''}}"></li>
+                        @foreach($bien->imagenes as $imagen)
+                            <li data-target="#carousel-example-generic" data-slide-to="0" class="active {{$loop->first ? 'active' : ''}}"></li>
                         @endforeach
                     </ol>
                     <div class="carousel-inner">
-                        @foreach($articulo->imagenes as $imagen)
+                        @foreach($bien->imagenes as $imagen)
                             <div class="item {{$loop->first ? 'active' : ''}}">
-                                <img class="slide-image" src="{{'/img/'.$imagen->nombre}}" alt="{{$imagen->descripcion}}" style="height:300px ;width:800px">
+                                <img class="slide-image" src="{{'/../admon/public/img/'.$imagen->nombre}}" alt="{{$imagen->descripcion}}" style="height:300px ;width:800px">
                             </div>
                         @endforeach
                         <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
@@ -34,7 +36,7 @@
                 Descripcion
             </div>
             <div class="card-body">
-                <p>{{$articulo->descripcion}}</p>
+                <p>{{$bien->descripcion}}</p>
                 <small class="text-muted">Posted by Anonymous on 3/1/17</small>
                 <hr>
                 {{--<a href="#" class="btn btn-success">Ofertar</a>--}}

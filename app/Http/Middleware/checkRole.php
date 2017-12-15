@@ -9,7 +9,7 @@ class checkRole
 {
     public function handle($request, Closure $next){
         if(Auth::user()->rol->id != 1){
-            return redirect("/subastas");
+            return redirect("/");
         }
         return $next($request);
     }

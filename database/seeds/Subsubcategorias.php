@@ -12,7 +12,7 @@ class Subsubcategorias extends Seeder
             "Estaquitas",
             "Carga",
             "Pasajero",
-            "Trailer"
+            "Tráiler"
         ];
 
         foreach ($subsubcategorias as $subsubcategoria) {

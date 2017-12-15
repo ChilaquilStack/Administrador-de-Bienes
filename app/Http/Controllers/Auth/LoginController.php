@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
-
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
-
+//use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Auth;
 class LoginController extends Controller
 {
     /*
@@ -18,22 +18,27 @@ class LoginController extends Controller
     |
     */
 
-    use AuthenticatesUsers;
+    //use AuthenticatesUsers;
 
-    /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/subastas';
+    protected $redirectTo = '/creditos';
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
     }
+
+    public function authenticate(request $request)
+    {
+        if($request->isMethod('post')){
+            if (Auth::attempt(['email' => $request['email'], 'password' => $request['password'], 'estado' => 1])) {
+                return redirect("/creditos");
+            }
+        }
+        return view("auth.login");
+    }
+    public function logout(){
+        Auth::logout();
+        return redirect("/");
+    }
+
 }

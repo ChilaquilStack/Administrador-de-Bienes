@@ -3,48 +3,28 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use Illuminate\Http\Request;
+use App\Http\Requests\UsersRequest;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Foundation\Auth\RegistersUsers;
 
-class RegisterController extends Controller
-{
-    /*
-    |--------------------------------------------------------------------------
-    | Register Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users as well as their
-    | validation and creation. By default this controller uses a trait to
-    | provide this functionality without requiring any additional code.
-    |
-    */
+class RegisterController extends Controller {
 
-    use RegistersUsers;
-
-    protected $redirectTo = '/subastas';
-
-    public function __construct()
-    {
+    public function __construct() {
         $this->middleware('guest');
     }
 
-    protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
+    public function create(UsersRequest $request) {
+        User::create([
+            'nombre' => $request['nombre'],
+            'apellido_paterno' => $request['apellido_paterno'],
+            'apellido_materno' => $request['apellido_materno'],
+            'email' => $request['email'],
+            'password' => bcrypt($request['password']),
         ]);
+        return redirect("/");
     }
-
-    protected function create(array $data)
-    {
-        return User::create([
-            'nombre' => $data['nombre'],
-            'apellido_paterno' => $data['apellido_paterno'],
-            'apellido_materno' => $data['apellido_materno'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-        ]);
+    
+    public function register() {
+        return view("auth.register");
     }
 }

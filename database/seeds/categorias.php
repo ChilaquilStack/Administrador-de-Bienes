@@ -13,19 +13,19 @@ class categorias extends Seeder
     {
         $categorias = [
             "Arte y Cultura",
-            "Articulos Personales",
+            "Artículos Personales",
             "Bienes Inmuebles",
             "Equipos y Aparatos de Comunicación",
             "Equipo Hospitalario y Medico",
-            "Equipo y Accesorio de Fotografia",
-            "Equipos Linea Blanca y Aparatos Electonicos",
+            "Equipo y Accesorio de Fotografía",
+            "Equipos Línea Blanca y Aparatos Electrónicos",
             "Herramientas",
             "Joyas, Metales Valiosos y Amonedados",
-            "Locales Comerciales, Moviles",
-            "Telas, Prendas y Articulos de Vestir",
+            "Locales Comerciales, Móviles",
+            "Telas, Prendas y Artículos de Vestir",
             "Vinos y Licores",
             "Deportes",
-            "Vehiculos Automotores",
+            "Vehículos Automotores",
             "Varios"
         ];
         //DB::table('categorias')->truncate();

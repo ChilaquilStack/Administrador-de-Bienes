@@ -396,23 +396,22 @@ function busqueda_elementos_por_clase (clase) {
     return data;
 }
 
-function eliminar_credito() {
-    var data = tabla_creditos.row($(this).parents("tr")).data();
-    $("#data_credito").val(data.folio);
+function eliminar_credito(folio) {
+    var aceptar = $("#aceptar_eliminar_credito");
+    $("#eliminar_credito").modal();
     $("#confirmar_warning").click(function() {
         $("#eliminar_credito").modal();
     });
+    
+    aceptar.click(function(){
+        ajax("/creditos/destroy", "post", {
+                "folio": folio,
+                "baja": $("#categorias_bajas_credito option:selected").text() + $("#subcategorias_bajas_credito option:selected").text() + $("#subsubcategorias_bajas_credito option:selected").text(),
+                "comentarios": $("#comentarios").val()
+            }
+        );
+    });
 }
-
-$("#aceptar_eliminar_credito").click(function(){
-    ajax("/creditos/destroy", "post",
-        {
-            "folio": $("#data_credito").val(),
-            "baja": $("#categoria_bajas option:selected").val(),
-            "comentarios": $("#comentarios").val()
-        }
-    );
-});
 
 function eliminar_articulo_credito() {
     var data = tabla_articulos.row($(this).parents("tr")).data();
@@ -486,6 +485,85 @@ function limpiar_formularios(){
     });
 }
 
-$('#creditos tbody').on('click', 'td.delete-control', eliminar_credito);
+function agregar_evento_subcategoria(subcategoria) {
+    //console.log(subcategoria);
+    $("#subcategorias_bajas_credito option").each(function() {
+        $(this).click( function() {
+            var index = $(this).index();
+            $("#subsubcategorias_bajas_credito").html("");
+            $("#subsubcategorias_bajas_credito").css("display", "block");
+            $(subcategoria[index]).each(function(i, e) {
+                $(e.subcategorias).each(function(i, a){
+                    $("#subsubcategorias_bajas_credito").append("<option>" + a.categoria + "</option>");
+                });
+            });
+        });
+    });
+}
 
- $('#tabla_articulos tbody').on('click', 'td.delete-bien', eliminar_articulo_credito);
+function causas_eliminar_credito(){
+    var categorias, fundamentos_legales = 
+    [ 
+        {"id": "1", "fundamento": "195", "concepto": "Retiro de Bienes po Pago del Crédito Fiscal Anterior al Remate", "definicion": "El Contribuyente al Pagar el Crédito Fiscal, evita el remate de bienes y puede disponer de ellos."},
+        {"id": "2", "fundamento": "146", "concepto": "Prescripción del Crédito Fiscal", "definicion": "EL Contribuyente se libera de la deuda por la inactividad del Fisco en la gestión de cobro, por lo tanto puede disponer de los bienes embargados."},
+        {"id": "3", "fundamento": "185", "concepto": "Adjudicación del Bien en Favor del Postor", "definicion": "El Postor que mejoró las pujas en el remate (ganador), por lo que al momento de pagar su oferta, ya puede disponer de dichos los bienes rematados."},
+        {"id": "4", "fundamento": "191", "concepto": "Adjudicación del Bien en Favor de la Autoridad Fiscal", "definicion": "Bienes que salieron a Remate pero no hubo Postores o Pujas."},
+        {"id": "5", "fundamento": "196", "concepto": "Abandono de Bienes en Favor del Fisco", "definicion": "Bienes que estando a libre Disposición de los Cntribuyentes y/o Postores no los retiraron del almacén (bodega)."},
+        {
+            "id":"6", "fundamento": "C.F.F. LFPCA, L.A.", "concepto": "Resolución Amdinistrativa o Judicial:", "definicion": "Cuando el Contribuyente impugna el Crédito Fiscal o el Proceso de Remate o el Avalúo por considerarlo inexacto.",
+            "categorias": 
+            [
+                {"id": "1", "categoria": "a) Recurso de Revocación", "subcategorias":
+                    [
+                        {"categoria": "a) Mandar reponer procedimiento"},
+                        {"categoria": "b) Dejar Sin Efectos"},
+                        {"categoria": "c) Modificar Acto Impugando"}
+                    ]
+                },
+                {"id": "2", "categoria": "b) Juicio de Nulidad", "subcategorias":
+                    [
+                        {"categoria":"a) Declara Nulidad Lisa y Llana"},
+                        {"categoria":"b) Declara Nulidad para Efectos"}
+                    ]
+                },
+                {"id": "3", "categoria": "c) Amparo Indirecto", "subcategorias":
+                    [
+                        {"categoria": "a) Otorga o Concede Amparo"}
+                    ]
+                },
+                {"id": "4", "categoria": "d) Amparo Directo", "subcategorias": 
+                    [
+                        {"categoria": "a) Otorga o Concede Amparo"}
+                    ]
+                }
+            ],
+        }
+    ]
+
+    $.each(fundamentos_legales, function(index, fundamento_legal){
+        $("#categorias_bajas_credito").append("<option value ='" + fundamento_legal.id  + "'>" + fundamento_legal.concepto + "</option>");
+    });
+
+    $("#categorias_bajas_credito option").each(function(index) {
+        $(this).click( function(){
+            $("#subcategorias_bajas_credito").html("");
+            $("#subcategorias_bajas_credito").css("display","none");
+            $("#subsubcategorias_bajas_credito").css("display","none");
+            if(index == 5){
+                $("#subcategorias_bajas_credito").css("display","block");
+                $.each(fundamentos_legales[index].categorias, function(i, categoria) {
+                    $("#subcategorias_bajas_credito").append("<option value='" + categoria.id + "'>" + categoria.categoria +  "</option>");
+                });
+                agregar_evento_subcategoria(fundamentos_legales[index].categorias); 
+            }
+        });
+    });
+}
+
+$('#creditos tbody').on('click', 'td.delete-control', function(){
+    var data = tabla_creditos.row($(this).parents("tr")).data();
+    console.log(data);
+    //eliminar_credito;
+});
+
+$('#tabla_articulos tbody').on('click', 'td.delete-bien', eliminar_articulo_credito);

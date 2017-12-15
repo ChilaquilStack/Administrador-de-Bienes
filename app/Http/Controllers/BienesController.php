@@ -107,9 +107,9 @@ class BienesController extends Controller {
             $bien->creditos;
             $bien->cantidad;
             foreach($bien->categorias as $categoria){
-                $bien->subcategorias = $this->users->subcategorias($categoria->id);
+                $bien->subcategorias = $this->users->subcategorias($bien);
                 foreach($bien->subcategorias as $subcategoria) {
-                    $bien->subsubcategorias = $this->users->subsubcategorias($subcategoria->id);
+                    $bien->subsubcategorias = $this->users->subsubcategorias($bien);
                 }    
             }
             $bien->creditos;
