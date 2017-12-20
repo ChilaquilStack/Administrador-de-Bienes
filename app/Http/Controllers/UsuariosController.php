@@ -5,60 +5,40 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\User;
+use App\Rol;
+use Auth;
 
-class UsuariosController extends Controller
-{
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
+class UsuariosController extends Controller {
+    public function __construct() {
+        $this->middleware('root');
+    }
+
+    public function index() {
         return view("usuarios.index", ["usuarios" => User::activos()]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+    public function create() {
+        return view("usuarios.create");
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+    public function store(Request $request) {
+        User::create([
+            'nombre' => $request['nombre'],
+            'apellido_paterno' => $request['apellido_paterno'],
+            'apellido_materno' => $request['apellido_materno'],
+            'email' => $request['email'],
+            'password' => bcrypt($request['password']),
+            "rols_id" => 3
+        ]);
+        return redirect("usuarios");
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+    public function show($id) {
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+    public function edit($id) {
+        $user = User::where("id", $id)->firstOrFail();
+        return view("usuarios.edit", ["user" => $user]);
     }
 
     /**
@@ -79,8 +59,9 @@ class UsuariosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
+    public function destroy($id) {
+        $user = User::where("id", $id);
+        $user->delete();
+        return redirect("/usuarios")->with("session","Usuario eliminado");
     }
 }

@@ -20,6 +20,7 @@ class RegisterController extends Controller {
             'apellido_materno' => $request['apellido_materno'],
             'email' => $request['email'],
             'password' => bcrypt($request['password']),
+            'rols_id' => 2
         ]);
         return redirect("/");
     }

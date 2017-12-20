@@ -69,9 +69,9 @@ class BienesController extends Controller {
         
         $categorias = DB::table("categorias")->select("id", "nombre")->get();
         foreach($bien->categorias as $categoria){
-            $categoria->subcategorias = $this->users->subcategorias($categoria->id);
+            $categoria->subcategorias = $this->users->subcategorias($bien);
             foreach($categoria->subcategorias as $subcategoria){
-                $subcategoria->subsubcategorias = $this->users->subcategorias($subcategoria->id);
+                $subcategoria->subsubcategorias = $this->users->subcategorias($bien);
             }
         }
 
@@ -128,9 +128,9 @@ class BienesController extends Controller {
             $subir = $imagen->move($dir, $nombre);
         } else {
             foreach($bien->categorias as $categoria) {
-                $categoria->subcategorias = $this->users->subcategorias($categoria->id);
+                $categoria->subcategorias = $this->users->subcategorias($bien);
                 foreach ($categoria->subcategorias as $subcategoria) {
-                    $subcategoria->subsubcategorias = $this->users->subsubcategorias($subcategoria->id);
+                    $subcategoria->subsubcategorias = $this->users->subsubcategorias($bien);
                 }
             }
         }

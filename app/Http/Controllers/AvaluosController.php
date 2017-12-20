@@ -49,9 +49,9 @@ class AvaluosController extends Controller
         $bien = Bien::where("numero_control", $id)->firstOrFail();
         $bien->categorias = $this->usuario->categorias($bien);
         foreach ($bien->categorias as $categoria) {
-            $categoria->subcategorias = $this->usuario->subcategorias($categoria->id);
+            $categoria->subcategorias = $this->usuario->subcategorias($bien);
             foreach ($categoria->subcategorias as $subcategoria) {
-                $subcategoria->subsubcategorias = $this->usuario->subsubcategorias($subcategoria->id);
+                $subcategoria->subsubcategorias = $this->usuario->subsubcategorias($bien);
             }
         }
         return view("avaluos.add", ["bien" => $bien, "categorias" => [] ]);

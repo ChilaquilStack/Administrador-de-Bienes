@@ -36,8 +36,6 @@ Route::group(['middleware' => ['checkRole']], function(){
     Route::get("/categorias/subsubcategoria/{id?}", "CategoriasController@subsubcategoria_destroy");
     Route::post("/categorias/subsubcategoria/create", "CategoriasController@subsubcategoria_create");
     //Rutas de los usuarios
-    Route::resource("usuarios", "UsuariosController");
-    
 });
 Route::get("/", "HomeController@index");
 Route::get("/show/{bien}", "HomeController@show");
@@ -46,3 +44,5 @@ Route::get("/logout","Auth\LoginController@logout")->name("logout");
 Route::match(["post", "get"],"/login","Auth\LoginController@authenticate")->name("login");
 Route::post("/register","Auth\RegisterController@create")->name("register");
 Route::get("/register", "Auth\RegisterController@register");
+Route::get("/subcategoria/{subCategoria?}", "HomeController@subcategorias");
+Route::resource("usuarios", "UsuariosController");

@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
             Municipios::class,
             SubcategoriasBienesTableSeeder::class,
             Subsubcategorias::class,
-            bajas_creditos::class,
+         //bajas_creditos::class,
             bajas_articulos::class
         ]);
     }

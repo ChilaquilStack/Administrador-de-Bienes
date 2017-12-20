@@ -5,7 +5,7 @@
     {{Html::style("//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css")}}
 @endsection
 @section("content")
-@if (session('status'))
+@if(session('status'))
     <div class="alert alert-success">
         {{ session('status') }}
     </div>

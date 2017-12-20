@@ -30,15 +30,10 @@ class CreditosController extends Controller {
 
     public function index() {
         
-        $bajas_creditos = DB::table("motivos_bajas_creditos_fiscales")
-                        ->select("id", "descripcion")->orderBy("descripcion", "asc")
-                        ->get();
-        
         $bajas_articulos = DB::table("motivos_bajas_bienes")->select("id", "descripcion")->orderBy("descripcion", "asc")->get();
 
         return view("index",
             [
-                "bajas_creditos" => $bajas_creditos,
                 "bajas_articulos" => $bajas_articulos, 
                 "categorias" => $this->categorias,
                 "estados" => $this->estados,

@@ -8,7 +8,7 @@ use Auth;
 class checkRole
 {
     public function handle($request, Closure $next){
-        if(Auth::user()->rol->id != 1){
+        if(Auth::user()->rol->id != 3){
             return redirect("/");
         }
         return $next($request);

@@ -34,7 +34,7 @@ class LoginController extends Controller
                 return redirect("/creditos");
             }
         }
-        return view("auth.login");
+        return redirect("/")->with("status", "Error");
     }
     public function logout(){
         Auth::logout();

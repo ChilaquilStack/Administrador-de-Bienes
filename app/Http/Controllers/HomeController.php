@@ -6,10 +6,10 @@ use Illuminate\Http\Request;
 use DB;
 use App\Remate;
 use App\Categoria_bien;
+use App\Subcategoria_bien;
 use App\Bien;
 
-class HomeController extends Controller
-{
+class HomeController extends Controller {
     private $categorias;
     private $remates;
     private $bienes;
@@ -20,8 +20,10 @@ class HomeController extends Controller
         $this->categorias = Categoria_bien::all();
         
         foreach($this->remates as $remate) {
-            $this->bienes = $remate->bienes->filter(function($bien){
-                return $bien->estado != 0;
+            $this->bienes = $remate->bienes->filter(function($bien) {
+                //Los remates deben estar conformados por bienes que cuenten con una valuacion, contengan imagenes
+                //y su estado sea el de activo
+                return $bien->estado != 0 && $bien->valuaciones()->count() > 0 && $bien->imagenes()->count() > 0;
             });
         }
     }
@@ -36,12 +38,31 @@ class HomeController extends Controller
     }
 
     public function categorias(Categoria_bien $categoria) {
-        $this->bienes = $categoria->bienes->where("estado", 1);
-        return view("subastas.index", ["categorias" => $this->categorias, "bienes" => $this->bienes, "categoria" => $categoria]);
+        $bienes = Collect();
+        if(sizeof($this->bienes)){
+            foreach($this->bienes as $bien){
+                foreach($bien->categorias as $categoria){
+                    if($categoria->id == $Categoria->id){
+                        $bienes->push($bien);
+                    }
+                }
+            }
+        }
+        return view("subastas.index", ["categorias" => $this->categorias, "bienes" => $bienes, "categoria" => $categoria]);
     }
-
-    public function subcategorias(Subcategoria_bien $subcategoria){
-        return view("subastas.index", ["categorias" => $this->categorias, "bienes" => [], "categoria" => $subcategoria]);
+    
+    public function subcategorias(Subcategoria_bien $subCategoria){
+        $bienes = Collect();
+        if(sizeof($this->bienes)){
+            foreach($this->bienes as $bien) {
+                foreach($bien->subcategorias as $subcategoria) {
+                    if($subcategoria->id == $subCategoria->id) {
+                        $bienes->push($bien);
+                    }
+                }
+            }
+        }
+        return view("subastas.index", ["categorias" => $this->categorias, "bienes" => $bienes, "categoria" => $subCategoria]);
     }
 
 }
