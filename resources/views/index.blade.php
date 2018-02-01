@@ -5,6 +5,8 @@
 @include('layout.modals.eliminar_credito')
 @include('layout.modals.eliminar_articulo')
 @section("content")
+@include("creditos.agregar")
+@include("bienes.agregar")
 <div class="row">
         <div class="col-md-12">
             @if(session('status'))
@@ -12,7 +14,7 @@
             @endif
         </div>
         <div class="col-md-12" id="tabla_credito">
-            @include('creditos.tabla')
+            <creditos-tabla :creditos="creditos" :credito="credito"></creditos-tabla>
         </div>
         <div class="col-md-12" id="articulos" style="display: none;">
             @include('articulos.tabla-articulos')
@@ -23,8 +25,10 @@
 </div>
 @endsection
 @section("scripts")
-    {{Html::script("js/variables.js")}}
-    {{Html::script("js/funciones.js")}}
-    {{Html::script("js/sub_subsub_categorias.js")}}
-    {{Html::script("js/creditos.js")}}
+    {{--
+        {{Html::script("js/variables.js")}}
+        {{Html::script("js/funciones.js")}}
+        {{Html::script("js/creditos.js")}}
+        {{Html::script("js/sub_subsub_categorias.js")}}
+    --}}
 @endsection

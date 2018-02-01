@@ -18,8 +18,7 @@ class ContribuyenteController extends Controller
         return view("contribuyentes.index");
     }
 
-    public function create()
-    {
+    public function create() {
         //
     }
 

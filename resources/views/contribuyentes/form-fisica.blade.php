@@ -1,7 +1,7 @@
 <div class="form-group">
-    {!!Form::label("nombre","Nombre:",["class"=>"control-label col-sm-2"])!!}
-    <div class="col-sm-10">
-        {!! Form::text("nombre",null,["class"=>"form-control", "placeholder"=>"Ingrese el nombre del contribuyente", "id" => "nombre_contribuyente"])!!}
+    {{Form::label("nombre","Nombre:",["class"=>"control-label col-sm-2"])}}
+    <div class="col-sm-8">
+        {{Form::text("nombre",null,["class"=>"form-control", "placeholder"=>"Ingrese el nombre del contribuyente", "id" => "nombre_contribuyente"])}}
     </div>
 </div>
 <div class="form-group">

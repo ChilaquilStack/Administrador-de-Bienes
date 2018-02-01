@@ -15,8 +15,24 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example', require('./components/Example.vue'));
+//Vue.component('example', require('./components/Example.vue'));
+Vue.component('creditos-tabla', require('./components/creditos/table.vue'));
 
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    mounted() {
+    	this.obtener_creditos()
+    },
+    data: {
+    	creditos: [],
+    	credito: {}
+    },
+    methods: {
+    	obtener_creditos() {
+    		axios.get('creditos/create').then(response => this.creditos = response.data);
+		},
+		agregar_credito() {
+			axios.post('creditos',this.credito).then(response => this.obtener_creditos());
+		},
+    }
 });

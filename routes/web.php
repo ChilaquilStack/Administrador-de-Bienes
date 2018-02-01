@@ -1,16 +1,15 @@
 <?php
 
 Route::group(['middleware' => ['checkRole']], function(){
-    Route::get('/creditos', 'CreditosController@index');
     //Rutas de los creditos
-    Route::get("/creditos/bienes", "CreditosController@bienes");
-    Route::get("/creditos/creditos", "CreditosController@creditos");
-    Route::get("/creditos/create",  "CreditosController@create");
-    Route::post("/creditos/store",  "CreditosController@store");
-    Route::post("/creditos/destroy", "CreditosController@destroy");
-    Route::post("/creditos/update",  "CreditosController@update");
-    Route::get("/creditos/municipios",  "CreditosController@municipios");
-    Route::match(["get", "post"] , "/creditos/add",  "CreditosController@add");
+    // Route::get("/creditos/bienes", "CreditosController@bienes");
+    // Route::get("/creditos/creditos", "CreditosController@creditos");
+    // Route::get("/creditos/create",  "CreditosController@create");
+    // Route::post("/creditos/store",  "CreditosController@store");
+    // Route::post("/creditos/destroy", "CreditosController@destroy");
+    // Route::post("/creditos/update",  "CreditosController@update");
+    // Route::get("/creditos/municipios",  "CreditosController@municipios");
+    // Route::match(["get", "post"] , "/creditos/add",  "CreditosController@add");
     Route::resource("creditos", "CreditosController");
     //Ruta de los bienes
     Route::get("/bienes/bienes", "BienesController@bienes");
